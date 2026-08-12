@@ -9,18 +9,19 @@
     <div class="logo">
         MySite
     </div>
-
             <nav>
                 <a href="{{ url_for('index') }}">
-                    <img src="{{ url_for('static', filename='icons/home.svg') }}" alt="Главная">
+                    <img src="{{ url_for('static', filename='icons/phone.svg') }}" alt="Телефон">
                 </a>
-            <a href="{{ url_for('about') }}">
-                <img src="{{ url_for('static', filename='icons/about.svg') }}" alt="О нас">
-            </a>
-
-            <a href="{{ url_for('login') }}">
-                <img src="{{ url_for('static', filename='icons/login.svg') }}" alt="Войти">
-            </a>
+                <a href="{{ url_for('about') }}">
+                    <img src="{{ url_for('static', filename='icons/shopping-cart.svg') }}" alt="Кошик">
+                </a>
+                <a href="{{ url_for('login') }}">
+                    <img src="{{ url_for('static', filename='icons/user-round.svg') }}" alt="Увійти">
+                </a>
+                <a href="{{ url_for('avatar') }}">
+                    <img src="{{ url_for('static', filename='icons/avatar.svg') }}" alt="Аватар">
+                </a>
             </nav>
         </header>
     </body>
