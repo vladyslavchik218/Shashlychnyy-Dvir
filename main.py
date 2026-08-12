@@ -16,8 +16,10 @@ def about():
 def login():
     return render_template("login.html")
 
+@app.route("/avatar")
+def avatar():
+    return render_template("avatar.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
 
-if __name__ == '__main__':
-    app.run(debug=True)
