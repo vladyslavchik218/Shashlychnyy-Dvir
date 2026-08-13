@@ -130,6 +130,10 @@ function addToCart(product, weight, selectedSauces) {
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
+
+        console.log("PRODUCT:", product);
+        console.log("PRICE:", product.price);
+
         const cartItem = {
             ...product,
             weight,
@@ -960,3 +964,108 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+
+
+function confirmOrder() {
+    console.log("CONFIRM ORDER ЗАПУЩЕН");
+    console.log("CART:", cart);
+
+    const name = document.getElementById("customer-name").value.trim();
+    const surname = document.getElementById("customer-surname").value.trim();
+    const phone = document.getElementById("customer-phone").value.trim();
+
+    // Проверяем поля
+    if (!name || !surname || !phone) {
+        alert("Будь ласка, заповніть усі поля.");
+        return;
+    }
+
+    // Проверяем выбранный мессенджер
+    const messenger = document.querySelector(
+        'input[name="messenger"]:checked'
+    );
+
+    if (!messenger) {
+        alert("Оберіть месенджер.");
+        return;
+    }
+
+    // Проверяем корзину
+    if (cart.length === 0) {
+        alert("Ваш кошик порожній.");
+        return;
+    }
+
+    // Создаём список заказа
+    let orderText = "";
+    let total = 0;
+
+    console.log(cart);
+
+    cart.forEach(item => {
+
+        const itemPrice = getItemPrice(item);
+        const itemTotal = itemPrice * item.quantity;
+
+        orderText +=
+            `• ${item.name} × ${item.quantity} — ${itemTotal} грн\n`;
+
+        total += itemTotal;
+});
+
+    // Формируем сообщение
+    const message =
+`Нове замовлення
+
+Ім'я: ${name}
+Прізвище: ${surname}
+Телефон: ${phone}
+
+Замовлення:
+${orderText}
+Разом: ${total} грн`;
+
+    // Telegram
+    if (messenger.value === "telegram") {
+
+        const telegramUrl =
+            "https://t.me/shahlk_cv?text=" +
+            encodeURIComponent(message);
+
+        window.open(telegramUrl, "_blank");
+
+    // WhatsApp
+    } else if (messenger.value === "whatsapp") {
+
+        const restaurantPhone = "380996615777";
+
+        const whatsappUrl =
+            "https://wa.me/" +
+            restaurantPhone +
+            "?text=" +
+            encodeURIComponent(message);
+
+        window.open(whatsappUrl, "_blank");
+    }
+}
+
+function getItemPrice(item) {
+
+    // Если это соус
+    if (item.type === "sauce") {
+        return Number(item.price);
+    }
+
+    // Если это обычное блюдо
+    let price = (Number(item.pricePer100g) * Number(item.weight)) / 100;
+
+    // Добавляем соусы к блюду
+    if (item.sauces && item.sauces.length > 0) {
+        price += item.sauces.reduce((sum, sauce) => {
+            return sum + Number(sauce.price50g);
+        }, 0);
+    }
+
+    return Math.round(price);
+}
