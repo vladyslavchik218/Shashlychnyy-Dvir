@@ -1,14 +1,502 @@
 {% extends "base.html" %}
-<!DOCTYPE html>
-    <html lang="uk">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Flask App</title>
-    </head>
-    <body>
-        <h1>Ласкаво просимо до Flask!</h1>
-        <p>Це проста базова структура Flask додатку.</p>
-        <a href="/about">Про нас</a>
-    </body>
-</html>
+{% block title %}Шашличний Двір - Крафтовий гастро-проект{% endblock %}
+
+{% block hero %}
+<section class="hero-fullscreen">
+    <div class="hero-background">
+        <video autoplay muted loop playsinline>
+            <source src="{{ url_for('static', filename='videos/grill-fire.mp4') }}" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1 class="hero-title">Вогонь. М'ясо. Характер.</h1>
+            <p class="hero-subtitle">Справжній шашлик на вугіллі за авторськими рецептами</p>
+            <button class="hero-cta" onclick="handleOrderButton()">
+                <span>Замовити</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block craft %}
+<section class="craft-section">
+    <div class="craft-container">
+        <div class="craft-header">
+            <h2 class="craft-title">Філософія вогню</h2>
+            <p class="craft-subtitle">Ми не просто готуємо — ми створюємо мистецтво</p>
+        </div>
+        <div class="craft-cards">
+            <div class="craft-card" data-color="#E76F51">
+                <div class="craft-number">01</div>
+                <h3 class="craft-card-title">Свіже м'ясо</h3>
+                <p class="craft-card-text">Тільки відібране м'ясо від локальних фермерів</p>
+            </div>
+            <div class="craft-card" data-color="#F4A261">
+                <div class="craft-number">02</div>
+                <h3 class="craft-card-title">Авторський маринад</h3>
+                <p class="craft-card-text">Таємні рецепти маринування 24 години</p>
+            </div>
+            <div class="craft-card" data-color="#2A9D8F">
+                <div class="craft-number">03</div>
+                <h3 class="craft-card-title">Живий вогонь</h3>
+                <p class="craft-card-text">Справжнє вугілля для ідеального смаку</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block categories %}
+<section class="categories-section">
+    <div class="categories-container">
+        <button class="category-item active" data-category="all">
+            <span>Все</span>
+        </button>
+        <button class="category-item" data-category="shashlik">
+            <span>Шашлик</span>
+        </button>
+        <button class="category-item" data-category="chicken">
+            <span>Курка</span>
+        </button>
+        <button class="category-item" data-category="sides">
+            <span>Гарніри</span>
+        </button>
+        <button class="category-item" data-category="sauces">
+            <span>Соуси</span>
+        </button>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="catalog-section" id="menu">
+    <div class="catalog-container">
+        <div class="section-header">
+            <h2 class="section-title">З МАНГАЛУ</h2>
+            <p class="section-subtitle">Свіжі страви на справжньому вугіллі</p>
+        </div>
+        
+        <div class="products-grid">
+            <!-- Product Card 1 -->
+            <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-neck')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/pork-neck.jpg') }}" alt="Шашлик зі свинного ошийка" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍖</div>
+                    <div class="product-badges">
+                        <span class="badge hit">Хіт вогню 🔥</span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Шашлик зі свинного ошийка</h3>
+                    <p class="product-description">Соковита свинина на кістці, маринована за авторським рецептом</p>
+                    <div class="product-footer">
+                        <div class="product-price">85 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('pork-neck')">-</button>
+                            <span class="quantity-value-card" id="quantity-pork-neck">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('pork-neck')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 2 -->
+            <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-fillet')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/chicken-fillet.jpg') }}" alt="Шашлик з філе курячого" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍗</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Шашлик з філе курячого</h3>
+                    <p class="product-description">Ніжне куряче філе з прянощами</p>
+                    <div class="product-footer">
+                        <div class="product-price">80 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-fillet')">-</button>
+                            <span class="quantity-value-card" id="quantity-chicken-fillet">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('chicken-fillet')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 3 -->
+            <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-thigh')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/chicken-thigh.jpg') }}" alt="Шашлик з стегна курячого" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍗</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Шашлик з стегна курячого</h3>
+                    <p class="product-description">Соковите куряче стегно на мангалі</p>
+                    <div class="product-footer">
+                        <div class="product-price">80 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-thigh')">-</button>
+                            <span class="quantity-value-card" id="quantity-chicken-thigh">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('chicken-thigh')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 4 -->
+            <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-sausages')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/pork-sausages.jpg') }}" alt="Ковбаски свинні" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥓</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Ковбаски свинні</h3>
+                    <p class="product-description">Домашні ковбаски з власного м'ясного цеху</p>
+                    <div class="product-footer">
+                        <div class="product-price">55 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('pork-sausages')">-</button>
+                            <span class="quantity-value-card" id="quantity-pork-sausages">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('pork-sausages')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 5 -->
+            <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-ribs')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/pork-ribs.jpg') }}" alt="Ребра свинні" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍖</div>
+                    <div class="product-badges">
+                        <span class="badge popular">Популярний ⭐</span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Ребра свинні</h3>
+                    <p class="product-description">М'ясні ребра в соусі BBQ з копченням</p>
+                    <div class="product-footer">
+                        <div class="product-price">70 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('pork-ribs')">-</button>
+                            <span class="quantity-value-card" id="quantity-pork-ribs">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('pork-ribs')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 6 -->
+            <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-wings')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/chicken-wings.jpg') }}" alt="Крильця курячі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍗</div>
+                    <div class="product-badges">
+                        <span class="badge new">Новинка</span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Крильця курячі</h3>
+                    <p class="product-description">Хрусткі крильця в соусі BBQ з копченням</p>
+                    <div class="product-footer">
+                        <div class="product-price">50 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-wings')">-</button>
+                            <span class="quantity-value-card" id="quantity-chicken-wings">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('chicken-wings')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 7 -->
+            <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-legs')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/chicken-legs.jpg') }}" alt="Гомілки курячі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍗</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Гомілки курячі</h3>
+                    <p class="product-description">Соковиті гомілки на мангалі</p>
+                    <div class="product-footer">
+                        <div class="product-price">50 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-legs')">-</button>
+                            <span class="quantity-value-card" id="quantity-chicken-legs">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('chicken-legs')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 8 -->
+            <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-thigh-grill')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/chicken-thigh-grill.jpg') }}" alt="Стегно куряче" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍗</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Стегно куряче</h3>
+                    <p class="product-description">Ціле куряче стегно на кістці</p>
+                    <div class="product-footer">
+                        <div class="product-price">50 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-thigh-grill')">-</button>
+                            <span class="quantity-value-card" id="quantity-chicken-thigh-grill">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('chicken-thigh-grill')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 9 -->
+            <div class="product-card" data-category="sides" onclick="openProductModal('grilled-vegetables')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/grilled-vegetables.jpg') }}" alt="Овочі печені" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥗</div>
+                    <div class="product-badges">
+                        <span class="badge veg">Веган 🌱</span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Овочі печені</h3>
+                    <p class="product-description">Перець, кабачок, печериці на мангалі</p>
+                    <div class="product-footer">
+                        <div class="product-price">60 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('grilled-vegetables')">-</button>
+                            <span class="quantity-value-card" id="quantity-grilled-vegetables">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('grilled-vegetables')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 10 -->
+            <div class="product-card" data-category="sides" onclick="openProductModal('baked-potatoes')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/baked-potatoes.jpg') }}" alt="Картопля печена" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥔</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Картопля печена</h3>
+                    <p class="product-description">Молода картопля в фользі з травами</p>
+                    <div class="product-footer">
+                        <div class="product-price">25 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('baked-potatoes')">-</button>
+                            <span class="quantity-value-card" id="quantity-baked-potatoes">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('baked-potatoes')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Card 11 -->
+            <div class="product-card" data-category="sides" onclick="openProductModal('marinated-onions')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/marinated-onions.jpg') }}" alt="Цибуля маринована" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🧅</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Цибуля маринована</h3>
+                    <p class="product-description">Хрустка маринована цибуля з травами</p>
+                    <div class="product-footer">
+                        <div class="product-price">15 грн/100г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('marinated-onions')">-</button>
+                            <span class="quantity-value-card" id="quantity-marinated-onions">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('marinated-onions')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="catalog-section" id="sauces">
+    <div class="catalog-container">
+        <div class="section-header">
+            <h2 class="section-title sauces-title">СОУСИ</h2>
+            <p class="section-subtitle">40 грн/50г, 70 грн/100г</p>
+        </div>
+        
+        <div class="products-grid">
+            <!-- Sauce Card 1 -->
+            <div class="product-card" data-category="sauces" onclick="openSauceModal('garlic')">
+                <div class="product-image">
+                    <div class="product-image-placeholder">🧄</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Часниковий</h3>
+                    <p class="product-description">Класичний часниковий соус</p>
+                    <div class="product-footer">
+                        <div class="product-price">40 грн/50г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('garlic')">-</button>
+                            <span class="quantity-value-card" id="quantity-sauce-garlic">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('garlic')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sauce Card 2 -->
+            <div class="product-card" data-category="sauces" onclick="openSauceModal('spicy')">
+                <div class="product-image">
+                    <div class="product-image-placeholder">🌶️</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Гострий</h3>
+                    <p class="product-description">Перець чилі для любителів гострого</p>
+                    <div class="product-footer">
+                        <div class="product-price">40 грн/50г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('spicy')">-</button>
+                            <span class="quantity-value-card" id="quantity-sauce-spicy">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('spicy')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sauce Card 3 -->
+            <div class="product-card" data-category="sauces" onclick="openSauceModal('curry')">
+                <div class="product-image">
+                    <div class="product-image-placeholder">🍛</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Карі</h3>
+                    <p class="product-description">Східний аромат карі</p>
+                    <div class="product-footer">
+                        <div class="product-price">40 грн/50г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('curry')">-</button>
+                            <span class="quantity-value-card" id="quantity-sauce-curry">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('curry')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sauce Card 4 -->
+            <div class="product-card" data-category="sauces" onclick="openSauceModal('lingonberry')">
+                <div class="product-image">
+                    <div class="product-image-placeholder">🫐</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Брусничний</h3>
+                    <p class="product-description">Солодко-кислий соус з брусниці</p>
+                    <div class="product-footer">
+                        <div class="product-price">40 грн/50г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('lingonberry')">-</button>
+                            <span class="quantity-value-card" id="quantity-sauce-lingonberry">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('lingonberry')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sauce Card 5 -->
+            <div class="product-card" data-category="sauces" onclick="openSauceModal('tartar')">
+                <div class="product-image">
+                    <div class="product-image-placeholder">🥄</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Тартар</h3>
+                    <p class="product-description">Класичний соус тартар</p>
+                    <div class="product-footer">
+                        <div class="product-price">40 грн/50г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('tartar')">-</button>
+                            <span class="quantity-value-card" id="quantity-sauce-tartar">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('tartar')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sauce Card 6 -->
+            <div class="product-card" data-category="sauces" onclick="openSauceModal('signature')">
+                <div class="product-image">
+                    <div class="product-image-placeholder">⭐</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Фірмовий</h3>
+                    <p class="product-description">Авторський соус шеф-кухаря</p>
+                    <div class="product-footer">
+                        <div class="product-price">40 грн/50г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('signature')">-</button>
+                            <span class="quantity-value-card" id="quantity-sauce-signature">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('signature')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sauce Card 7 -->
+            <div class="product-card" data-category="sauces" onclick="openSauceModal('cheese')">
+                <div class="product-image">
+                    <div class="product-image-placeholder">🧀</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Сирний</h3>
+                    <p class="product-description">Ніжний сирний соус</p>
+                    <div class="product-footer">
+                        <div class="product-price">40 грн/50г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('cheese')">-</button>
+                            <span class="quantity-value-card" id="quantity-sauce-cheese">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('cheese')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sauce Card 8 -->
+            <div class="product-card" data-category="sauces" onclick="openSauceModal('mustard')">
+                <div class="product-image">
+                    <div class="product-image-placeholder">🌾</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Французька гірчиця</h3>
+                    <p class="product-description">Класична гірчиця французького стилю</p>
+                    <div class="product-footer">
+                        <div class="product-price">40 грн/50г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('mustard')">-</button>
+                            <span class="quantity-value-card" id="quantity-sauce-mustard">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('mustard')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sauce Card 9 -->
+            <div class="product-card" data-category="sauces" onclick="openSauceModal('sweet-chili')">
+                <div class="product-image">
+                    <div class="product-image-placeholder">🌶️</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Солодкий чилі</h3>
+                    <p class="product-description">Солодко-гострий соус</p>
+                    <div class="product-footer">
+                        <div class="product-price">40 грн/50г</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('sweet-chili')">-</button>
+                            <span class="quantity-value-card" id="quantity-sauce-sweet-chili">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('sweet-chili')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
