@@ -1,28 +1,163 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="uk">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock %}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
-        <header>
-    <div class="logo">
-        MySite
-    </div>
-            <nav>
-                <a href="{{ url_for('index') }}">
-                    <img src="{{ url_for('static', filename='icons/phone.svg') }}" alt="Телефон">
-                </a>
-                <a href="{{ url_for('about') }}">
-                    <img src="{{ url_for('static', filename='icons/shopping-cart.svg') }}" alt="Кошик">
-                </a>
-                <a href="{{ url_for('login') }}">
-                    <img src="{{ url_for('static', filename='icons/user-round.svg') }}" alt="Увійти">
-                </a>
-                <a href="{{ url_for('avatar') }}">
-                    <img src="{{ url_for('static', filename='icons/avatar.svg') }}" alt="Аватар">
-                </a>
-            </nav>
+        <header class="header">
+            <div class="header-container">
+                <div class="header-left">
+                    <div class="logo">
+                        <span class="logo-text">Шашличний Двір</span>
+                    </div>
+                    <div class="location-selector">
+                        <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <span class="location-text">м. Чернівці, вул. Південно-Кільцева, 45А</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="working-hours">
+                        <span>Пн-Пт 8-22, Сб-Нд 10-22</span>
+                    </div>
+                    <nav class="header-nav">
+                        <button class="nav-btn favorites-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            </svg>
+                        </button>
+                        <button class="nav-btn cart-btn" onclick="openCart()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="9" cy="21" r="1"/>
+                                <circle cx="20" cy="21" r="1"/>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                            </svg>
+                            <span class="cart-badge" id="cart-badge">0</span>
+                        </button>
+                    </nav>
+                </div>
+            </div>
         </header>
+        
+        <main class="main-content">
+            {% block hero %}{% endblock %}
+            {% block craft %}{% endblock %}
+            {% block categories %}{% endblock %}
+            {% block content %}{% endblock %}
+        </main>
+        
+        <!-- Cart Drawer -->
+        <div class="cart-drawer" id="cart-drawer">
+            <div class="cart-overlay" onclick="closeCart()"></div>
+            <div class="cart-content">
+                <div class="cart-header">
+                    <h2>Кошик</h2>
+                    <button class="close-btn" onclick="closeCart()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="cart-items" id="cart-items">
+                    <div class="empty-cart">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"/>
+                            <circle cx="20" cy="21" r="1"/>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                        </svg>
+                        <p>Ваш кошик порожній</p>
+                    </div>
+                </div>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <span>Разом:</span>
+                        <span class="total-price" id="total-price">0 грн</span>
+                    </div>
+                    <button class="checkout-btn" onclick="toggleCheckoutForm()">Оформити замовлення</button>
+                    <div class="checkout-form" id="checkout-form">
+                        <div class="form-group">
+                            <label>Ім'я</label>
+                            <input type="text" placeholder="Ваше ім'я">
+                        </div>
+                        <div class="form-group">
+                            <label>Прізвище</label>
+                            <input type="text" placeholder="Ваше прізвище">
+                        </div>
+                        <div class="form-group">
+                            <label>Номер телефону</label>
+                            <input type="tel" placeholder="+380 XX XXX XX XX">
+                        </div>
+                        <button class="submit-order-btn">Підтвердити замовлення</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Modal -->
+        <div class="product-modal" id="product-modal">
+            <div class="modal-overlay" onclick="closeProductModal()"></div>
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeProductModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+                <div class="modal-body">
+                    <div class="modal-image">
+                        <img src="" alt="" id="modal-product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="modal-image-placeholder" style="display:none;" id="modal-placeholder">🍖</div>
+                    </div>
+                    <div class="modal-details">
+                        <div class="modal-badges" id="modal-badges"></div>
+                        <h2 class="modal-title" id="modal-product-title"></h2>
+                        <p class="modal-description" id="modal-product-description"></p>
+                        <div class="modal-options">
+                            <div class="portion-selector">
+                                <h3>Порція</h3>
+                                <div class="portion-options">
+                                    <button class="portion-btn active" data-portion="small">Мала (300г)</button>
+                                    <button class="portion-btn" data-portion="medium">Середня (500г)</button>
+                                    <button class="portion-btn" data-portion="large">Велика (700г)</button>
+                                </div>
+                            </div>
+                            <div class="extras-selector">
+                                <h3>Додати соус</h3>
+                                <div class="extras-options">
+                                    <label class="extra-option">
+                                        <input type="checkbox" value="тар-тар">
+                                        <span>Тар-тар (+25 грн)</span>
+                                    </label>
+                                    <label class="extra-option">
+                                        <input type="checkbox" value="часниковий">
+                                        <span>Часниковий (+20 грн)</span>
+                                    </label>
+                                    <label class="extra-option">
+                                        <input type="checkbox" value="аджика">
+                                        <span>Аджика (+15 грн)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="modal-price">
+                                <span class="price-label">Ціна:</span>
+                                <span class="price-value" id="modal-product-price">0 грн</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCartFromModal()">Додати в кошик</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     </body>
 </html>

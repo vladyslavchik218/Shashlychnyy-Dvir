@@ -16,9 +16,9 @@ def about():
 def login():
     return render_template("login.html")
 
-@app.route("/avatar")
-def avatar():
-    return render_template("avatar.html")
+@app.route("/basket")
+def basket():
+    return render_template("basket.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
