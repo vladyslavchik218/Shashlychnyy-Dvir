@@ -45,9 +45,9 @@ const products = {
         id: 'pork-ribs',
         name: 'Ребра свинні',
         description: 'М\'ясні ребра в соусі BBQ з копченням',
-        pricePer100g: 70,
+        pricePer100g: 60,
         image: '/static/images/pork-ribs.jpg',
-        badges: ['popular'],
+        badges: ['popular', 'smoker'],
         category: 'shashlik'
     },
     'chicken-wings': {
@@ -56,7 +56,7 @@ const products = {
         description: 'Хрусткі крильця в соусі BBQ з копченням',
         pricePer100g: 50,
         image: '/static/images/chicken-wings.jpg',
-        badges: ['new'],
+        badges: ['new', 'smoker'],
         category: 'chicken'
     },
     'chicken-legs': {
@@ -72,9 +72,9 @@ const products = {
         id: 'chicken-thigh-grill',
         name: 'Стегно куряче',
         description: 'Ціле куряче стегно на кістці',
-        pricePer100g: 50,
+        pricePer100g: 80,
         image: '/static/images/chicken-thigh-grill.jpg',
-        badges: [],
+        badges: ['smoker'],
         category: 'chicken'
     },
     'grilled-vegetables': {
@@ -103,6 +103,105 @@ const products = {
         image: '/static/images/marinated-onions.jpg',
         badges: [],
         category: 'sides'
+    },
+    'bell-pepper': {
+        id: 'bell-pepper',
+        name: 'Болгарський перець',
+        description: 'Солодкий соковитий перець, запечений на грилі',
+        pricePer100g: 60,
+        image: '/static/images/bell-pepper.jpg',
+        badges: ['veg'],
+        category: 'grill'
+    },
+    'mushrooms': {
+        id: 'mushrooms',
+        name: 'Шампіньйони',
+        description: 'Соковиті гриби, смажені на грилі з часником',
+        pricePer100g: 60,
+        image: '/static/images/mushrooms.jpg',
+        badges: ['veg'],
+        category: 'grill'
+    },
+    'zucchini': {
+        id: 'zucchini',
+        name: 'Кабачок',
+        description: 'Ніжний кабачок, запечений на грилі з часником',
+        pricePer100g: 60,
+        image: '/static/images/zucchini.jpg',
+        badges: ['veg'],
+        category: 'grill'
+    },
+    'bean-pepper': {
+        id: 'bean-pepper',
+        name: 'Стручковий перець',
+        description: 'Хрусткий перець, смажений на грилі',
+        pricePer100g: 60,
+        image: '/static/images/bean-pepper.jpg',
+        badges: ['veg'],
+        category: 'grill'
+    },
+    'cherry-tomatoes': {
+        id: 'cherry-tomatoes',
+        name: 'Чері помідори',
+        description: 'Солодкі чері, запечені на грилі з базиліком',
+        pricePer100g: 60,
+        image: '/static/images/cherry-tomatoes.jpg',
+        badges: ['veg'],
+        category: 'grill'
+    },
+    'corn': {
+        id: 'corn',
+        name: 'Кукурудза',
+        description: 'Солодка кукурудза, запечена на грилі з маслом',
+        pricePer100g: 60,
+        image: '/static/images/corn.jpg',
+        badges: ['veg'],
+        category: 'grill'
+    },
+    'pork-chop': {
+        id: 'pork-chop',
+        name: 'Костиця',
+        description: 'Соковита свиняча костиця на кістці',
+        pricePer100g: 70,
+        image: '/static/images/pork-chop.jpg',
+        badges: ['smoker'],
+        category: 'shashlik'
+    },
+    'pork-liver': {
+        id: 'pork-liver',
+        name: 'Пічеревина',
+        description: 'Ніжна свиняча печінка на мангалі',
+        pricePer100g: 55,
+        image: '/static/images/pork-liver.jpg',
+        badges: ['smoker'],
+        category: 'shashlik'
+    },
+    'pork-tenderloin': {
+        id: 'pork-tenderloin',
+        name: 'Полядвиця',
+        description: 'Найніжніша частина свинини на грилі',
+        pricePer100g: 60,
+        image: '/static/images/pork-tenderloin.jpg',
+        badges: ['smoker'],
+        category: 'shashlik'
+    },
+    'rib-strip': {
+        id: 'rib-strip',
+        name: 'Ребро полоска',
+        description: 'Смажені ребра-полоски з копченням',
+        pricePer100g: 48,
+        image: '/static/images/rib-strip.jpg',
+        badges: ['smoker'],
+        category: 'shashlik'
+    },
+    'grill-sausages': {
+        id: 'grill-sausages',
+        name: 'Ковбаски гриль',
+        description: 'Домашні ковбаски гриль з власного м\'ясного цеху',
+        pricePer100g: 55,
+        image: '/static/images/grill-sausages.jpg',
+        badges: ['smoker'],
+        category: 'shashlik'
     }
 };
 
@@ -130,6 +229,10 @@ function addToCart(product, weight, selectedSauces) {
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
+
+        console.log("PRODUCT:", product);
+        console.log("PRICE:", product.price);
+
         const cartItem = {
             ...product,
             weight,
@@ -191,15 +294,26 @@ function openProductModal(productId) {
     const productEmojis = {
         'pork-neck': '🍖',
         'chicken-fillet': '🍗',
-        'chicken-thigh': '�',
-        'pork-sausages': '�',
+        'chicken-thigh': '🍗',
+        'pork-sausages': '🥓',
         'pork-ribs': '🍖',
         'chicken-wings': '🍗',
         'chicken-legs': '🍗',
         'chicken-thigh-grill': '🍗',
         'grilled-vegetables': '🥗',
         'baked-potatoes': '🥔',
-        'marinated-onions': '🧅'
+        'marinated-onions': '🧅',
+        'bell-pepper': '🫑',
+        'mushrooms': '🍄',
+        'zucchini': '🥒',
+        'bean-pepper': '🫛',
+        'cherry-tomatoes': '🍅',
+        'corn': '🌽',
+        'pork-chop': '🍖',
+        'pork-liver': '🍖',
+        'pork-tenderloin': '🍖',
+        'rib-strip': '🍖',
+        'grill-sausages': '🥓'
     };
     modalPlaceholder.textContent = productEmojis[productId] || '🍖';
     
@@ -237,10 +351,19 @@ function openProductModal(productId) {
         <h3>Соуси (додатково)</h3>
         <div class="sauces-options">
             ${sauces.map(sauce => `
-                <label class="sauce-option">
-                    <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}'>
-                    <span>${sauce.name} - ${sauce.price50g} грн/50г, ${sauce.price100g} грн/100г</span>
-                </label>
+                <div class="sauce-item">
+                    <div class="sauce-name">${sauce.name}</div>
+                    <div class="sauce-weights">
+                        <label class="sauce-option">
+                            <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}' data-weight="50">
+                            <span>50г - ${sauce.price50g} грн</span>
+                        </label>
+                        <label class="sauce-option">
+                            <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}' data-weight="100">
+                            <span>100г - ${sauce.price100g} грн</span>
+                        </label>
+                    </div>
+                </div>
             `).join('')}
         </div>
     `;
@@ -278,13 +401,19 @@ function updateModalPrice() {
     
     document.querySelectorAll('.sauce-option input:checked').forEach(input => {
         const sauce = JSON.parse(input.dataset.sauce);
-        selectedSauces.push(sauce);
+        const sauceWeight = parseInt(input.dataset.weight);
+        const saucePrice = sauceWeight === 50 ? sauce.price50g : sauce.price100g;
+        selectedSauces.push({
+            ...sauce,
+            selectedWeight: sauceWeight,
+            selectedPrice: saucePrice
+        });
     });
     
     let totalPrice = (currentProduct.pricePer100g * selectedWeight / 100);
     
     selectedSauces.forEach(sauce => {
-        totalPrice += sauce.price50g; // Default to 50g
+        totalPrice += sauce.selectedPrice;
     });
     
     document.getElementById('modal-product-price').textContent = Math.round(totalPrice) + ' грн';
@@ -305,7 +434,8 @@ function getBadgeText(badge) {
         'spicy': 'О гострота 🌶️',
         'new': 'Новинка',
         'veg': 'Веган 🌱',
-        'popular': 'Популярний ⭐'
+        'popular': 'Популярний ⭐',
+        'smoker': 'Смокер 🔥'
     };
     return badgeTexts[badge] || badge;
 }
@@ -625,7 +755,13 @@ function addToCartFromModal() {
         
         document.querySelectorAll('.sauce-option input:checked').forEach(input => {
             const sauce = JSON.parse(input.dataset.sauce);
-            selectedSauces.push(sauce);
+            const sauceWeight = parseInt(input.dataset.weight);
+            const saucePrice = sauceWeight === 50 ? sauce.price50g : sauce.price100g;
+            selectedSauces.push({
+                ...sauce,
+                selectedWeight: sauceWeight,
+                selectedPrice: saucePrice
+            });
         });
         
         addToCart(currentProduct, selectedWeight, selectedSauces);
@@ -960,3 +1096,127 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+
+
+function confirmOrder() {
+    console.log("CONFIRM ORDER ЗАПУЩЕН");
+    console.log("CART:", cart);
+
+    const name = document.getElementById("customer-name").value.trim();
+    const surname = document.getElementById("customer-surname").value.trim();
+    const phone = document.getElementById("customer-phone").value.trim();
+
+    // Проверяем поля
+    if (!name || !surname || !phone) {
+        alert("Будь ласка, заповніть усі поля.");
+        return;
+    }
+
+    // Проверяем выбранный мессенджер
+    const messenger = document.querySelector(
+        'input[name="messenger"]:checked'
+    );
+
+    if (!messenger) {
+        alert("Оберіть месенджер.");
+        return;
+    }
+
+    // Проверяем корзину
+    if (cart.length === 0) {
+        alert("Ваш кошик порожній.");
+        return;
+    }
+
+    // Создаём список заказа
+    let orderText = "";
+    let total = 0;
+
+    console.log(cart);
+
+    cart.forEach(item => {
+
+        const itemPrice = getItemPrice(item);
+        const itemTotal = itemPrice * item.quantity;
+
+        // Формуємо текст для товару
+        let itemText = `• ${item.name}`;
+
+        // Додаємо вагу для звичайних товарів
+        if (item.type !== 'sauce' && item.weight) {
+            itemText += ` (${item.weight}г)`;
+        }
+
+        // Додаємо соуси, якщо є
+        if (item.sauces && item.sauces.length > 0) {
+            const sauceDetails = item.sauces.map(s => {
+                const weight = s.selectedWeight ? s.selectedWeight : '50';
+                return `${s.name} (${weight}г)`;
+            }).join(', ');
+            itemText += ` + ${sauceDetails}`;
+        }
+
+        itemText += ` × ${item.quantity} — ${itemTotal} грн\n`;
+        orderText += itemText;
+
+        total += itemTotal;
+});
+
+    // Формируем сообщение
+    const message =
+`Нове замовлення
+
+Ім'я: ${name}
+Прізвище: ${surname}
+Телефон: ${phone}
+
+Замовлення:
+${orderText}
+Разом: ${total} грн`;
+
+    // Telegram
+    if (messenger.value === "telegram") {
+
+        const telegramUrl =
+            "https://t.me/shahlk_cv?text=" +
+            encodeURIComponent(message);
+
+        window.open(telegramUrl, "_blank");
+
+    // WhatsApp
+    } else if (messenger.value === "whatsapp") {
+
+        const restaurantPhone = "380996615777";
+
+        const whatsappUrl =
+            "https://wa.me/" +
+            restaurantPhone +
+            "?text=" +
+            encodeURIComponent(message);
+
+        window.open(whatsappUrl, "_blank");
+    }
+}
+
+function getItemPrice(item) {
+
+    // Если это соус
+    if (item.type === "sauce") {
+        return Number(item.price);
+    }
+
+    // Если это обычное блюдо
+    let price = (Number(item.pricePer100g) * Number(item.weight)) / 100;
+
+    // Добавляем соусы к блюду
+    if (item.sauces && item.sauces.length > 0) {
+        price += item.sauces.reduce((sum, sauce) => {
+            // Use selectedPrice if available, otherwise fall back to price50g
+            const saucePrice = sauce.selectedPrice ? Number(sauce.selectedPrice) : Number(sauce.price50g);
+            return sum + saucePrice;
+        }, 0);
+    }
+
+    return Math.round(price);
+}
