@@ -669,6 +669,11 @@ body {
     color: var(--white);
 }
 
+.badge.smoker {
+    background: #8B4513;
+    color: var(--white);
+}
+
 .product-info {
     padding: 20px;
 }
@@ -1089,6 +1094,7 @@ body {
     margin-bottom: 24px;
 }
 
+.weight-selector h3,
 .portion-selector h3,
 .extras-selector h3 {
     font-family: 'Syne', sans-serif;
@@ -1098,13 +1104,20 @@ body {
     color: var(--text-dark);
 }
 
+.weight-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
 .portion-options {
     display: flex;
     gap: 10px;
     margin-bottom: 24px;
 }
 
-.portion-btn {
+.portion-btn,
+.weight-btn {
     padding: 10px 20px;
     background: var(--secondary-bg);
     border: 1px solid var(--border-color);
@@ -1116,11 +1129,13 @@ body {
     transition: all 0.3s ease;
 }
 
-.portion-btn:hover {
+.portion-btn:hover,
+.weight-btn:hover {
     border-color: var(--accent-fire);
 }
 
-.portion-btn.active {
+.portion-btn.active,
+.weight-btn.active {
     background: var(--accent-fire);
     border-color: var(--accent-fire);
     color: var(--white);
@@ -1135,6 +1150,61 @@ body {
 .extra-option {
     display: flex;
     align-items: center;
+}
+
+/* Sauce Selector Styles */
+.sauces-selector h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-dark);
+}
+
+.sauces-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sauce-item {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.sauce-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+}
+
+.sauce-weights {
+    display: flex;
+    gap: 15px;
+}
+
+.sauce-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.sauce-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent-fire);
+}
+
+.sauce-option span {
+    font-size: 14px;
+    color: var(--text-dark);
+}
     gap: 10px;
     cursor: pointer;
 }
@@ -1309,6 +1379,11 @@ body {
     
     .portion-options {
         flex-direction: column;
+    }
+
+    .sauce-weights {
+        flex-direction: column;
+        gap: 8px;
     }
     
     .modal-footer {
