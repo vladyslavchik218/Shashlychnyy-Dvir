@@ -3,6 +3,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 
 :root {
@@ -28,6 +30,22 @@ body {
     background-image: 
         radial-gradient(circle at 30% 30%, rgba(231, 111, 81, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 70% 70%, rgba(42, 157, 143, 0.08) 0%, transparent 50%);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Touch-friendly buttons */
+button, .category-item, .product-card {
+    -webkit-tap-highlight-color: rgba(231, 111, 81, 0.2);
+    cursor: pointer;
+}
+
+/* Better touch targets on mobile */
+@media (hover: none) and (pointer: coarse) {
+    button, .category-item, .product-card {
+        min-height: 44px;
+        min-width: 44px;
+    }
 }
 
 /* Header Styles */
@@ -158,6 +176,8 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+
 
 /* Main Content */
 .main-content {
@@ -450,6 +470,14 @@ body {
     z-index: 100;
 }
 
+@media (max-width: 768px) {
+    .categories-section {
+        position: relative;
+        top: 0;
+        padding: 15px 0;
+    }
+}
+
 .categories-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -458,11 +486,22 @@ body {
     gap: 12px;
     overflow-x: auto;
     padding-bottom: 10px;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-fire) var(--secondary-bg);
 }
 
 .categories-container::-webkit-scrollbar {
-    display: none;
+    height: 6px;
+}
+
+.categories-container::-webkit-scrollbar-track {
+    background: var(--secondary-bg);
+    border-radius: 3px;
+}
+
+.categories-container::-webkit-scrollbar-thumb {
+    background: var(--accent-fire);
+    border-radius: 3px;
 }
 
 .category-item {
@@ -575,7 +614,19 @@ body {
     position: relative;
 }
 
-.product-card::before {
+/* Food cards specific styles */
+.product-card[data-category="shashlik"],
+.product-card[data-category="chicken"],
+.product-card[data-category="sides"],
+.product-card[data-category="grill"] {
+    /* Specific styles defined in hover and other selectors */
+    display: block;
+}
+
+.product-card[data-category="shashlik"]::before,
+.product-card[data-category="chicken"]::before,
+.product-card[data-category="sides"]::before,
+.product-card[data-category="grill"]::before {
     content: '';
     position: absolute;
     top: 0;
@@ -587,19 +638,79 @@ body {
     transition: opacity 0.3s ease;
 }
 
-.product-card:hover::before {
+.product-card[data-category="shashlik"]:hover::before,
+.product-card[data-category="chicken"]:hover::before,
+.product-card[data-category="sides"]:hover::before,
+.product-card[data-category="grill"]:hover::before {
     opacity: 1;
 }
 
-.product-card:hover {
+.product-card[data-category="shashlik"]:hover,
+.product-card[data-category="chicken"]:hover,
+.product-card[data-category="sides"]:hover,
+.product-card[data-category="grill"]:hover {
     transform: translateY(-8px);
     box-shadow: 0 10px 30px rgba(255, 87, 34, 0.15);
     border-color: var(--accent-fire);
 }
 
+/* Sauce cards specific styles */
+.product-card[data-category="sauces"] {
+    border-color: #2A9D8F;
+}
+
+.product-card[data-category="sauces"]:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(42, 157, 143, 0.15);
+    border-color: #2A9D8F;
+}
+
+.product-card[data-category="sauces"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2A9D8F, #3498DB);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card[data-category="sauces"]:hover::before {
+    opacity: 1;
+}
+
+/* Drink cards specific styles */
+.product-card[data-category="drinks"] {
+    border-color: #9B59B6;
+}
+
+.product-card[data-category="drinks"]:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(155, 89, 182, 0.15);
+    border-color: #9B59B6;
+}
+
+.product-card[data-category="drinks"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #9B59B6, #8E44AD);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card[data-category="drinks"]:hover::before {
+    opacity: 1;
+}
+
 .product-image {
     position: relative;
-    height: 200px;
+    height: 350px;
     overflow: hidden;
     background: linear-gradient(135deg, var(--wood-light) 0%, var(--wood-dark) 100%);
     display: flex;
@@ -611,6 +722,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 40% 30%;
     transition: transform 0.3s ease;
     position: absolute;
     top: 0;
@@ -622,7 +734,12 @@ body {
     opacity: 0.3;
 }
 
-.product-card:hover .product-image img {
+.product-card[data-category="shashlik"]:hover .product-image img,
+.product-card[data-category="chicken"]:hover .product-image img,
+.product-card[data-category="sides"]:hover .product-image img,
+.product-card[data-category="grill"]:hover .product-image img,
+.product-card[data-category="sauces"]:hover .product-image img,
+.product-card[data-category="drinks"]:hover .product-image img {
     transform: scale(1.05);
 }
 
@@ -674,6 +791,85 @@ body {
     color: var(--white);
 }
 
+/* Sauce cards footer specific styles */
+.product-card[data-category="sauces"] .product-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.product-card[data-category="sauces"] .sauce-weight-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.product-card[data-category="sauces"] .sauce-weight-btn {
+    padding: 6px 12px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-dark);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.product-card[data-category="sauces"] .sauce-weight-btn:hover {
+    border-color: #2A9D8F;
+}
+
+.product-card[data-category="sauces"] .sauce-weight-btn.active {
+    background: #2A9D8F;
+    border-color: #2A9D8F;
+    color: var(--white);
+}
+
+.product-card[data-category="sauces"] .sauce-price {
+    margin-right: auto;
+}
+
+/* Default footer styles for food and drink cards */
+.product-card[data-category="shashlik"] .product-footer,
+.product-card[data-category="chicken"] .product-footer,
+.product-card[data-category="sides"] .product-footer,
+.product-card[data-category="grill"] .product-footer,
+.product-card[data-category="drinks"] .product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.subcategories {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.subcategory-item {
+    padding: 10px 20px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.subcategory-item:hover {
+    border-color: var(--accent-fire);
+}
+
+.subcategory-item.active {
+    background: var(--accent-fire);
+    border-color: var(--accent-fire);
+    color: var(--white);
+}
+
 .product-info {
     padding: 20px;
 }
@@ -694,11 +890,8 @@ body {
     line-height: 1.5;
 }
 
-.product-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+/* Remove general product-footer styles to avoid conflicts */
+/* Each category has its own specific styles defined above */
 
 .product-price {
     font-family: 'Syne', sans-serif;
@@ -756,25 +949,6 @@ body {
 
 .cart-drawer.open {
     right: 0;
-}
-
-.cart-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 1999;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.cart-drawer.open .cart-overlay {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
 }
 
 .cart-content {
@@ -1044,7 +1218,7 @@ body {
 }
 
 .modal-image {
-    height: 300px;
+    height: 150px;
     background: var(--wood-light);
     display: flex;
     align-items: center;
@@ -1205,9 +1379,6 @@ body {
     font-size: 14px;
     color: var(--text-dark);
 }
-    gap: 10px;
-    cursor: pointer;
-}
 
 .extra-option input[type="checkbox"] {
     width: 20px;
@@ -1319,8 +1490,25 @@ body {
         font-size: 48px;
     }
     
+    .header {
+        padding: 10px 0;
+    }
+    
+    .main-content {
+        padding-top: 80px;
+    }
+    
     .header-container {
         padding: 0 15px;
+        gap: 10px;
+    }
+    
+    .header-left {
+        gap: 10px;
+    }
+    
+    .logo-text {
+        font-size: 20px;
     }
     
     .location-selector {
@@ -1329,6 +1517,15 @@ body {
     
     .working-hours {
         display: none;
+    }
+    
+    .header-right {
+        gap: 15px;
+    }
+    
+    .nav-btn {
+        width: 40px;
+        height: 40px;
     }
     
     .section-title {
@@ -1386,6 +1583,16 @@ body {
         gap: 8px;
     }
     
+    .sauce-weight-selector {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .sauce-weight-btn {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    
     .modal-footer {
         flex-direction: column;
         gap: 16px;
@@ -1397,6 +1604,10 @@ body {
 }
 
 @media (max-width: 480px) {
+    .main-content {
+        padding-top: 70px;
+    }
+    
     .hero-title {
         font-size: 28px;
     }
@@ -1433,16 +1644,421 @@ body {
     }
     
     .category-item {
-        min-width: 70px;
-        padding: 12px 15px;
+        min-width: 60px;
+        padding: 10px 12px;
     }
     
     .category-item span {
-        font-size: 14px;
+        font-size: 12px;
     }
     
     .products-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .product-image {
+        height: 120px;
+    }
+    
+    .product-info {
+        padding: 12px;
+    }
+    
+    .product-title {
+        font-size: 14px;
+    }
+    
+    .product-description {
+        font-size: 12px;
+    }
+    
+    .product-price {
+        font-size: 13px;
+    }
+    
+    .quantity-btn-card {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+    
+    .quantity-value-card {
+        font-size: 13px;
+    }
+    
+    .section-header {
+        padding: 20px 15px;
+    }
+    
+    .section-title {
+        font-size: 20px;
+    }
+    
+    .section-subtitle {
+        font-size: 13px;
+    }
+    
+    .categories-container {
+        padding: 0 10px;
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    
+    .categories-container::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .catalog-container {
+        padding: 0 15px;
+    }
+    
+    .subcategories {
+        gap: 8px;
+    }
+    
+    .subcategory-item {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+    
+    .badge {
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+    
+    .product-badges {
+        top: 8px;
+        left: 8px;
+        gap: 4px;
+    }
+    
+    .cart-drawer {
+        width: 100%;
+        right: -100%;
+    }
+    
+    .cart-item {
+        padding: 12px;
+    }
+    
+    .cart-item-image {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .cart-item-info {
+        font-size: 13px;
+    }
+    
+    .cart-item-name {
+        font-size: 14px;
+    }
+    
+    .modal-content {
+        width: 98%;
+        max-height: 90vh;
+    }
+    
+    .modal-image {
+        height: 150px;
+    }
+    
+    .modal-details {
+        padding: 15px;
+    }
+    
+    .modal-title {
+        font-size: 18px;
+    }
+    
+    .modal-description {
+        font-size: 14px;
+    }
+    
+    .modal-options {
+        margin-bottom: 16px;
+    }
+    
+    .weight-options,
+    .portion-options {
+        gap: 8px;
+    }
+    
+    .weight-btn,
+    .portion-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .sauce-option {
+        font-size: 13px;
+    }
+    
+    .sauce-option input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .extra-option {
+        font-size: 13px;
+    }
+    
+    .extra-option input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .modal-footer {
+        padding: 15px;
+        gap: 12px;
+    }
+    
+    .add-to-cart-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .close-modal-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+    
+    .checkout-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .form-title {
+        font-size: 18px;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    
+    .form-group label {
+        font-size: 13px;
+    }
+    
+    .footer {
+        height: 120px;
+    }
+    
+    .footer-logo {
+        font-size: 16px;
+    }
+    
+    .footer-subtitle {
+        font-size: 10px;
+    }
+    
+    .footer-number,
+    .footer-copy {
+        font-size: 10px;
+    }
+}
+
+/* Extra small devices (phones, less than 360px) */
+@media (max-width: 360px) {
+    .hero-title {
+        font-size: 24px;
+    }
+    
+    .hero-subtitle {
+        font-size: 12px;
+    }
+    
+    .logo-text {
+        font-size: 16px;
+    }
+    
+    .category-item {
+        min-width: 50px;
+        padding: 8px 10px;
+    }
+    
+    .category-item span {
+        font-size: 11px;
+    }
+    
+    .product-title {
+        font-size: 13px;
+    }
+    
+    .product-description {
+        font-size: 11px;
+    }
+    
+    .section-title {
+        font-size: 18px;
+    }
+    
+    .modal-title {
+        font-size: 16px;
+    }
+    
+    .modal-description {
+        font-size: 13px;
+    }
+}
+
+/* Large tablets and small laptops (1024px - 1366px) */
+@media (min-width: 1024px) and (max-width: 1366px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    
+    .craft-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Medium laptops (1366px - 1600px) */
+@media (min-width: 1366px) and (max-width: 1600px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
+/* Extra large screens (1600px+) */
+@media (min-width: 1600px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    
+    .catalog-container {
+        max-width: 1400px;
+    }
+}
+
+/* Landscape mobile devices */
+@media (max-height: 500px) and (orientation: landscape) {
+    .main-content {
+        padding-top: 70px;
+    }
+    
+    .header {
+        padding: 8px 0;
+    }
+    
+    .hero-section {
+        min-height: 60vh;
+    }
+    
+    .hero-title {
+        font-size: 24px;
+    }
+    
+    .hero-subtitle {
+        font-size: 12px;
+    }
+    
+    .modal-content {
+        max-height: 85vh;
+    }
+    
+    .modal-image {
+        height: 120px;
+    }
+    
+    .modal-details {
+        padding: 12px;
+    }
+}
+
+/* Font loading optimization */
+@font-face {
+    font-family: 'Space Grotesk';
+    src: local('Space Grotesk');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Syne';
+    src: local('Syne');
+    font-display: swap;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+    .product-card:hover,
+    .category-item:hover {
+        transform: none;
+    }
+    
+    .product-card::before,
+    .category-item::before {
+        display: none;
+    }
+}
+
+/* Image optimization */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Prevent horizontal overflow on mobile */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+    
+    .catalog-container,
+    .craft-container,
+    .categories-container {
+        overflow-x: hidden;
+    }
+}
+
+/* Respect user's font size preferences */
+@media (max-width: 768px) {
+    html {
+        font-size: 100%;
+    }
+}
+
+/* Safe area for notched devices */
+@supports (padding: max(0px)) {
+    .header {
+        padding-left: max(15px, env(safe-area-inset-left));
+        padding-right: max(15px, env(safe-area-inset-right));
+    }
+    
+    .catalog-container {
+        padding-left: max(15px, env(safe-area-inset-left));
+        padding-right: max(15px, env(safe-area-inset-right));
+    }
+}
+
+/* Input field optimization for mobile */
+@media (max-width: 768px) {
+    input, select, textarea {
+        font-size: 16px; /* Prevents iOS zoom on focus */
     }
 }
 
@@ -1588,3 +2204,12 @@ main {
 .submit-order-btn:active {
     transform: scale(0.98);
 }
+
+/*.product-image img {
+    object-fit: cover;
+    object-position: top;   /* было center, теперь показываем верх фото, где соус */
+/*}
+
+.product-image {
+    height: 280px;   /* было 220px, к примеру — попробуйте разные значения */
+/*}

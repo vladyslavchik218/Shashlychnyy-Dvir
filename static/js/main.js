@@ -2,6 +2,170 @@
 let cart = [];
 let currentProduct = null;
 let currentSauce = null;
+let currentDrink = null;
+
+// Store selected sauce weights and prices
+let selectedSauceWeights = {};
+let selectedSaucePrices = {};
+
+// Select sauce weight on card
+
+// Drink functions
+function openDrinkModal(drinkId) {
+    const drink = products[drinkId];
+    if (!drink) return;
+    
+    const modalImage = document.getElementById('modal-product-image');
+    const modalPlaceholder = document.getElementById('modal-placeholder');
+    
+    modalImage.src = drink.image;
+    modalImage.style.display = 'block';
+    modalPlaceholder.style.display = 'none';
+    
+    modalImage.onerror = function() {
+        this.style.display = 'none';
+        modalPlaceholder.style.display = 'flex';
+        const drinkEmojis = {
+            'cherry-juice-1l': '🍒',
+            'multifruit-juice-1l': '🍎',
+            'tomato-juice-1l': '🍅',
+            'cherry-juice-05l': '🍒',
+            'multifruit-juice-05l': '🍎',
+            'tomato-juice-05l': '🍅',
+            'kvass-05l': '🍺',
+            'kvass-1l': '🍺',
+            'mojito-05l': '🍹',
+            'mojito-1l': '🍹',
+            'cola-zero-05l': '🥤',
+            'cola-05l': '🥤',
+            'cola-125l': '🥤',
+            'pepsi-05l': '🥤',
+            'pepsi-07l': '🥤',
+            'pepsi-125l': '🥤',
+            'pepsi-03l-glass': '🥤',
+            'lipton-peach': '🍑',
+            'lipton-lemon': '🍋',
+            'lipton-green': '🍵',
+            'kvass': '🍺',
+            'mojito': '🍹'
+        };
+        modalPlaceholder.textContent = drinkEmojis[drinkId] || '🥤';
+    };
+    
+    document.getElementById('modal-product-title').textContent = drink.name;
+    document.getElementById('modal-product-description').textContent = drink.description;
+    document.getElementById('modal-product-price').textContent = drink.price + ' грн';
+    
+    // Set badges
+    const badgesContainer = document.getElementById('modal-badges');
+    badgesContainer.innerHTML = '';
+    drink.badges.forEach(badge => {
+        const badgeElement = document.createElement('span');
+        badgeElement.className = `badge ${badge}`;
+        badgeElement.textContent = getBadgeText(badge);
+        badgesContainer.appendChild(badgeElement);
+    });
+    
+    // Remove weight and sauce selectors for drinks
+    const modalOptions = document.querySelector('.modal-options');
+    modalOptions.innerHTML = '';
+    
+    // Add to cart button for drinks
+    const addToCartBtn = document.createElement('button');
+    addToCartBtn.className = 'add-to-cart-btn';
+    addToCartBtn.textContent = 'Додати в кошик';
+    addToCartBtn.onclick = addToCartFromModal;
+    modalOptions.appendChild(addToCartBtn);
+    
+    document.getElementById('product-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    
+    // Store current drink
+    currentProduct = null;
+    currentSauce = null;
+    currentDrink = drink;
+}
+
+function increaseDrinkQuantity(drinkId) {
+    const drink = products[drinkId];
+    if (!drink) return;
+
+    const existingItem = cart.find(item => item.id === drinkId);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        const cartItem = {
+            ...drink,
+            quantity: 1,
+            cartId: Date.now()
+        };
+        cart.push(cartItem);
+    }
+
+    updateCartUI();
+    updateCardQuantities();
+}
+
+function decreaseDrinkQuantity(drinkId) {
+    const existingItem = cart.find(item => item.id === drinkId);
+    if (existingItem) {
+        if (existingItem.quantity > 1) {
+            existingItem.quantity -= 1;
+        } else {
+            cart = cart.filter(i => i.cartId !== existingItem.cartId);
+        }
+    }
+
+    updateCartUI();
+    updateCardQuantities();
+}
+
+// Subcategory filtering for drinks
+document.addEventListener('DOMContentLoaded', function() {
+    const subcategoryButtons = document.querySelectorAll('.subcategory-item');
+    subcategoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const subcategory = this.dataset.subcategory;
+            
+            // Update active state
+            subcategoryButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter drink cards
+            const drinkCards = document.querySelectorAll('.product-card[data-category="drinks"]');
+            drinkCards.forEach(card => {
+                if (subcategory === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    const cardSubcategory = card.dataset.subcategory;
+                    card.style.display = cardSubcategory === subcategory ? 'block' : 'none';
+                }
+            });
+        });
+    });
+});
+function selectSauceWeight(sauceId, weight, price) {
+    selectedSauceWeights[sauceId] = weight;
+    selectedSaucePrices[sauceId] = price;
+    
+    // Update UI
+    const buttons = document.querySelectorAll(`.sauce-weight-btn[data-sauce="${sauceId}"]`);
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        if (parseInt(btn.dataset.weight) === weight) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Update price display
+    const priceElement = document.getElementById(`price-sauce-${sauceId}`);
+    if (priceElement) {
+        priceElement.textContent = price + ' грн';
+    }
+    
+    // Update quantity display for the selected weight
+    updateCardQuantities();
+}
 
 // Product data (in real app, this would come from backend)
 const products = {
@@ -202,20 +366,267 @@ const products = {
         image: '/static/images/grill-sausages.jpg',
         badges: ['smoker'],
         category: 'shashlik'
+    },
+    // Drinks
+    'cherry-juice-1l': {
+        id: 'cherry-juice-1l',
+        name: 'Вишневий сік',
+        description: 'Натуральний вишневий сік 1 л',
+        price: 108,
+        volume: '1 л',
+        image: '/static/images/cherry-juice.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'juices'
+    },
+    'multifruit-juice-1l': {
+        id: 'multifruit-juice-1l',
+        name: 'Мульти фрукт сік',
+        description: 'Натуральний мульти-фруктовий сік 1 л',
+        price: 108,
+        volume: '1 л',
+        image: '/static/images/multifruit-juice.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'juices'
+    },
+    'tomato-juice-1l': {
+        id: 'tomato-juice-1l',
+        name: 'Томатний сік',
+        description: 'Натуральний томатний сік 1 л',
+        price: 108,
+        volume: '1 л',
+        image: '/static/images/tomato-juice.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'juices'
+    },
+    'cherry-juice-05l': {
+        id: 'cherry-juice-05l',
+        name: 'Вишневий сік',
+        description: 'Натуральний вишневий сік 0.5 л',
+        price: 59,
+        volume: '0.5 л',
+        image: '/static/images/cherry-juice.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'juices'
+    },
+    'multifruit-juice-05l': {
+        id: 'multifruit-juice-05l',
+        name: 'Мульти фрукт сік',
+        description: 'Натуральний мульти-фруктовий сік 0.5 л',
+        price: 59,
+        volume: '0.5 л',
+        image: '/static/images/multifruit-juice.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'juices'
+    },
+    'tomato-juice-05l': {
+        id: 'tomato-juice-05l',
+        name: 'Томатний сік',
+        description: 'Натуральний томатний сік 0.5 л',
+        price: 59,
+        volume: '0.5 л',
+        image: '/static/images/tomato-juice.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'juices'
+    },
+    'kvass-05l': {
+        id: 'kvass-05l',
+        name: 'Квас',
+        description: 'Традиційний український квас 0,5 л',
+        price: 30,
+        volume: '0.5 л',
+        image: '/static/images/kvass.jpg',
+        badges: ['popular'],
+        category: 'drinks',
+        subcategory: 'draft'
+    },
+    'kvass-1l': {
+        id: 'kvass-1l',
+        name: 'Квас',
+        description: 'Традиційний український квас 1 л',
+        price: 60,
+        volume: '1 л',
+        image: '/static/images/kvass.jpg',
+        badges: ['popular'],
+        category: 'drinks',
+        subcategory: 'draft'
+    },
+    'mojito-05l': {
+        id: 'mojito-05l',
+        name: 'Мохіто',
+        description: 'Освіжаючий мохіто 0,5 л',
+        price: 30,
+        volume: '0.5 л',
+        image: '/static/images/mojito.jpg',
+        badges: ['hit'],
+        category: 'drinks',
+        subcategory: 'draft'
+    },
+    'mojito-1l': {
+        id: 'mojito-1l',
+        name: 'Мохіто',
+        description: 'Освіжаючий мохіто 1 л',
+        price: 69,
+        volume: '1 л',
+        image: '/static/images/mojito.jpg',
+        badges: ['hit'],
+        category: 'drinks',
+        subcategory: 'draft'
+    },
+    // Backward compatibility aliases
+    'kvass': {
+        id: 'kvass',
+        name: 'Квас',
+        description: 'Традиційний український квас',
+        price: 30,
+        volume: '0.5 л',
+        image: '/static/images/kvass.jpg',
+        badges: ['popular'],
+        category: 'drinks',
+        subcategory: 'draft'
+    },
+    'mojito': {
+        id: 'mojito',
+        name: 'Мохіто',
+        description: 'Освіжаючий мохіто',
+        price: 30,
+        volume: '0.5 л',
+        image: '/static/images/mojito.jpg',
+        badges: ['hit'],
+        category: 'drinks',
+        subcategory: 'draft'
+    },
+    // Coca-Cola products
+    'cola-zero-05l': {
+        id: 'cola-zero-05l',
+        name: 'Кола Zero',
+        description: 'Coca-Cola Zero 0,5 л',
+        price: 37,
+        volume: '0.5 л',
+        image: '/static/images/cola-zero.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'carbonated'
+    },
+    'cola-05l': {
+        id: 'cola-05l',
+        name: 'Кола',
+        description: 'Coca-Cola 0,5 л',
+        price: 37,
+        volume: '0.5 л',
+        image: '/static/images/cola.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'carbonated'
+    },
+    'cola-125l': {
+        id: 'cola-125l',
+        name: 'Кола',
+        description: 'Coca-Cola 1,25 л',
+        price: 62,
+        volume: '1.25 л',
+        image: '/static/images/cola.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'carbonated'
+    },
+    // Pepsi products
+    'pepsi-05l': {
+        id: 'pepsi-05l',
+        name: 'Пепсі',
+        description: 'Pepsi 0,5 л',
+        price: 35,
+        volume: '0.5 л',
+        image: '/static/images/pepsi.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'carbonated'
+    },
+    'pepsi-07l': {
+        id: 'pepsi-07l',
+        name: 'Пепсі',
+        description: 'Pepsi 0,7 л',
+        price: 41,
+        volume: '0.7 л',
+        image: '/static/images/pepsi.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'carbonated'
+    },
+    'pepsi-125l': {
+        id: 'pepsi-125l',
+        name: 'Пепсі',
+        description: 'Pepsi 1,25 л',
+        price: 59,
+        volume: '1.25 л',
+        image: '/static/images/pepsi.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'carbonated'
+    },
+    'pepsi-03l-glass': {
+        id: 'pepsi-03l-glass',
+        name: 'Пепсі',
+        description: 'Pepsi 0,3 л скло',
+        price: 43,
+        volume: '0.3 л',
+        image: '/static/images/pepsi.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'carbonated'
+    },
+    // Lipton Tea products
+    'lipton-peach': {
+        id: 'lipton-peach',
+        name: 'Чай Lipton',
+        description: 'Lipton Персик 0,5 л',
+        price: 35,
+        volume: '0.5 л',
+        image: '/static/images/lipton-peach.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'tea'
+    },
+    'lipton-lemon': {
+        id: 'lipton-lemon',
+        name: 'Чай Lipton',
+        description: 'Lipton Лимон 0,5 л',
+        price: 35,
+        volume: '0.5 л',
+        image: '/static/images/lipton-lemon.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'tea'
+    },
+    'lipton-green': {
+        id: 'lipton-green',
+        name: 'Чай Lipton',
+        description: 'Lipton Зелений 0,5 л',
+        price: 35,
+        volume: '0.5 л',
+        image: '/static/images/lipton-green.jpg',
+        badges: [],
+        category: 'drinks',
+        subcategory: 'tea'
     }
 };
 
 // Sauces data
 const sauces = [
-    { id: 'garlic', name: 'Часниковий', price50g: 40, price100g: 70 },
-    { id: 'spicy', name: 'Гострий', price50g: 40, price100g: 70 },
-    { id: 'curry', name: 'Карі', price50g: 40, price100g: 70 },
-    { id: 'lingonberry', name: 'Брусничний', price50g: 40, price100g: 70 },
-    { id: 'tartar', name: 'Тартар', price50g: 40, price100g: 70 },
-    { id: 'signature', name: 'Фірмовий', price50g: 40, price100g: 70 },
-    { id: 'cheese', name: 'Сирний', price50g: 40, price100g: 70 },
-    { id: 'mustard', name: 'Французька гірчиця', price50g: 40, price100g: 70 },
-    { id: 'sweet-chili', name: 'Солодкий чилі', price50g: 40, price100g: 70 }
+    { id: 'garlic', name: 'Часниковий', price50g: 40, price100g: 70, image: '/static/images/sauce-ketchup.jpg' },
+    { id: 'spicy', name: 'Гострий', price50g: 40, price100g: 70, image: '/static/images/sauce-spicy.jpg' },
+    { id: 'curry', name: 'Карі', price50g: 40, price100g: 70, image: '/static/images/sauce-curry.jpg' },
+    { id: 'lingonberry', name: 'Брусничний', price50g: 40, price100g: 70, image: '/static/images/sauce-lingonberry.jpg' },
+    { id: 'tartar', name: 'Тартар', price50g: 40, price100g: 70, image: '/static/images/sauce-tartar.jpg' },
+    { id: 'signature', name: 'Фірмовий', price50g: 40, price100g: 70, image: '/static/images/sauce-signature.jpg' },
+    { id: 'cheese', name: 'Сирний', price50g: 40, price100g: 70, image: '/static/images/sauce-cheese.jpg' },
+    { id: 'mustard', name: 'Французька гірчиця', price50g: 40, price100g: 70, image: '/static/images/sauce-mustard.jpg' },
+    { id: 'sweet-chili', name: 'Солодкий чилі', price50g: 40, price100g: 70, image: '/static/images/sauce-mustard-correct.jpg' }
 ];
 
 // Add quantity property to cart items
@@ -267,13 +678,11 @@ function handleOrderButton() {
 // Open cart drawer
 function openCart() {
     document.getElementById('cart-drawer').classList.add('open');
-    document.body.style.overflow = 'hidden';
 }
 
 // Close cart drawer
 function closeCart() {
     document.getElementById('cart-drawer').classList.remove('open');
-    document.body.style.overflow = '';
 }
 
 // Open product modal
@@ -313,7 +722,29 @@ function openProductModal(productId) {
         'pork-liver': '🍖',
         'pork-tenderloin': '🍖',
         'rib-strip': '🍖',
-        'grill-sausages': '🥓'
+        'grill-sausages': '🥓',
+        'cherry-juice-1l': '🍒',
+        'multifruit-juice-1l': '🍎',
+        'tomato-juice-1l': '🍅',
+        'cherry-juice-05l': '🍒',
+        'multifruit-juice-05l': '🍎',
+        'tomato-juice-05l': '🍅',
+        'kvass-05l': '🍺',
+        'kvass-1l': '🍺',
+        'mojito-05l': '🍹',
+        'mojito-1l': '🍹',
+        'cola-zero-05l': '🥤',
+        'cola-05l': '🥤',
+        'cola-125l': '🥤',
+        'pepsi-05l': '🥤',
+        'pepsi-07l': '🥤',
+        'pepsi-125l': '🥤',
+        'pepsi-03l-glass': '🥤',
+        'lipton-peach': '🍑',
+        'lipton-lemon': '🍋',
+        'lipton-green': '🍵',
+        'kvass': '🍺',
+        'mojito': '🍹'
     };
     modalPlaceholder.textContent = productEmojis[productId] || '🍖';
     
@@ -331,62 +762,53 @@ function openProductModal(productId) {
         badgesContainer.appendChild(badgeElement);
     });
     
-    // Add weight selector
-    const weightSelector = document.createElement('div');
-    weightSelector.className = 'weight-selector';
-    weightSelector.innerHTML = `
-        <h3>Вага</h3>
-        <div class="weight-options">
-            <button class="weight-btn active" data-weight="100">100г</button>
-            <button class="weight-btn" data-weight="200">200г</button>
-            <button class="weight-btn" data-weight="300">300г</button>
-            <button class="weight-btn" data-weight="500">500г</button>
-        </div>
-    `;
-    
-    // Add sauces selector
-    const saucesSelector = document.createElement('div');
-    saucesSelector.className = 'sauces-selector';
-    saucesSelector.innerHTML = `
-        <h3>Соуси (додатково)</h3>
-        <div class="sauces-options">
-            ${sauces.map(sauce => `
-                <div class="sauce-item">
-                    <div class="sauce-name">${sauce.name}</div>
-                    <div class="sauce-weights">
-                        <label class="sauce-option">
-                            <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}' data-weight="50">
-                            <span>50г - ${sauce.price50g} грн</span>
-                        </label>
-                        <label class="sauce-option">
-                            <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}' data-weight="100">
-                            <span>100г - ${sauce.price100g} грн</span>
-                        </label>
-                    </div>
+    // Populate sauces dynamically
+    const saucesOptions = document.querySelector('.sauces-options');
+    if (saucesOptions) {
+        saucesOptions.innerHTML = sauces.map(sauce => `
+            <div class="sauce-item">
+                <div class="sauce-name">${sauce.name}</div>
+                <div class="sauce-weights">
+                    <label class="sauce-option">
+                        <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}' data-weight="50">
+                        <span>50г - ${sauce.price50g} грн</span>
+                    </label>
+                    <label class="sauce-option">
+                        <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}' data-weight="100">
+                        <span>100г - ${sauce.price100g} грн</span>
+                    </label>
                 </div>
-            `).join('')}
-        </div>
-    `;
+            </div>
+        `).join('');
+    }
     
-    // Replace options with new ones
-    const modalOptions = document.querySelector('.modal-options');
-    modalOptions.innerHTML = '';
-    modalOptions.appendChild(weightSelector);
-    modalOptions.appendChild(saucesSelector);
+    // Set active weight button
+    document.querySelectorAll('.weight-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector('.weight-btn[data-weight="100"]').classList.add('active');
+    
+    // Clear all sauce checkboxes
+    document.querySelectorAll('.sauce-option input').forEach(input => {
+        input.checked = false;
+    });
     
     // Add event listeners for weight buttons
-    weightSelector.querySelectorAll('.weight-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            weightSelector.querySelectorAll('.weight-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.weight-btn').forEach(btn => {
+        btn.onclick = function() {
+            document.querySelectorAll('.weight-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             updateModalPrice();
-        });
+        };
     });
     
     // Add event listeners for sauce checkboxes
-    saucesSelector.querySelectorAll('.sauce-option input').forEach(input => {
-        input.addEventListener('change', updateModalPrice);
+    document.querySelectorAll('.sauce-option input').forEach(input => {
+        input.onchange = updateModalPrice;
     });
+    
+    // Initial price update
+    updateModalPrice();
     
     document.getElementById('product-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -425,6 +847,7 @@ function closeProductModal() {
     document.body.style.overflow = '';
     currentProduct = null;
     currentSauce = null;
+    currentDrink = null;
 }
 
 // Get badge text
@@ -520,10 +943,25 @@ function updateCardQuantities() {
     sauces.forEach(sauce => {
         const quantityElement = document.getElementById(`quantity-sauce-${sauce.id}`);
         if (quantityElement) {
+            const selectedWeight = selectedSauceWeights[sauce.id] || 50;
             const totalQuantity = cart
-                .filter(item => item.type === 'sauce' && item.sauceId === sauce.id && item.weight === 50)
+                .filter(item => item.type === 'sauce' && item.sauceId === sauce.id && item.weight === selectedWeight)
                 .reduce((sum, item) => sum + item.quantity, 0);
             quantityElement.textContent = totalQuantity;
+        }
+    });
+    
+    // Update drink quantities
+    Object.keys(products).forEach(productId => {
+        const product = products[productId];
+        if (product.category === 'drinks') {
+            const quantityElement = document.getElementById(`quantity-${productId}`);
+            if (quantityElement) {
+                const totalQuantity = cart
+                    .filter(item => item.id === productId)
+                    .reduce((sum, item) => sum + item.quantity, 0);
+                quantityElement.textContent = totalQuantity;
+            }
         }
     });
 }
@@ -536,21 +974,26 @@ function openSauceModal(sauceId) {
     const modalImage = document.getElementById('modal-product-image');
     const modalPlaceholder = document.getElementById('modal-placeholder');
     
-    modalImage.style.display = 'none';
-    modalPlaceholder.style.display = 'flex';
+    modalImage.src = sauce.image;
+    modalImage.style.display = 'block';
+    modalPlaceholder.style.display = 'none';
     
-    const sauceEmojis = {
-        'garlic': '🧄',
-        'spicy': '🌶️',
-        'curry': '🍛',
-        'lingonberry': '🫐',
-        'tartar': '🥄',
-        'signature': '⭐',
-        'cheese': '🧀',
-        'mustard': '🌾',
-        'sweet-chili': '🌶️'
+    modalImage.onerror = function() {
+        this.style.display = 'none';
+        modalPlaceholder.style.display = 'flex';
+        const sauceEmojis = {
+            'garlic': '🧄',
+            'spicy': '🌶️',
+            'curry': '🍛',
+            'lingonberry': '🫐',
+            'tartar': '🥄',
+            'signature': '⭐',
+            'cheese': '🧀',
+            'mustard': '🌾',
+            'sweet-chili': '🌶️'
+        };
+        modalPlaceholder.textContent = sauceEmojis[sauceId] || '🥫';
     };
-    modalPlaceholder.textContent = sauceEmojis[sauceId] || '🥫';
     
     document.getElementById('modal-product-title').textContent = sauce.name;
     document.getElementById('modal-product-description').textContent = 'Оберіть вагу соусу';
@@ -610,21 +1053,26 @@ function openSauceModal(sauceId) {
     const modalImage = document.getElementById('modal-product-image');
     const modalPlaceholder = document.getElementById('modal-placeholder');
     
-    modalImage.style.display = 'none';
-    modalPlaceholder.style.display = 'flex';
+    modalImage.src = sauce.image;
+    modalImage.style.display = 'block';
+    modalPlaceholder.style.display = 'none';
     
-    const sauceEmojis = {
-        'garlic': '🧄',
-        'spicy': '🌶️',
-        'curry': '🍛',
-        'lingonberry': '🫐',
-        'tartar': '🥄',
-        'signature': '⭐',
-        'cheese': '🧀',
-        'mustard': '🌾',
-        'sweet-chili': '🌶️'
+    modalImage.onerror = function() {
+        this.style.display = 'none';
+        modalPlaceholder.style.display = 'flex';
+        const sauceEmojis = {
+            'garlic': '🧄',
+            'spicy': '🌶️',
+            'curry': '🍛',
+            'lingonberry': '🫐',
+            'tartar': '🥄',
+            'signature': '⭐',
+            'cheese': '🧀',
+            'mustard': '🌾',
+            'sweet-chili': '🌶️'
+        };
+        modalPlaceholder.textContent = sauceEmojis[sauceId] || '🥫';
     };
-    modalPlaceholder.textContent = sauceEmojis[sauceId] || '🥫';
     
     document.getElementById('modal-product-title').textContent = sauce.name;
     document.getElementById('modal-product-description').textContent = 'Оберіть вагу соусу';
@@ -682,7 +1130,10 @@ function increaseSauceQuantity(sauceId) {
     const sauce = sauces.find(s => s.id === sauceId);
     if (!sauce) return;
     
-    const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === 50);
+    const selectedWeight = selectedSauceWeights[sauceId] || 50;
+    const selectedPrice = selectedSaucePrices[sauceId] || sauce.price50g;
+    
+    const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === selectedWeight);
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
@@ -690,8 +1141,8 @@ function increaseSauceQuantity(sauceId) {
             type: 'sauce',
             sauceId: sauce.id,
             name: sauce.name,
-            weight: 50,
-            price: sauce.price50g,
+            weight: selectedWeight,
+            price: selectedPrice,
             quantity: 1,
             cartId: Date.now()
         };
@@ -704,7 +1155,8 @@ function increaseSauceQuantity(sauceId) {
 
 // Decrease sauce quantity
 function decreaseSauceQuantity(sauceId) {
-    const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === 50);
+    const selectedWeight = selectedSauceWeights[sauceId] || 50;
+    const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === selectedWeight);
     if (existingItem) {
         if (existingItem.quantity > 1) {
             existingItem.quantity -= 1;
@@ -767,6 +1219,23 @@ function addToCartFromModal() {
         addToCart(currentProduct, selectedWeight, selectedSauces);
         closeProductModal();
         showNotification('Додано в кошик!');
+    } else if (currentDrink) {
+        // Add drink
+        const existingItem = cart.find(item => item.id === currentDrink.id);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            const cartItem = {
+                ...currentDrink,
+                quantity: 1,
+                cartId: Date.now()
+            };
+            cart.push(cartItem);
+        }
+        closeProductModal();
+        updateCartUI();
+        updateCardQuantities();
+        showNotification('Напій додано в кошик!');
     }
 }
 
@@ -799,9 +1268,14 @@ function updateCartUI() {
             if (item.type === 'sauce') {
                 itemPrice = item.price;
                 itemText = `${item.weight}г`;
+            } else if (item.category === 'drinks') {
+                // Handle drinks
+                itemPrice = item.price;
+                itemText = item.volume || '';
             } else {
-                itemPrice = Math.round((item.pricePer100g * item.weight / 100) + item.sauces.reduce((sum, sauce) => sum + sauce.price50g, 0));
-                const saucesText = item.sauces.length > 0 ? item.sauces.map(s => s.name).join(', ') : '';
+                // Handle regular products
+                itemPrice = Math.round((item.pricePer100g * item.weight / 100) + (item.sauces ? item.sauces.reduce((sum, sauce) => sum + sauce.price50g, 0) : 0));
+                const saucesText = item.sauces && item.sauces.length > 0 ? item.sauces.map(s => s.name).join(', ') : '';
                 itemText = `${item.weight}г${saucesText ? ', ' + saucesText : ''}`;
             }
             
@@ -830,8 +1304,12 @@ function updateCartUI() {
         let itemPrice;
         if (item.type === 'sauce') {
             itemPrice = item.price;
+        } else if (item.category === 'drinks') {
+            // Handle drinks
+            itemPrice = item.price;
         } else {
-            itemPrice = Math.round((item.pricePer100g * item.weight / 100) + item.sauces.reduce((sum, sauce) => sum + sauce.price50g, 0));
+            // Handle regular products
+            itemPrice = Math.round((item.pricePer100g * item.weight / 100) + (item.sauces ? item.sauces.reduce((sum, sauce) => sum + sauce.price50g, 0) : 0));
         }
         return sum + (itemPrice * item.quantity);
     }, 0);
@@ -1177,10 +1655,30 @@ ${orderText}
 
     // Telegram
     if (messenger.value === "telegram") {
+        // Check message length to avoid 400 error
+        const maxLength = 3500; // Safe limit for Telegram URLs
+        let finalMessage = message;
+        
+        if (message.length > maxLength) {
+            // Truncate the order text if too long
+            const headerLength = message.indexOf('Замовлення:');
+            const footer = `\nРазом: ${total} грн`;
+            const availableSpace = maxLength - headerLength - footer.length - 50; // 50 for safety
+            
+            if (availableSpace > 100) {
+                finalMessage = message.substring(0, headerLength) + 
+                    'Замовлення:\n' + 
+                    orderText.substring(0, availableSpace) + 
+                    '...\n(Замовлення скорочено через обмеження)\n' + 
+                    footer;
+            } else {
+                finalMessage = message.substring(0, maxLength - 50) + '...';
+            }
+        }
 
         const telegramUrl =
             "https://t.me/shahlk_cv?text=" +
-            encodeURIComponent(message);
+            encodeURIComponent(finalMessage);
 
         window.open(telegramUrl, "_blank");
 
@@ -1203,6 +1701,11 @@ function getItemPrice(item) {
 
     // Если это соус
     if (item.type === "sauce") {
+        return Number(item.price);
+    }
+
+    // Если это напій (сік, квас, мохіто)
+    if (item.category === "drinks" || item.category === "draft") {
         return Number(item.price);
     }
 

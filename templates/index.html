@@ -73,6 +73,9 @@
         <button class="category-item" data-category="sauces">
             <span>Соуси</span>
         </button>
+        <button class="category-item" data-category="drinks">
+            <span>Напої</span>
+        </button>
     </div>
 </section>
 {% endblock %}
@@ -89,7 +92,7 @@
             <!-- Product Card 1 -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-neck')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/pork-neck.jpg') }}" alt="Шашлик зі свинного ошийка" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/shahluk.jpg') }}" alt="Шашлик зі свинного ошийка" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
                     <div class="product-badges">
                         <span class="badge hit">Хіт вогню 🔥</span>
@@ -112,7 +115,7 @@
             <!-- Product Card 2 -->
             <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-fillet')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/chicken-fillet.jpg') }}" alt="Шашлик з філе курячого" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/chicken-shahluk.jpg') }}" alt="Шашлик з філе курячого" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍗</div>
                 </div>
                 <div class="product-info">
@@ -175,7 +178,7 @@
             <!-- Product Card 5 -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-ribs')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/pork-ribs.jpg') }}" alt="Ребра свинні" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/rebra-svuni.jpg') }}" alt="Ребра свинні" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
                     <div class="product-badges">
                         <span class="badge popular">Популярний ⭐</span>
@@ -266,7 +269,7 @@
             <!-- Product Card 9 -->
             <div class="product-card" data-category="sides" onclick="openProductModal('grilled-vegetables')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/grilled-vegetables.jpg') }}" alt="Овочі печені" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/ovoshi-pecheni.jpg') }}" alt="Овочі печені" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥗</div>
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
@@ -289,7 +292,7 @@
             <!-- Product Card 10 -->
             <div class="product-card" data-category="sides" onclick="openProductModal('baked-potatoes')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/baked-potatoes.jpg') }}" alt="Картопля печена" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/potato.jpg') }}" alt="Картопля печена" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥔</div>
                 </div>
                 <div class="product-info">
@@ -309,7 +312,7 @@
             <!-- Product Card 11 -->
             <div class="product-card" data-category="sides" onclick="openProductModal('marinated-onions')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/marinated-onions.jpg') }}" alt="Цибуля маринована" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/tsibylya-marynovana.jpg') }}" alt="Цибуля маринована" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🧅</div>
                 </div>
                 <div class="product-info">
@@ -329,7 +332,7 @@
             <!-- Product Card 12 - Овочі гриль -->
             <div class="product-card" data-category="grill" onclick="openProductModal('bell-pepper')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/bell-pepper.jpg') }}" alt="Болгарський перець" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/pertsi.jpg') }}" alt="Болгарський перець" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🫑</div>
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
@@ -352,7 +355,7 @@
             <!-- Product Card 13 -->
             <div class="product-card" data-category="grill" onclick="openProductModal('mushrooms')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/mushrooms.jpg') }}" alt="Шампіньйони" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/mushroom.jpg') }}" alt="Шампіньйони" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍄</div>
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
@@ -375,7 +378,7 @@
             <!-- Product Card 14 -->
             <div class="product-card" data-category="grill" onclick="openProductModal('zucchini')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/zucchini.jpg') }}" alt="Кабачок" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/kabachki.jpg') }}" alt="Кабачок" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥒</div>
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
@@ -421,7 +424,7 @@
             <!-- Product Card 16 -->
             <div class="product-card" data-category="grill" onclick="openProductModal('cherry-tomatoes')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/cherry-tomatoes.jpg') }}" alt="Чері помідори" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/tomato.jpg') }}" alt="Чері помідори" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍅</div>
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
@@ -444,7 +447,7 @@
             <!-- Product Card 17 -->
             <div class="product-card" data-category="grill" onclick="openProductModal('corn')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/corn.jpg') }}" alt="Кукурудза" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="/static/images/corn.jpg" alt="Кукурудза" onerror="console.log('Image error for corn:', this.src); this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🌽</div>
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
@@ -452,7 +455,7 @@
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">Кукурудза</h3>
-                    <p class="product-description">Солодка кукурудза, запечена на грилі</p>
+                    <p class="product-description">Солодка кукурудза, запечена на грилі з маслом</p>
                     <div class="product-footer">
                         <div class="product-price">60 грн/100г</div>
                         <div class="product-quantity">
@@ -559,7 +562,7 @@
             <!-- Product Card 22 - Ковбаски гриль -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('grill-sausages')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/grill-sausages.jpg') }}" alt="Ковбаски гриль" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/kovbasku.jpg') }}" alt="Ковбаски гриль" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥓</div>
                     <div class="product-badges">
                         <span class="badge smoker">Смокер 🔥</span>
@@ -591,15 +594,20 @@
         
         <div class="products-grid">
             <!-- Sauce Card 1 -->
-            <div class="product-card" data-category="sauces" onclick="openSauceModal('garlic')">
+            <div class="product-card" data-category="sauces">
                 <div class="product-image">
-                    <div class="product-image-placeholder">🧄</div>
+                    <img src="{{ url_for('static', filename='images/chasnikovii.jpg') }}" alt="Часниковий соус" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🧄</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">Часниковий</h3>
                     <p class="product-description">Класичний часниковий соус</p>
                     <div class="product-footer">
-                        <div class="product-price">40 грн/50г</div>
+                        <div class="sauce-weight-selector">
+                            <button class="sauce-weight-btn active" data-sauce="garlic" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('garlic', 50, 40)">50г</button>
+                            <button class="sauce-weight-btn" data-sauce="garlic" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('garlic', 100, 70)">100г</button>
+                        </div>
+                        <div class="product-price sauce-price" id="price-sauce-garlic">40 грн</div>
                         <div class="product-quantity">
                             <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('garlic')">-</button>
                             <span class="quantity-value-card" id="quantity-sauce-garlic">0</span>
@@ -610,15 +618,20 @@
             </div>
             
             <!-- Sauce Card 2 -->
-            <div class="product-card" data-category="sauces" onclick="openSauceModal('spicy')">
+            <div class="product-card" data-category="sauces">
                 <div class="product-image">
-                    <div class="product-image-placeholder">🌶️</div>
+                    <img src="{{ url_for('static', filename='images/sauce-spicy.jpg') }}" alt="Гострий соус" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🌶️</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">Гострий</h3>
                     <p class="product-description">Перець чилі для любителів гострого</p>
                     <div class="product-footer">
-                        <div class="product-price">40 грн/50г</div>
+                        <div class="sauce-weight-selector">
+                            <button class="sauce-weight-btn active" data-sauce="spicy" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('spicy', 50, 40)">50г</button>
+                            <button class="sauce-weight-btn" data-sauce="spicy" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('spicy', 100, 70)">100г</button>
+                        </div>
+                        <div class="product-price sauce-price" id="price-sauce-spicy">40 грн</div>
                         <div class="product-quantity">
                             <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('spicy')">-</button>
                             <span class="quantity-value-card" id="quantity-sauce-spicy">0</span>
@@ -629,15 +642,20 @@
             </div>
             
             <!-- Sauce Card 3 -->
-            <div class="product-card" data-category="sauces" onclick="openSauceModal('curry')">
+            <div class="product-card" data-category="sauces">
                 <div class="product-image">
-                    <div class="product-image-placeholder">🍛</div>
+                    <img src="{{ url_for('static', filename='images/sause-cury.jpg') }}" alt="Соус карі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍛</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">Карі</h3>
                     <p class="product-description">Східний аромат карі</p>
                     <div class="product-footer">
-                        <div class="product-price">40 грн/50г</div>
+                        <div class="sauce-weight-selector">
+                            <button class="sauce-weight-btn active" data-sauce="curry" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('curry', 50, 40)">50г</button>
+                            <button class="sauce-weight-btn" data-sauce="curry" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('curry', 100, 70)">100г</button>
+                        </div>
+                        <div class="product-price sauce-price" id="price-sauce-curry">40 грн</div>
                         <div class="product-quantity">
                             <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('curry')">-</button>
                             <span class="quantity-value-card" id="quantity-sauce-curry">0</span>
@@ -648,15 +666,20 @@
             </div>
             
             <!-- Sauce Card 4 -->
-            <div class="product-card" data-category="sauces" onclick="openSauceModal('lingonberry')">
+            <div class="product-card" data-category="sauces">
                 <div class="product-image">
-                    <div class="product-image-placeholder">🫐</div>
+                    <img src="{{ url_for('static', filename='images/sauce-mustard.jpg') }}" alt="Брусничний соус" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🫐</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">Брусничний</h3>
                     <p class="product-description">Солодко-кислий соус з брусниці</p>
                     <div class="product-footer">
-                        <div class="product-price">40 грн/50г</div>
+                        <div class="sauce-weight-selector">
+                            <button class="sauce-weight-btn active" data-sauce="lingonberry" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('lingonberry', 50, 40)">50г</button>
+                            <button class="sauce-weight-btn" data-sauce="lingonberry" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('lingonberry', 100, 70)">100г</button>
+                        </div>
+                        <div class="product-price sauce-price" id="price-sauce-lingonberry">40 грн</div>
                         <div class="product-quantity">
                             <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('lingonberry')">-</button>
                             <span class="quantity-value-card" id="quantity-sauce-lingonberry">0</span>
@@ -667,15 +690,20 @@
             </div>
             
             <!-- Sauce Card 5 -->
-            <div class="product-card" data-category="sauces" onclick="openSauceModal('tartar')">
+            <div class="product-card" data-category="sauces">
                 <div class="product-image">
-                    <div class="product-image-placeholder">🥄</div>
+                    <img src="{{ url_for('static', filename='images/sauce-tartar.jpg') }}" alt="Соус тартар" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥄</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">Тартар</h3>
                     <p class="product-description">Класичний соус тартар</p>
                     <div class="product-footer">
-                        <div class="product-price">40 грн/50г</div>
+                        <div class="sauce-weight-selector">
+                            <button class="sauce-weight-btn active" data-sauce="tartar" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('tartar', 50, 40)">50г</button>
+                            <button class="sauce-weight-btn" data-sauce="tartar" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('tartar', 100, 70)">100г</button>
+                        </div>
+                        <div class="product-price sauce-price" id="price-sauce-tartar">40 грн</div>
                         <div class="product-quantity">
                             <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('tartar')">-</button>
                             <span class="quantity-value-card" id="quantity-sauce-tartar">0</span>
@@ -686,15 +714,20 @@
             </div>
             
             <!-- Sauce Card 6 -->
-            <div class="product-card" data-category="sauces" onclick="openSauceModal('signature')">
+            <div class="product-card" data-category="sauces">
                 <div class="product-image">
-                    <div class="product-image-placeholder">⭐</div>
+                    <img src="{{ url_for('static', filename='images/sauce-signature.jpg') }}" alt="Фірмовий соус" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">⭐</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">Фірмовий</h3>
                     <p class="product-description">Авторський соус шеф-кухаря</p>
                     <div class="product-footer">
-                        <div class="product-price">40 грн/50г</div>
+                        <div class="sauce-weight-selector">
+                            <button class="sauce-weight-btn active" data-sauce="signature" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('signature', 50, 40)">50г</button>
+                            <button class="sauce-weight-btn" data-sauce="signature" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('signature', 100, 70)">100г</button>
+                        </div>
+                        <div class="product-price sauce-price" id="price-sauce-signature">40 грн</div>
                         <div class="product-quantity">
                             <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('signature')">-</button>
                             <span class="quantity-value-card" id="quantity-sauce-signature">0</span>
@@ -705,15 +738,20 @@
             </div>
             
             <!-- Sauce Card 7 -->
-            <div class="product-card" data-category="sauces" onclick="openSauceModal('cheese')">
+            <div class="product-card" data-category="sauces">
                 <div class="product-image">
-                    <div class="product-image-placeholder">🧀</div>
+                    <img src="{{ url_for('static', filename='images/sauce-mustard-correct.jpg') }}" alt="Сирний соус" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🧀</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">Сирний</h3>
                     <p class="product-description">Ніжний сирний соус</p>
                     <div class="product-footer">
-                        <div class="product-price">40 грн/50г</div>
+                        <div class="sauce-weight-selector">
+                            <button class="sauce-weight-btn active" data-sauce="cheese" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('cheese', 50, 40)">50г</button>
+                            <button class="sauce-weight-btn" data-sauce="cheese" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('cheese', 100, 70)">100г</button>
+                        </div>
+                        <div class="product-price sauce-price" id="price-sauce-cheese">40 грн</div>
                         <div class="product-quantity">
                             <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('cheese')">-</button>
                             <span class="quantity-value-card" id="quantity-sauce-cheese">0</span>
@@ -724,15 +762,20 @@
             </div>
             
             <!-- Sauce Card 8 -->
-            <div class="product-card" data-category="sauces" onclick="openSauceModal('mustard')">
+            <div class="product-card" data-category="sauces">
                 <div class="product-image">
-                    <div class="product-image-placeholder">🌾</div>
+                    <img src="{{ url_for('static', filename='images/sauce-cheese.jpg') }}" alt="Французька гірчиця" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🌾</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">Французька гірчиця</h3>
                     <p class="product-description">Класична гірчиця французького стилю</p>
                     <div class="product-footer">
-                        <div class="product-price">40 грн/50г</div>
+                        <div class="sauce-weight-selector">
+                            <button class="sauce-weight-btn active" data-sauce="mustard" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('mustard', 50, 40)">50г</button>
+                            <button class="sauce-weight-btn" data-sauce="mustard" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('mustard', 100, 70)">100г</button>
+                        </div>
+                        <div class="product-price sauce-price" id="price-sauce-mustard">40 грн</div>
                         <div class="product-quantity">
                             <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('mustard')">-</button>
                             <span class="quantity-value-card" id="quantity-sauce-mustard">0</span>
@@ -743,19 +786,451 @@
             </div>
             
             <!-- Sauce Card 9 -->
-            <div class="product-card" data-category="sauces" onclick="openSauceModal('sweet-chili')">
+            <div class="product-card" data-category="sauces">
                 <div class="product-image">
-                    <div class="product-image-placeholder">🌶️</div>
+                    <img src="{{ url_for('static', filename='images/sauce-curry.jpg') }}" alt="Солодкий чилі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🌶️</div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">Солодкий чилі</h3>
                     <p class="product-description">Солодко-гострий соус</p>
                     <div class="product-footer">
-                        <div class="product-price">40 грн/50г</div>
+                        <div class="sauce-weight-selector">
+                            <button class="sauce-weight-btn active" data-sauce="sweet-chili" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('sweet-chili', 50, 40)">50г</button>
+                            <button class="sauce-weight-btn" data-sauce="sweet-chili" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('sweet-chili', 100, 70)">100г</button>
+                        </div>
+                        <div class="product-price sauce-price" id="price-sauce-sweet-chili">40 грн</div>
                         <div class="product-quantity">
                             <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('sweet-chili')">-</button>
                             <span class="quantity-value-card" id="quantity-sauce-sweet-chili">0</span>
                             <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('sweet-chili')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="catalog-section" id="drinks">
+    <div class="catalog-container">
+        <div class="section-header">
+            <h2 class="section-title">НАПОЇ</h2>
+            <p class="section-subtitle">Освіжаючі напої для вашого комфорту</p>
+        </div>
+        
+        <div class="subcategories">
+            <button class="subcategory-item active" data-subcategory="all">
+                <span>Всі напої</span>
+            </button>
+            <button class="subcategory-item" data-subcategory="juices">
+                <span>Соки</span>
+            </button>
+            <button class="subcategory-item" data-subcategory="draft">
+                <span>Розливні напої</span>
+            </button>
+            <button class="subcategory-item" data-subcategory="carbonated">
+                <span>Газовані напої</span>
+            </button>
+            <button class="subcategory-item" data-subcategory="tea">
+                <span>Чай</span>
+            </button>
+        </div>
+        
+        <div class="products-grid">
+            <!-- Juice 1L Products -->
+            <div class="product-card" data-category="drinks" data-subcategory="juices" onclick="openDrinkModal('cherry-juice-1l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/cherry-1L.jpg') }}" alt="Вишневий сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍒</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Вишневий сік</h3>
+                    <p class="product-description">Натуральний вишневий сік 1 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">108 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('cherry-juice-1l')">-</button>
+                            <span class="quantity-value-card" id="quantity-cherry-juice-1l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('cherry-juice-1l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="drinks" data-subcategory="juices" onclick="openDrinkModal('multifruit-juice-1l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/multi-1L.jpg') }}" alt="Мульти фрукт сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍎</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Мульти фрукт сік</h3>
+                    <p class="product-description">Натуральний мульти-фруктовий сік 1 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">108 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('multifruit-juice-1l')">-</button>
+                            <span class="quantity-value-card" id="quantity-multifruit-juice-1l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('multifruit-juice-1l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="drinks" data-subcategory="juices" onclick="openDrinkModal('tomato-juice-1l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/tomato-1L.jpg') }}" alt="Томатний сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍅</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Томатний сік</h3>
+                    <p class="product-description">Натуральний томатний сік 1 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">108 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('tomato-juice-1l')">-</button>
+                            <span class="quantity-value-card" id="quantity-tomato-juice-1l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('tomato-juice-1l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Juice 0.5L Products -->
+            <div class="product-card" data-category="drinks" data-subcategory="juices" onclick="openDrinkModal('cherry-juice-05l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/cherry-0.5.jpg') }}" alt="Вишневий сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍒</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Вишневий сік</h3>
+                    <p class="product-description">Натуральний вишневий сік 0.5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">59 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('cherry-juice-05l')">-</button>
+                            <span class="quantity-value-card" id="quantity-cherry-juice-05l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('cherry-juice-05l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="drinks" data-subcategory="juices" onclick="openDrinkModal('multifruit-juice-05l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/multi-0.5.jpg') }}" alt="Мульти фрукт сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍎</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Мульти фрукт сік</h3>
+                    <p class="product-description">Натуральний мульти-фруктовий сік 0.5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">59 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('multifruit-juice-05l')">-</button>
+                            <span class="quantity-value-card" id="quantity-multifruit-juice-05l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('multifruit-juice-05l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-category="drinks" data-subcategory="juices" onclick="openDrinkModal('tomato-juice-05l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/tomato-0.5.jpg') }}" alt="Томатний сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍅</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Томатний сік</h3>
+                    <p class="product-description">Натуральний томатний сік 0.5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">59 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('tomato-juice-05l')">-</button>
+                            <span class="quantity-value-card" id="quantity-tomato-juice-05l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('tomato-juice-05l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Draft Drinks -->
+            <div class="product-card" data-category="drinks" data-subcategory="draft" onclick="openDrinkModal('kvass-05l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kvas.jpg') }}" alt="Квас" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍺</div>
+                    <div class="product-badges">
+                        <span class="badge popular">Популярний ⭐</span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Квас</h3>
+                    <p class="product-description">Традиційний український квас 0,5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">30 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('kvass-05l')">-</button>
+                            <span class="quantity-value-card" id="quantity-kvass-05l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('kvass-05l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="drinks" data-subcategory="draft" onclick="openDrinkModal('kvass-1l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kvas.jpg') }}" alt="Квас" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍺</div>
+                    <div class="product-badges">
+                        <span class="badge popular">Популярний ⭐</span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Квас</h3>
+                    <p class="product-description">Традиційний український квас 1 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">60 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('kvass-1l')">-</button>
+                            <span class="quantity-value-card" id="quantity-kvass-1l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('kvass-1l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="drinks" data-subcategory="draft" onclick="openDrinkModal('mojito-05l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/moxito.jpg') }}" alt="Мохіто" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍹</div>
+                    <div class="product-badges">
+                        <span class="badge hit">Хіт вогню 🔥</span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Мохіто</h3>
+                    <p class="product-description">Освіжаючий мохіто 0,5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">30 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('mojito-05l')">-</button>
+                            <span class="quantity-value-card" id="quantity-mojito-05l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('mojito-05l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="drinks" data-subcategory="draft" onclick="openDrinkModal('mojito-1l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/moxito.jpg') }}" alt="Мохіто" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍹</div>
+                    <div class="product-badges">
+                        <span class="badge hit">Хіт вогню 🔥</span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Мохіто</h3>
+                    <p class="product-description">Освіжаючий мохіто 1 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">69 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('mojito-1l')">-</button>
+                            <span class="quantity-value-card" id="quantity-mojito-1l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('mojito-1l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coca-Cola Products -->
+            <div class="product-card" data-category="drinks" data-subcategory="carbonated" onclick="openDrinkModal('cola-zero-05l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/cola-zero.jpg') }}" alt="Кола Zero" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥤</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Кола Zero</h3>
+                    <p class="product-description">Coca-Cola Zero 0,5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">37 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('cola-zero-05l')">-</button>
+                            <span class="quantity-value-card" id="quantity-cola-zero-05l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('cola-zero-05l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="drinks" data-subcategory="carbonated" onclick="openDrinkModal('cola-05l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/cola-0.5.jpg') }}" alt="Кола" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥤</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Кола</h3>
+                    <p class="product-description">Coca-Cola 0,5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">37 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('cola-05l')">-</button>
+                            <span class="quantity-value-card" id="quantity-cola-05l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('cola-05l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="drinks" data-subcategory="carbonated" onclick="openDrinkModal('cola-125l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/cola-1.25.jpg') }}" alt="Кола" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥤</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Кола</h3>
+                    <p class="product-description">Coca-Cola 1,25 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">62 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('cola-125l')">-</button>
+                            <span class="quantity-value-card" id="quantity-cola-125l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('cola-125l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pepsi Products -->
+            <div class="product-card" data-category="drinks" data-subcategory="carbonated" onclick="openDrinkModal('pepsi-05l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/pepsi-0.5.jpg') }}" alt="Пепсі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥤</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Пепсі</h3>
+                    <p class="product-description">Pepsi 0,5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">35 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-05l')">-</button>
+                            <span class="quantity-value-card" id="quantity-pepsi-05l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-05l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="drinks" data-subcategory="carbonated" onclick="openDrinkModal('pepsi-07l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/pepsi-0.75.jpg') }}" alt="Пепсі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥤</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Пепсі</h3>
+                    <p class="product-description">Pepsi 0,7 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">41 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-07l')">-</button>
+                            <span class="quantity-value-card" id="quantity-pepsi-07l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-07l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="drinks" data-subcategory="carbonated" onclick="openDrinkModal('pepsi-125l')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/pepsi-1.25L.jpg') }}" alt="Пепсі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥤</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Пепсі</h3>
+                    <p class="product-description">Pepsi 1,25 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">59 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-125l')">-</button>
+                            <span class="quantity-value-card" id="quantity-pepsi-125l">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-125l')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="drinks" data-subcategory="carbonated" onclick="openDrinkModal('pepsi-03l-glass')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/pepsi-glass.jpg') }}" alt="Пепсі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥤</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Пепсі</h3>
+                    <p class="product-description">Pepsi 0,3 л скло</p>
+                    <div class="product-footer">
+                        <div class="product-price">43 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-03l-glass')">-</button>
+                            <span class="quantity-value-card" id="quantity-pepsi-03l-glass">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-03l-glass')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lipton Tea Products -->
+            <div class="product-card" data-category="drinks" data-subcategory="tea" onclick="openDrinkModal('lipton-peach')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/lipton-peach.jpg') }}" alt="Чай Lipton" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍑</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Чай Lipton</h3>
+                    <p class="product-description">Lipton Персик 0,5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">35 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('lipton-peach')">-</button>
+                            <span class="quantity-value-card" id="quantity-lipton-peach">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('lipton-peach')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="drinks" data-subcategory="tea" onclick="openDrinkModal('lipton-lemon')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/lipton-lemon.jpg') }}" alt="Чай Lipton" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍋</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Чай Lipton</h3>
+                    <p class="product-description">Lipton Лимон 0,5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">35 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('lipton-lemon')">-</button>
+                            <span class="quantity-value-card" id="quantity-lipton-lemon">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('lipton-lemon')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="drinks" data-subcategory="tea" onclick="openDrinkModal('lipton-green')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/lipton-green-tea.jpg') }}" alt="Чай Lipton" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍵</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Чай Lipton</h3>
+                    <p class="product-description">Lipton Зелений 0,5 л</p>
+                    <div class="product-footer">
+                        <div class="product-price">35 грн</div>
+                        <div class="product-quantity">
+                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('lipton-green')">-</button>
+                            <span class="quantity-value-card" id="quantity-lipton-green">0</span>
+                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('lipton-green')">+</button>
                         </div>
                     </div>
                 </div>
