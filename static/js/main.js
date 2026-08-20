@@ -1,5 +1,5 @@
 // Cart functionality
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let currentProduct = null;
 let currentSauce = null;
 let currentDrink = null;
@@ -7,6 +7,21 @@ let currentDrink = null;
 // Store selected sauce weights and prices
 let selectedSauceWeights = {};
 let selectedSaucePrices = {};
+
+// Save cart to localStorage
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// Load cart from localStorage
+function loadCart() {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCartUI();
+        updateCardQuantities();
+    }
+}
 
 // Select sauce weight on card
 
