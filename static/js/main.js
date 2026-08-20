@@ -693,11 +693,19 @@ function handleOrderButton() {
 // Open cart drawer
 function openCart() {
     document.getElementById('cart-drawer').classList.add('open');
+    // Don't block body scroll on mobile to allow cart drawer scrolling
+    if (window.innerWidth > 768) {
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 // Close cart drawer
 function closeCart() {
     document.getElementById('cart-drawer').classList.remove('open');
+    // Restore body scroll only on desktop
+    if (window.innerWidth > 768) {
+        document.body.style.overflow = '';
+    }
 }
 
 // Open product modal
@@ -1413,6 +1421,13 @@ document.querySelectorAll('.category-item').forEach(item => {
 function toggleCheckoutForm() {
     const checkoutForm = document.getElementById('checkout-form');
     checkoutForm.classList.toggle('active');
+    
+    // Scroll to the form on mobile when it opens
+    if (checkoutForm.classList.contains('active') && window.innerWidth <= 768) {
+        setTimeout(() => {
+            checkoutForm.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 100);
+    }
 }
 
 // Close modals on escape key
