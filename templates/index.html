@@ -4,17 +4,14 @@
 {% block hero %}
 <section class="hero-fullscreen">
     <div class="hero-background">
-        <video autoplay muted loop playsinline>
-            <source src="{{ url_for('static', filename='videos/grill-fire.mp4') }}" type="video/mp4">
-        </video>
-        <div class="hero-overlay"></div>
+    <div class="hero-overlay"></div>
     </div>
     <div class="hero-content">
         <div class="hero-text">
-            <h1 class="hero-title">Вогонь. М'ясо. Характер.</h1>
-            <p class="hero-subtitle">Справжній шашлик на вугіллі за авторськими рецептами</p>
+            <h1 class="hero-title">Шашличний двір</h1>
+            <p class="hero-subtitle">Страви з мангалу на Вашому столі до 60хв</p>
             <button class="hero-cta" onclick="handleOrderButton()">
-                <span>Замовити</span>
+                <span>Меню</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14M5 12h14"/>
                 </svg>
@@ -61,6 +58,9 @@
         <button class="category-item" data-category="shashlik">
             <span>Шашлик</span>
         </button>
+        <button class="category-item" data-category="sets">
+            <span>Сети</span>
+        </button>
         <button class="category-item" data-category="chicken">
             <span>Курка</span>
         </button>
@@ -89,24 +89,113 @@
         </div>
         
         <div class="products-grid">
+            <!-- Set Card 1 -->
+            <div class="product-card" data-category="sets" data-id="set-4-persons" onclick="openProductModal('set-4-persons')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/4-set.jpg') }}" alt="Сет на 4 особи" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍖</div>
+                    <div class="product-badges">
+                        <span class="badge hit">Хіт вогню 🔥</span>
+                    </div>
+                </div>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Сет на 4 особи</h3>
+                    <p class="product-description-new">Шашлик 500г, Ребра 500г, Овочі печені 500г, Картопля печена 500г, Соуси: Класичний 50г, Вершково-часниковий 50г</p>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-set-4-persons">1230 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('set-4-persons')">-</button>
+                                    <span class="quantity-value-new" id="quantity-set-4-persons">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('set-4-persons')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('set-4-persons')">Хочу</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Set Card 2 -->
+            <div class="product-card" data-category="sets" data-id="set-6-persons" onclick="openProductModal('set-6-persons')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/6-set.jpg') }}" alt="Сет на 6 осіб" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍖</div>
+                    <div class="product-badges">
+                        <span class="badge popular">Популярний ⭐</span>
+                    </div>
+                </div>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Сет на 6 осіб</h3>
+                    <p class="product-description-new">Шашлик 700г, Ребра 700г, Ковбаски 700г, Овочі печені 500г, Картопля печена 600г, Соус</p>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-set-6-persons">1890 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('set-6-persons')">-</button>
+                                    <span class="quantity-value-new" id="quantity-set-6-persons">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('set-6-persons')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('set-6-persons')">Хочу</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Set Card 3 -->
+            <div class="product-card" data-category="sets" onclick="openProductModal('set-10-persons')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/10-set.jpg') }}" alt="Сет на 10 осіб" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍖</div>
+                    <div class="product-badges">
+                        <span class="badge new">Новинка</span>
+                    </div>
+                </div>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Сет на 10 осіб</h3>
+                    <p class="product-description-new">Шашлик 1.5кг, Ковбаски 1кг, Реберця 1кг, Картопля по-селянськи 1кг, Овочі печені 1кг, Соус</p>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-set-10-persons">3315 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('set-10-persons')">-</button>
+                                    <span class="quantity-value-new" id="quantity-set-10-persons">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('set-10-persons')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('set-10-persons')">Хочу</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Product Card 1 -->
-            <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-neck')">
+            <div class="product-card" data-category="shashlik" data-id="pork-neck" onclick="openProductModal('pork-neck')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/shahluk.jpg') }}" alt="Шашлик зі свинного ошийка" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
                     <div class="product-badges">
                         <span class="badge hit">Хіт вогню 🔥</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Шашлик зі свинного ошийка</h3>
-                    <p class="product-description">Соковита свинина на кістці, маринована за авторським рецептом</p>
-                    <div class="product-footer">
-                        <div class="product-price">85 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('pork-neck')">-</button>
-                            <span class="quantity-value-card" id="quantity-pork-neck">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('pork-neck')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pork-neck">85 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-neck')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pork-neck">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-neck')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-neck')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -117,16 +206,21 @@
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/chicken-shahluk.jpg') }}" alt="Шашлик з філе курячого" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍗</div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Шашлик з філе курячого</h3>
-                    <p class="product-description">Ніжне куряче філе з прянощами</p>
-                    <div class="product-footer">
-                        <div class="product-price">80 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-fillet')">-</button>
-                            <span class="quantity-value-card" id="quantity-chicken-fillet">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('chicken-fillet')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-chicken-fillet">80 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-fillet')">-</button>
+                                    <span class="quantity-value-new" id="quantity-chicken-fillet">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('chicken-fillet')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('chicken-fillet')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -137,44 +231,50 @@
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/chicken-thigh.jpg') }}" alt="Шашлик з стегна курячого" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍗</div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Шашлик з стегна курячого</h3>
-                    <p class="product-description">Соковите куряче стегно на мангалі</p>
-                    <div class="product-footer">
-                        <div class="product-price">80 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-thigh')">-</button>
-                            <span class="quantity-value-card" id="quantity-chicken-thigh">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('chicken-thigh')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-chicken-thigh">80 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-thigh')">-</button>
+                                    <span class="quantity-value-new" id="quantity-chicken-thigh">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('chicken-thigh')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('chicken-thigh')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Product Card 4 -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-sausages')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/pork-sausages.jpg') }}" alt="Ковбаски свинні" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥓</div>
-                    <div class="product-badges">
-                        <span class="badge smoker">Смокер 🔥</span>
-                    </div>
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Ковбаски свинні</h3>
-                    <p class="product-description">Домашні ковбаски з власного м'ясного цеху</p>
-                    <div class="product-footer">
-                        <div class="product-price">55 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('pork-sausages')">-</button>
-                            <span class="quantity-value-card" id="quantity-pork-sausages">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('pork-sausages')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pork-sausages">55 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-sausages')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pork-sausages">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-sausages')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-sausages')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Product Card 5 -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-ribs')">
                 <div class="product-image">
@@ -184,21 +284,26 @@
                         <span class="badge popular">Популярний ⭐</span>
                         <span class="badge smoker">Смокер 🔥</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Ребра свинні</h3>
-                    <p class="product-description">М'ясні ребра в соусі BBQ з копченням</p>
-                    <div class="product-footer">
-                        <div class="product-price">60 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('pork-ribs')">-</button>
-                            <span class="quantity-value-card" id="quantity-pork-ribs">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('pork-ribs')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pork-ribs">70 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-ribs')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pork-ribs">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-ribs')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-ribs')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Product Card 6 -->
             <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-wings')">
                 <div class="product-image">
@@ -208,16 +313,21 @@
                         <span class="badge new">Новинка</span>
                         <span class="badge smoker">Смокер 🔥</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Крильця курячі</h3>
-                    <p class="product-description">Хрусткі крильця в соусі BBQ з копченням</p>
-                    <div class="product-footer">
-                        <div class="product-price">50 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-wings')">-</button>
-                            <span class="quantity-value-card" id="quantity-chicken-wings">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('chicken-wings')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-chicken-wings">50 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-wings')">-</button>
+                                    <span class="quantity-value-new" id="quantity-chicken-wings">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('chicken-wings')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('chicken-wings')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -228,16 +338,21 @@
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/chicken-legs.jpg') }}" alt="Гомілки курячі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍗</div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Гомілки курячі</h3>
-                    <p class="product-description">Соковиті гомілки на мангалі</p>
-                    <div class="product-footer">
-                        <div class="product-price">50 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-legs')">-</button>
-                            <span class="quantity-value-card" id="quantity-chicken-legs">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('chicken-legs')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-chicken-legs">50 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-legs')">-</button>
+                                    <span class="quantity-value-new" id="quantity-chicken-legs">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('chicken-legs')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('chicken-legs')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -251,16 +366,21 @@
                     <div class="product-badges">
                         <span class="badge smoker">Смокер 🔥</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Стегно куряче</h3>
-                    <p class="product-description">Ціле куряче стегно на кістці</p>
-                    <div class="product-footer">
-                        <div class="product-price">80 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-thigh-grill')">-</button>
-                            <span class="quantity-value-card" id="quantity-chicken-thigh-grill">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('chicken-thigh-grill')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-chicken-thigh-grill">50 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-thigh-grill')">-</button>
+                                    <span class="quantity-value-new" id="quantity-chicken-thigh-grill">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('chicken-thigh-grill')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('chicken-thigh-grill')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -274,16 +394,21 @@
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Овочі печені</h3>
-                    <p class="product-description">Перець, кабачок, печериці на мангалі</p>
-                    <div class="product-footer">
-                        <div class="product-price">60 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('grilled-vegetables')">-</button>
-                            <span class="quantity-value-card" id="quantity-grilled-vegetables">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('grilled-vegetables')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-grilled-vegetables">60 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('grilled-vegetables')">-</button>
+                                    <span class="quantity-value-new" id="quantity-grilled-vegetables">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('grilled-vegetables')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('grilled-vegetables')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -294,16 +419,21 @@
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/potato.jpg') }}" alt="Картопля печена" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥔</div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Картопля печена</h3>
-                    <p class="product-description">Молода картопля в фользі з травами</p>
-                    <div class="product-footer">
-                        <div class="product-price">25 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('baked-potatoes')">-</button>
-                            <span class="quantity-value-card" id="quantity-baked-potatoes">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('baked-potatoes')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-baked-potatoes">25 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('baked-potatoes')">-</button>
+                                    <span class="quantity-value-new" id="quantity-baked-potatoes">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('baked-potatoes')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('baked-potatoes')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -314,16 +444,21 @@
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/tsibylya-marynovana.jpg') }}" alt="Цибуля маринована" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🧅</div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Цибуля маринована</h3>
-                    <p class="product-description">Хрустка маринована цибуля з травами</p>
-                    <div class="product-footer">
-                        <div class="product-price">15 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('marinated-onions')">-</button>
-                            <span class="quantity-value-card" id="quantity-marinated-onions">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('marinated-onions')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-marinated-onions">15 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('marinated-onions')">-</button>
+                                    <span class="quantity-value-new" id="quantity-marinated-onions">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('marinated-onions')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('marinated-onions')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -337,16 +472,21 @@
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Болгарський перець</h3>
-                    <p class="product-description">Солодкий соковитий перець, запечений на грилі</p>
-                    <div class="product-footer">
-                        <div class="product-price">60 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('bell-pepper')">-</button>
-                            <span class="quantity-value-card" id="quantity-bell-pepper">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('bell-pepper')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-bell-pepper">60 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('bell-pepper')">-</button>
+                                    <span class="quantity-value-new" id="quantity-bell-pepper">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('bell-pepper')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('bell-pepper')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -360,16 +500,21 @@
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Шампіньйони</h3>
-                    <p class="product-description">Соковиті гриби, смажені на грилі</p>
-                    <div class="product-footer">
-                        <div class="product-price">60 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('mushrooms')">-</button>
-                            <span class="quantity-value-card" id="quantity-mushrooms">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('mushrooms')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-mushrooms">60 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('mushrooms')">-</button>
+                                    <span class="quantity-value-new" id="quantity-mushrooms">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('mushrooms')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('mushrooms')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -383,16 +528,21 @@
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Кабачок</h3>
-                    <p class="product-description">Ніжний кабачок, запечений на грилі з часником</p>
-                    <div class="product-footer">
-                        <div class="product-price">60 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('zucchini')">-</button>
-                            <span class="quantity-value-card" id="quantity-zucchini">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('zucchini')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-zucchini">60 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('zucchini')">-</button>
+                                    <span class="quantity-value-new" id="quantity-zucchini">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('zucchini')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('zucchini')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -406,16 +556,21 @@
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Стручковий перець</h3>
-                    <p class="product-description">Хрусткий перець, смажений на грилі</p>
-                    <div class="product-footer">
-                        <div class="product-price">60 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('bean-pepper')">-</button>
-                            <span class="quantity-value-card" id="quantity-bean-pepper">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('bean-pepper')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-bean-pepper">60 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('bean-pepper')">-</button>
+                                    <span class="quantity-value-new" id="quantity-bean-pepper">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('bean-pepper')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('bean-pepper')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -429,16 +584,21 @@
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Чері помідори</h3>
-                    <p class="product-description">Солодкі чері, запечені на грилі з базиліком</p>
-                    <div class="product-footer">
-                        <div class="product-price">60 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('cherry-tomatoes')">-</button>
-                            <span class="quantity-value-card" id="quantity-cherry-tomatoes">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('cherry-tomatoes')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-cherry-tomatoes">60 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('cherry-tomatoes')">-</button>
+                                    <span class="quantity-value-new" id="quantity-cherry-tomatoes">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('cherry-tomatoes')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('cherry-tomatoes')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -452,16 +612,21 @@
                     <div class="product-badges">
                         <span class="badge veg">Веган 🌱</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Кукурудза</h3>
-                    <p class="product-description">Солодка кукурудза, запечена на грилі з маслом</p>
-                    <div class="product-footer">
-                        <div class="product-price">60 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('corn')">-</button>
-                            <span class="quantity-value-card" id="quantity-corn">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('corn')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-corn">60 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('corn')">-</button>
+                                    <span class="quantity-value-new" id="quantity-corn">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('corn')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('corn')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -475,16 +640,21 @@
                     <div class="product-badges">
                         <span class="badge smoker">Смокер 🔥</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Костиця</h3>
-                    <p class="product-description">Соковита свиняча костиця на кістці</p>
-                    <div class="product-footer">
-                        <div class="product-price">70 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('pork-chop')">-</button>
-                            <span class="quantity-value-card" id="quantity-pork-chop">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('pork-chop')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pork-chop">70 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-chop')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pork-chop">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-chop')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-chop')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -498,16 +668,21 @@
                     <div class="product-badges">
                         <span class="badge smoker">Смокер 🔥</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Пічеревина</h3>
-                    <p class="product-description">Ніжна свиняча печінка на мангалі</p>
-                    <div class="product-footer">
-                        <div class="product-price">55 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('pork-liver')">-</button>
-                            <span class="quantity-value-card" id="quantity-pork-liver">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('pork-liver')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pork-liver">55 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-liver')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pork-liver">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-liver')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-liver')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -521,16 +696,21 @@
                     <div class="product-badges">
                         <span class="badge smoker">Смокер 🔥</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Полядвиця</h3>
-                    <p class="product-description">Найніжніша частина свинини на грилі</p>
-                    <div class="product-footer">
-                        <div class="product-price">60 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('pork-tenderloin')">-</button>
-                            <span class="quantity-value-card" id="quantity-pork-tenderloin">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('pork-tenderloin')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pork-tenderloin">60 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-tenderloin')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pork-tenderloin">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-tenderloin')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-tenderloin')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -544,16 +724,21 @@
                     <div class="product-badges">
                         <span class="badge smoker">Смокер 🔥</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Ребро полоска</h3>
-                    <p class="product-description">Смажені ребра-полоски з копченням</p>
-                    <div class="product-footer">
-                        <div class="product-price">48 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('rib-strip')">-</button>
-                            <span class="quantity-value-card" id="quantity-rib-strip">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('rib-strip')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-rib-strip">48 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('rib-strip')">-</button>
+                                    <span class="quantity-value-new" id="quantity-rib-strip">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('rib-strip')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('rib-strip')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -562,21 +747,26 @@
             <!-- Product Card 22 - Ковбаски гриль -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('grill-sausages')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/kovbasku.jpg') }}" alt="Ковбаски гриль" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/kovbaski.jpg') }}" alt="Ковбаски гриль" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥓</div>
                     <div class="product-badges">
                         <span class="badge smoker">Смокер 🔥</span>
                     </div>
+
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Ковбаски гриль</h3>
-                    <p class="product-description">Домашні ковбаски гриль з власного м'ясного цеху</p>
-                    <div class="product-footer">
-                        <div class="product-price">55 грн/100г</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseCardQuantity('grill-sausages')">-</button>
-                            <span class="quantity-value-card" id="quantity-grill-sausages">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseCardQuantity('grill-sausages')">+</button>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-grill-sausages">55 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('grill-sausages')">-</button>
+                                    <span class="quantity-value-new" id="quantity-grill-sausages">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('grill-sausages')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('grill-sausages')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -599,19 +789,23 @@
                     <img src="{{ url_for('static', filename='images/chasnikovii.jpg') }}" alt="Часниковий соус" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🧄</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Часниковий</h3>
-                    <p class="product-description">Класичний часниковий соус</p>
-                    <div class="product-footer">
+                    <div class="product-footer-new">
                         <div class="sauce-weight-selector">
                             <button class="sauce-weight-btn active" data-sauce="garlic" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('garlic', 50, 40)">50г</button>
                             <button class="sauce-weight-btn" data-sauce="garlic" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('garlic', 100, 70)">100г</button>
                         </div>
-                        <div class="product-price sauce-price" id="price-sauce-garlic">40 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('garlic')">-</button>
-                            <span class="quantity-value-card" id="quantity-sauce-garlic">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('garlic')">+</button>
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new sauce-price" id="price-sauce-garlic">40 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseSauceQuantity('garlic')">-</button>
+                                    <span class="quantity-value-new" id="quantity-sauce-garlic">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseSauceQuantity('garlic')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('sauce-garlic')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -623,19 +817,23 @@
                     <img src="{{ url_for('static', filename='images/sauce-spicy.jpg') }}" alt="Гострий соус" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🌶️</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Гострий</h3>
-                    <p class="product-description">Перець чилі для любителів гострого</p>
-                    <div class="product-footer">
+                    <div class="product-footer-new">
                         <div class="sauce-weight-selector">
                             <button class="sauce-weight-btn active" data-sauce="spicy" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('spicy', 50, 40)">50г</button>
                             <button class="sauce-weight-btn" data-sauce="spicy" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('spicy', 100, 70)">100г</button>
                         </div>
-                        <div class="product-price sauce-price" id="price-sauce-spicy">40 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('spicy')">-</button>
-                            <span class="quantity-value-card" id="quantity-sauce-spicy">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('spicy')">+</button>
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new sauce-price" id="price-sauce-spicy">40 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseSauceQuantity('spicy')">-</button>
+                                    <span class="quantity-value-new" id="quantity-sauce-spicy">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseSauceQuantity('spicy')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('sauce-spicy')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -647,19 +845,23 @@
                     <img src="{{ url_for('static', filename='images/sause-cury.jpg') }}" alt="Соус карі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍛</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Карі</h3>
-                    <p class="product-description">Східний аромат карі</p>
-                    <div class="product-footer">
+                    <div class="product-footer-new">
                         <div class="sauce-weight-selector">
                             <button class="sauce-weight-btn active" data-sauce="curry" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('curry', 50, 40)">50г</button>
                             <button class="sauce-weight-btn" data-sauce="curry" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('curry', 100, 70)">100г</button>
                         </div>
-                        <div class="product-price sauce-price" id="price-sauce-curry">40 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('curry')">-</button>
-                            <span class="quantity-value-card" id="quantity-sauce-curry">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('curry')">+</button>
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new sauce-price" id="price-sauce-curry">40 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseSauceQuantity('curry')">-</button>
+                                    <span class="quantity-value-new" id="quantity-sauce-curry">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseSauceQuantity('curry')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('sauce-curry')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -671,19 +873,23 @@
                     <img src="{{ url_for('static', filename='images/sauce-mustard.jpg') }}" alt="Брусничний соус" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🫐</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Брусничний</h3>
-                    <p class="product-description">Солодко-кислий соус з брусниці</p>
-                    <div class="product-footer">
+                    <div class="product-footer-new">
                         <div class="sauce-weight-selector">
                             <button class="sauce-weight-btn active" data-sauce="lingonberry" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('lingonberry', 50, 40)">50г</button>
                             <button class="sauce-weight-btn" data-sauce="lingonberry" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('lingonberry', 100, 70)">100г</button>
                         </div>
-                        <div class="product-price sauce-price" id="price-sauce-lingonberry">40 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('lingonberry')">-</button>
-                            <span class="quantity-value-card" id="quantity-sauce-lingonberry">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('lingonberry')">+</button>
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new sauce-price" id="price-sauce-lingonberry">40 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseSauceQuantity('lingonberry')">-</button>
+                                    <span class="quantity-value-new" id="quantity-sauce-lingonberry">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseSauceQuantity('lingonberry')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('sauce-lingonberry')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -695,19 +901,23 @@
                     <img src="{{ url_for('static', filename='images/sauce-tartar.jpg') }}" alt="Соус тартар" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥄</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Тартар</h3>
-                    <p class="product-description">Класичний соус тартар</p>
-                    <div class="product-footer">
+                    <div class="product-footer-new">
                         <div class="sauce-weight-selector">
                             <button class="sauce-weight-btn active" data-sauce="tartar" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('tartar', 50, 40)">50г</button>
                             <button class="sauce-weight-btn" data-sauce="tartar" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('tartar', 100, 70)">100г</button>
                         </div>
-                        <div class="product-price sauce-price" id="price-sauce-tartar">40 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('tartar')">-</button>
-                            <span class="quantity-value-card" id="quantity-sauce-tartar">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('tartar')">+</button>
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new sauce-price" id="price-sauce-tartar">40 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseSauceQuantity('tartar')">-</button>
+                                    <span class="quantity-value-new" id="quantity-sauce-tartar">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseSauceQuantity('tartar')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('sauce-tartar')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -719,19 +929,23 @@
                     <img src="{{ url_for('static', filename='images/sauce-signature.jpg') }}" alt="Фірмовий соус" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">⭐</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Фірмовий</h3>
-                    <p class="product-description">Авторський соус шеф-кухаря</p>
-                    <div class="product-footer">
+                    <div class="product-footer-new">
                         <div class="sauce-weight-selector">
                             <button class="sauce-weight-btn active" data-sauce="signature" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('signature', 50, 40)">50г</button>
                             <button class="sauce-weight-btn" data-sauce="signature" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('signature', 100, 70)">100г</button>
                         </div>
-                        <div class="product-price sauce-price" id="price-sauce-signature">40 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('signature')">-</button>
-                            <span class="quantity-value-card" id="quantity-sauce-signature">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('signature')">+</button>
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new sauce-price" id="price-sauce-signature">40 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseSauceQuantity('signature')">-</button>
+                                    <span class="quantity-value-new" id="quantity-sauce-signature">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseSauceQuantity('signature')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('sauce-signature')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -743,19 +957,23 @@
                     <img src="{{ url_for('static', filename='images/sauce-mustard-correct.jpg') }}" alt="Сирний соус" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🧀</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Сирний</h3>
-                    <p class="product-description">Ніжний сирний соус</p>
-                    <div class="product-footer">
+                    <div class="product-footer-new">
                         <div class="sauce-weight-selector">
                             <button class="sauce-weight-btn active" data-sauce="cheese" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('cheese', 50, 40)">50г</button>
                             <button class="sauce-weight-btn" data-sauce="cheese" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('cheese', 100, 70)">100г</button>
                         </div>
-                        <div class="product-price sauce-price" id="price-sauce-cheese">40 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('cheese')">-</button>
-                            <span class="quantity-value-card" id="quantity-sauce-cheese">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('cheese')">+</button>
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new sauce-price" id="price-sauce-cheese">40 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseSauceQuantity('cheese')">-</button>
+                                    <span class="quantity-value-new" id="quantity-sauce-cheese">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseSauceQuantity('cheese')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('sauce-cheese')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -767,19 +985,23 @@
                     <img src="{{ url_for('static', filename='images/sauce-cheese.jpg') }}" alt="Французька гірчиця" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🌾</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Французька гірчиця</h3>
-                    <p class="product-description">Класична гірчиця французького стилю</p>
-                    <div class="product-footer">
+                    <div class="product-footer-new">
                         <div class="sauce-weight-selector">
                             <button class="sauce-weight-btn active" data-sauce="mustard" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('mustard', 50, 40)">50г</button>
                             <button class="sauce-weight-btn" data-sauce="mustard" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('mustard', 100, 70)">100г</button>
                         </div>
-                        <div class="product-price sauce-price" id="price-sauce-mustard">40 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('mustard')">-</button>
-                            <span class="quantity-value-card" id="quantity-sauce-mustard">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('mustard')">+</button>
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new sauce-price" id="price-sauce-mustard">40 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseSauceQuantity('mustard')">-</button>
+                                    <span class="quantity-value-new" id="quantity-sauce-mustard">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseSauceQuantity('mustard')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('sauce-mustard')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -791,19 +1013,23 @@
                     <img src="{{ url_for('static', filename='images/sauce-curry.jpg') }}" alt="Солодкий чилі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🌶️</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info product-info-new">
                     <h3 class="product-title">Солодкий чилі</h3>
-                    <p class="product-description">Солодко-гострий соус</p>
-                    <div class="product-footer">
+                    <div class="product-footer-new">
                         <div class="sauce-weight-selector">
                             <button class="sauce-weight-btn active" data-sauce="sweet-chili" data-weight="50" data-price="40" onclick="event.stopPropagation(); selectSauceWeight('sweet-chili', 50, 40)">50г</button>
                             <button class="sauce-weight-btn" data-sauce="sweet-chili" data-weight="100" data-price="70" onclick="event.stopPropagation(); selectSauceWeight('sweet-chili', 100, 70)">100г</button>
                         </div>
-                        <div class="product-price sauce-price" id="price-sauce-sweet-chili">40 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseSauceQuantity('sweet-chili')">-</button>
-                            <span class="quantity-value-card" id="quantity-sauce-sweet-chili">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseSauceQuantity('sweet-chili')">+</button>
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new sauce-price" id="price-sauce-sweet-chili">40 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseSauceQuantity('sweet-chili')">-</button>
+                                    <span class="quantity-value-new" id="quantity-sauce-sweet-chili">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseSauceQuantity('sweet-chili')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('sauce-sweet-chili')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -844,15 +1070,19 @@
                     <img src="{{ url_for('static', filename='images/cherry-1L.jpg') }}" alt="Вишневий сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍒</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Вишневий сік</h3>
-                    <p class="product-description">Натуральний вишневий сік 1 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">108 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('cherry-juice-1l')">-</button>
-                            <span class="quantity-value-card" id="quantity-cherry-juice-1l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('cherry-juice-1l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Вишневий сік 1 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-cherry-juice-1l">108 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('cherry-juice-1l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-cherry-juice-1l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('cherry-juice-1l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('cherry-juice-1l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -863,15 +1093,19 @@
                     <img src="{{ url_for('static', filename='images/multi-1L.jpg') }}" alt="Мульти фрукт сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍎</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Мульти фрукт сік</h3>
-                    <p class="product-description">Натуральний мульти-фруктовий сік 1 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">108 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('multifruit-juice-1l')">-</button>
-                            <span class="quantity-value-card" id="quantity-multifruit-juice-1l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('multifruit-juice-1l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Мульти фрукт сік 1 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-multifruit-juice-1l">108 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('multifruit-juice-1l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-multifruit-juice-1l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('multifruit-juice-1l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('multifruit-juice-1l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -882,15 +1116,19 @@
                     <img src="{{ url_for('static', filename='images/tomato-1L.jpg') }}" alt="Томатний сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍅</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Томатний сік</h3>
-                    <p class="product-description">Натуральний томатний сік 1 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">108 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('tomato-juice-1l')">-</button>
-                            <span class="quantity-value-card" id="quantity-tomato-juice-1l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('tomato-juice-1l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Томатний сік 1 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-tomato-juice-1l">108 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('tomato-juice-1l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-tomato-juice-1l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('tomato-juice-1l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('tomato-juice-1l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -902,15 +1140,19 @@
                     <img src="{{ url_for('static', filename='images/cherry-0.5.jpg') }}" alt="Вишневий сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍒</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Вишневий сік</h3>
-                    <p class="product-description">Натуральний вишневий сік 0.5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">59 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('cherry-juice-05l')">-</button>
-                            <span class="quantity-value-card" id="quantity-cherry-juice-05l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('cherry-juice-05l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Вишневий сік 0.5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-cherry-juice-05l">59 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('cherry-juice-05l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-cherry-juice-05l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('cherry-juice-05l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('cherry-juice-05l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -921,15 +1163,19 @@
                     <img src="{{ url_for('static', filename='images/multi-0.5.jpg') }}" alt="Мульти фрукт сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍎</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Мульти фрукт сік</h3>
-                    <p class="product-description">Натуральний мульти-фруктовий сік 0.5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">59 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('multifruit-juice-05l')">-</button>
-                            <span class="quantity-value-card" id="quantity-multifruit-juice-05l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('multifruit-juice-05l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Мульти фрукт сік 0.5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-multifruit-juice-05l">59 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('multifruit-juice-05l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-multifruit-juice-05l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('multifruit-juice-05l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('multifruit-juice-05l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -940,15 +1186,19 @@
                     <img src="{{ url_for('static', filename='images/tomato-0.5.jpg') }}" alt="Томатний сік" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍅</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Томатний сік</h3>
-                    <p class="product-description">Натуральний томатний сік 0.5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">59 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('tomato-juice-05l')">-</button>
-                            <span class="quantity-value-card" id="quantity-tomato-juice-05l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('tomato-juice-05l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Томатний сік 0.5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-tomato-juice-05l">59 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('tomato-juice-05l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-tomato-juice-05l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('tomato-juice-05l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('tomato-juice-05l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -963,15 +1213,19 @@
                         <span class="badge popular">Популярний ⭐</span>
                     </div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Квас</h3>
-                    <p class="product-description">Традиційний український квас 0,5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">30 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('kvass-05l')">-</button>
-                            <span class="quantity-value-card" id="quantity-kvass-05l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('kvass-05l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Квас 0,5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-kvass-05l">30 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('kvass-05l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-kvass-05l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('kvass-05l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('kvass-05l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -985,15 +1239,19 @@
                         <span class="badge popular">Популярний ⭐</span>
                     </div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Квас</h3>
-                    <p class="product-description">Традиційний український квас 1 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">60 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('kvass-1l')">-</button>
-                            <span class="quantity-value-card" id="quantity-kvass-1l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('kvass-1l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Квас 1 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-kvass-1l">60 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('kvass-1l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-kvass-1l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('kvass-1l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('kvass-1l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1007,15 +1265,19 @@
                         <span class="badge hit">Хіт вогню 🔥</span>
                     </div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Мохіто</h3>
-                    <p class="product-description">Освіжаючий мохіто 0,5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">30 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('mojito-05l')">-</button>
-                            <span class="quantity-value-card" id="quantity-mojito-05l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('mojito-05l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Мохіто 0.5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-mojito-05l">30 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('mojito-05l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-mojito-05l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('mojito-05l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('mojito-05l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1029,15 +1291,19 @@
                         <span class="badge hit">Хіт вогню 🔥</span>
                     </div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Мохіто</h3>
-                    <p class="product-description">Освіжаючий мохіто 1 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">69 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('mojito-1l')">-</button>
-                            <span class="quantity-value-card" id="quantity-mojito-1l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('mojito-1l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Мохіто 1 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-mojito-1l">69 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('mojito-1l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-mojito-1l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('mojito-1l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('mojito-1l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1049,15 +1315,19 @@
                     <img src="{{ url_for('static', filename='images/cola-zero.jpg') }}" alt="Кола Zero" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥤</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Кола Zero</h3>
-                    <p class="product-description">Coca-Cola Zero 0,5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">37 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('cola-zero-05l')">-</button>
-                            <span class="quantity-value-card" id="quantity-cola-zero-05l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('cola-zero-05l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Кола Zero 0.5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-cola-zero-05l">37 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('cola-zero-05l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-cola-zero-05l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('cola-zero-05l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('cola-zero-05l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1068,15 +1338,19 @@
                     <img src="{{ url_for('static', filename='images/cola-0.5.jpg') }}" alt="Кола" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥤</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Кола</h3>
-                    <p class="product-description">Coca-Cola 0,5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">37 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('cola-05l')">-</button>
-                            <span class="quantity-value-card" id="quantity-cola-05l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('cola-05l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Кола 0.5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-cola-05l">37 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('cola-05l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-cola-05l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('cola-05l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('cola-05l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1087,15 +1361,19 @@
                     <img src="{{ url_for('static', filename='images/cola-1.25.jpg') }}" alt="Кола" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥤</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Кола</h3>
-                    <p class="product-description">Coca-Cola 1,25 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">62 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('cola-125l')">-</button>
-                            <span class="quantity-value-card" id="quantity-cola-125l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('cola-125l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Кола 1.25 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-cola-125l">62 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('cola-125l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-cola-125l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('cola-125l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('cola-125l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1107,15 +1385,19 @@
                     <img src="{{ url_for('static', filename='images/pepsi-0.5.jpg') }}" alt="Пепсі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥤</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Пепсі</h3>
-                    <p class="product-description">Pepsi 0,5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">35 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-05l')">-</button>
-                            <span class="quantity-value-card" id="quantity-pepsi-05l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-05l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Пепсі 0.5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pepsi-05l">35 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-05l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pepsi-05l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-05l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pepsi-05l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1126,15 +1408,19 @@
                     <img src="{{ url_for('static', filename='images/pepsi-0.75.jpg') }}" alt="Пепсі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥤</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Пепсі</h3>
-                    <p class="product-description">Pepsi 0,7 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">41 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-07l')">-</button>
-                            <span class="quantity-value-card" id="quantity-pepsi-07l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-07l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Пепсі 0.7 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pepsi-07l">41 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-07l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pepsi-07l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-07l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pepsi-07l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1145,15 +1431,19 @@
                     <img src="{{ url_for('static', filename='images/pepsi-1.25L.jpg') }}" alt="Пепсі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥤</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Пепсі</h3>
-                    <p class="product-description">Pepsi 1,25 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">59 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-125l')">-</button>
-                            <span class="quantity-value-card" id="quantity-pepsi-125l">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-125l')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Пепсі 1.25 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pepsi-125l">59 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-125l')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pepsi-125l">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-125l')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pepsi-125l')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1164,15 +1454,19 @@
                     <img src="{{ url_for('static', filename='images/pepsi-glass.jpg') }}" alt="Пепсі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥤</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Пепсі</h3>
-                    <p class="product-description">Pepsi 0,3 л скло</p>
-                    <div class="product-footer">
-                        <div class="product-price">43 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-03l-glass')">-</button>
-                            <span class="quantity-value-card" id="quantity-pepsi-03l-glass">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-03l-glass')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Пепсі 0.3 л скло</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pepsi-03l-glass">43 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('pepsi-03l-glass')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pepsi-03l-glass">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('pepsi-03l-glass')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pepsi-03l-glass')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1181,18 +1475,22 @@
             <!-- Lipton Tea Products -->
             <div class="product-card" data-category="drinks" data-subcategory="tea" onclick="openDrinkModal('lipton-peach')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/lipton-peach.jpg') }}" alt="Чай Lipton" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/lipton-peach.jpg') }}" alt="Холодний чай Lipton" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍑</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Чай Lipton</h3>
-                    <p class="product-description">Lipton Персик 0,5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">35 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('lipton-peach')">-</button>
-                            <span class="quantity-value-card" id="quantity-lipton-peach">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('lipton-peach')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Холодний чай Lipton Персик 0.5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-lipton-peach">35 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('lipton-peach')">-</button>
+                                    <span class="quantity-value-new" id="quantity-lipton-peach">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('lipton-peach')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('lipton-peach')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1200,18 +1498,22 @@
 
             <div class="product-card" data-category="drinks" data-subcategory="tea" onclick="openDrinkModal('lipton-lemon')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/lipton-lemon.jpg') }}" alt="Чай Lipton" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/lipton-lemon.jpg') }}" alt="Холодний чай Lipton" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍋</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Чай Lipton</h3>
-                    <p class="product-description">Lipton Лимон 0,5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">35 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('lipton-lemon')">-</button>
-                            <span class="quantity-value-card" id="quantity-lipton-lemon">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('lipton-lemon')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Холодний чай Lipton Лимон 0.5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-lipton-lemon">35 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('lipton-lemon')">-</button>
+                                    <span class="quantity-value-new" id="quantity-lipton-lemon">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('lipton-lemon')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('lipton-lemon')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1219,18 +1521,22 @@
 
             <div class="product-card" data-category="drinks" data-subcategory="tea" onclick="openDrinkModal('lipton-green')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/lipton-green-tea.jpg') }}" alt="Чай Lipton" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/lipton-green-tea.jpg') }}" alt="Холодний чай Lipton" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍵</div>
                 </div>
-                <div class="product-info">
-                    <h3 class="product-title">Чай Lipton</h3>
-                    <p class="product-description">Lipton Зелений 0,5 л</p>
-                    <div class="product-footer">
-                        <div class="product-price">35 грн</div>
-                        <div class="product-quantity">
-                            <button class="quantity-btn-card minus" onclick="event.stopPropagation(); decreaseDrinkQuantity('lipton-green')">-</button>
-                            <span class="quantity-value-card" id="quantity-lipton-green">0</span>
-                            <button class="quantity-btn-card plus" onclick="event.stopPropagation(); increaseDrinkQuantity('lipton-green')">+</button>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Холодний чай Lipton Зелений 0.5 л</h3>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-lipton-green">35 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseDrinkQuantity('lipton-green')">-</button>
+                                    <span class="quantity-value-new" id="quantity-lipton-green">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseDrinkQuantity('lipton-green')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('lipton-green')">Хочу</button>
+                            </div>
                         </div>
                     </div>
                 </div>

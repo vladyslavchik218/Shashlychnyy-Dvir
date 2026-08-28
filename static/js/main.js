@@ -4,6 +4,54 @@ let currentProduct = null;
 let currentSauce = null;
 let currentDrink = null;
 
+// Sticky categories functionality
+let categoriesSection = null;
+let categoriesOriginalPosition = null;
+let isSticky = false;
+let selectedMessenger = null;
+
+function initStickyCategories() {
+    categoriesSection = document.querySelector('.categories-section');
+    if (!categoriesSection) return;
+    
+    categoriesOriginalPosition = categoriesSection.getBoundingClientRect().top + window.pageYOffset;
+    
+    window.addEventListener('scroll', handleStickyCategories, { passive: true });
+    window.addEventListener('resize', handleStickyCategories, { passive: true });
+}
+
+function handleStickyCategories() {
+    if (!categoriesSection) return;
+    
+    const headerHeight = window.innerWidth <= 768 ? 70 : 80;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > categoriesOriginalPosition - headerHeight && !isSticky) {
+        categoriesSection.style.position = 'fixed';
+        categoriesSection.style.top = headerHeight + 'px';
+        categoriesSection.style.left = '0';
+        categoriesSection.style.right = '0';
+        categoriesSection.style.width = '100%';
+        categoriesSection.style.zIndex = '999';
+        categoriesSection.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+        isSticky = true;
+    } else if (scrollTop <= categoriesOriginalPosition - headerHeight && isSticky) {
+        categoriesSection.style.position = '';
+        categoriesSection.style.top = '';
+        categoriesSection.style.left = '';
+        categoriesSection.style.right = '';
+        categoriesSection.style.width = '';
+        categoriesSection.style.zIndex = '';
+        categoriesSection.style.boxShadow = '';
+        isSticky = false;
+    }
+}
+
+// Initialize on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    initStickyCategories();
+});
+
 // Store selected sauce weights and prices
 let selectedSauceWeights = {};
 let selectedSaucePrices = {};
@@ -105,34 +153,57 @@ function increaseDrinkQuantity(drinkId) {
     const drink = products[drinkId];
     if (!drink) return;
 
+    const quantityElement = document.getElementById(`quantity-${drinkId}`);
+    if (quantityElement) {
+        let currentQuantity = parseInt(quantityElement.textContent) || 1;
+        currentQuantity += 1;
+        quantityElement.textContent = currentQuantity;
+    }
+
     const existingItem = cart.find(item => item.id === drinkId);
     if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity = parseInt(quantityElement.textContent);
     } else {
         const cartItem = {
             ...drink,
-            quantity: 1,
+            quantity: parseInt(quantityElement.textContent),
             cartId: Date.now()
         };
         cart.push(cartItem);
     }
 
+    saveCart();
     updateCartUI();
     updateCardQuantities();
+    updateCardPrice(drinkId);
 }
 
 function decreaseDrinkQuantity(drinkId) {
+    const drink = products[drinkId];
+    if (!drink) return;
+
+    const quantityElement = document.getElementById(`quantity-${drinkId}`);
+    if (quantityElement) {
+        let currentQuantity = parseInt(quantityElement.textContent) || 1;
+        if (currentQuantity > 1) {
+            currentQuantity -= 1;
+            quantityElement.textContent = currentQuantity;
+        }
+    }
+
     const existingItem = cart.find(item => item.id === drinkId);
     if (existingItem) {
-        if (existingItem.quantity > 1) {
-            existingItem.quantity -= 1;
+        if (parseInt(quantityElement.textContent) > 0) {
+            existingItem.quantity = parseInt(quantityElement.textContent);
         } else {
             cart = cart.filter(i => i.cartId !== existingItem.cartId);
         }
     }
 
+    saveCart();
     updateCartUI();
     updateCardQuantities();
+    updateCardPrice(drinkId);
 }
 
 // Subcategory filtering for drinks
@@ -184,10 +255,40 @@ function selectSauceWeight(sauceId, weight, price) {
 
 // Product data (in real app, this would come from backend)
 const products = {
+    'set-4-persons': {
+        id: 'set-4-persons',
+        name: 'Сет на 4 особи',
+        description: 'Шашлик 700г, Ребра 700г, Ковбаски 700г, Овочі печені 500г, Картопля печена 600г, Соус',
+        price: 1100,
+        originalPrice: 3200,
+        image: '/static/images/kovbasku.jpg',
+        badges: ['hit'],
+        category: 'sets'
+    },
+    'set-6-persons': {
+        id: 'set-6-persons',
+        name: 'Сет на 6 осіб',
+        description: 'Шашлик 1000г, Ребра 1000г, Ковбаски 1000г, Овочі печені 700г, Картопля печена 800г, Соус',
+        price: 1600,
+        originalPrice: 4800,
+        image: '/static/images/kovbasku.jpg',
+        badges: ['popular'],
+        category: 'sets'
+    },
+    'set-10-persons': {
+        id: 'set-10-persons',
+        name: 'Сет на 10 осіб',
+        description: 'Шашлик 1.5кг, Ковбаски 1кг, Реберця 1кг, Скумбрія печена 1кг, Картопля по-селянськи 1кг, Овочі печені 1кг, Соус',
+        price: 2200,
+        originalPrice: 6500,
+        image: '/static/images/kovbasku.jpg',
+        badges: ['new'],
+        category: 'sets'
+    },
     'pork-neck': {
         id: 'pork-neck',
         name: 'Шашлик зі свинного ошийка',
-        description: 'Соковита свинина на кістці, маринована за авторським рецептом',
+        description: '123',
         pricePer100g: 85,
         image: '/static/images/pork-neck.jpg',
         badges: ['hit'],
@@ -646,29 +747,38 @@ const sauces = [
 
 // Add quantity property to cart items
 function addToCart(product, weight, selectedSauces) {
-    const existingItem = cart.find(item => 
-        item.id === product.id && 
-        item.weight === weight && 
+    const existingItem = cart.find(item =>
+        item.id === product.id &&
+        item.weight === weight &&
         JSON.stringify(item.sauces) === JSON.stringify(selectedSauces)
     );
-    
+
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
-
-        console.log("PRODUCT:", product);
-        console.log("PRICE:", product.price);
+        // Calculate price based on weight or fixed price for sets
+        let calculatedPrice = 0;
+        if (product.category === 'sets') {
+            calculatedPrice = product.price;
+        } else if (product.pricePer100g && weight) {
+            calculatedPrice = (product.pricePer100g * weight) / 100;
+        } else if (product.price) {
+            calculatedPrice = product.price;
+        } else if (product.pricePer100g) {
+            calculatedPrice = product.pricePer100g;
+        }
 
         const cartItem = {
             ...product,
             weight,
             sauces: selectedSauces,
             quantity: 1,
+            price: Math.round(calculatedPrice), // Store calculated price
             cartId: Date.now()
         };
         cart.push(cartItem);
     }
-    
+
     updateCartUI();
 }
 
@@ -690,13 +800,9 @@ function handleOrderButton() {
     }
 }
 
-// Open cart drawer
+// Open cart drawer - redirect to basket page
 function openCart() {
-    document.getElementById('cart-drawer').classList.add('open');
-    // Don't block body scroll on mobile to allow cart drawer scrolling
-    if (window.innerWidth > 768) {
-        document.body.style.overflow = 'hidden';
-    }
+    window.location.href = '/basket';
 }
 
 // Close cart drawer
@@ -706,6 +812,9 @@ function closeCart() {
     if (window.innerWidth > 768) {
         document.body.style.overflow = '';
     }
+    
+    // Скрываем форму оплаты при закрытии корзины
+    document.getElementById('checkout-form').classList.remove('active');
 }
 
 // Open product modal
@@ -724,6 +833,9 @@ function openProductModal(productId) {
     
     // Set placeholder emoji based on product
     const productEmojis = {
+        'set-4-persons': '🍖',
+        'set-6-persons': '🍖',
+        'set-10-persons': '🍖',
         'pork-neck': '🍖',
         'chicken-fillet': '🍗',
         'chicken-thigh': '🍗',
@@ -773,8 +885,17 @@ function openProductModal(productId) {
     
     document.getElementById('modal-product-title').textContent = product.name;
     document.getElementById('modal-product-description').textContent = product.description;
-    document.getElementById('modal-product-price').textContent = product.pricePer100g + ' грн/100г';
-    
+
+    // Set price based on product type
+    if (product.category === 'sets') {
+        document.getElementById('modal-product-price').textContent = product.price + ' грн';
+        if (product.originalPrice) {
+            document.getElementById('modal-product-price').textContent += ` (замість ${product.originalPrice} грн)`;
+        }
+    } else {
+        document.getElementById('modal-product-price').textContent = product.pricePer100g + ' грн/100г';
+    }
+
     // Set badges
     const badgesContainer = document.getElementById('modal-badges');
     badgesContainer.innerHTML = '';
@@ -784,55 +905,64 @@ function openProductModal(productId) {
         badgeElement.textContent = getBadgeText(badge);
         badgesContainer.appendChild(badgeElement);
     });
-    
-    // Populate sauces dynamically
-    const saucesOptions = document.querySelector('.sauces-options');
-    if (saucesOptions) {
-        saucesOptions.innerHTML = sauces.map(sauce => `
-            <div class="sauce-item">
-                <div class="sauce-name">${sauce.name}</div>
-                <div class="sauce-weights">
-                    <label class="sauce-option">
-                        <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}' data-weight="50">
-                        <span>50г - ${sauce.price50g} грн</span>
-                    </label>
-                    <label class="sauce-option">
-                        <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}' data-weight="100">
-                        <span>100г - ${sauce.price100g} грн</span>
-                    </label>
+
+    // For sets, hide weight and sauce selectors
+    if (product.category === 'sets') {
+        const modalOptions = document.querySelector('.modal-options');
+        modalOptions.innerHTML = '';
+    } else {
+        // Populate sauces dynamically
+        const saucesOptions = document.querySelector('.sauces-options');
+        if (saucesOptions) {
+            saucesOptions.innerHTML = sauces.map(sauce => `
+                <div class="sauce-item">
+                    <div class="sauce-name">${sauce.name}</div>
+                    <div class="sauce-weights">
+                        <label class="sauce-option">
+                            <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}' data-weight="50">
+                            <span>50г - ${sauce.price50g} грн</span>
+                        </label>
+                        <label class="sauce-option">
+                            <input type="checkbox" value="${sauce.id}" data-sauce='${JSON.stringify(sauce)}' data-weight="100">
+                            <span>100г - ${sauce.price100g} грн</span>
+                        </label>
+                    </div>
                 </div>
-            </div>
-        `).join('');
+            `).join('');
+        }
+
+        // Set active weight button
+        document.querySelectorAll('.weight-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector('.weight-btn[data-weight="100"]').classList.add('active');
+
+        // Clear all sauce checkboxes
+        document.querySelectorAll('.sauce-option input').forEach(input => {
+            input.checked = false;
+        });
     }
-    
-    // Set active weight button
-    document.querySelectorAll('.weight-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.querySelector('.weight-btn[data-weight="100"]').classList.add('active');
-    
-    // Clear all sauce checkboxes
-    document.querySelectorAll('.sauce-option input').forEach(input => {
-        input.checked = false;
-    });
-    
-    // Add event listeners for weight buttons
-    document.querySelectorAll('.weight-btn').forEach(btn => {
-        btn.onclick = function() {
-            document.querySelectorAll('.weight-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            updateModalPrice();
-        };
-    });
-    
-    // Add event listeners for sauce checkboxes
-    document.querySelectorAll('.sauce-option input').forEach(input => {
-        input.onchange = updateModalPrice;
-    });
-    
-    // Initial price update
-    updateModalPrice();
-    
+
+    // Add event listeners for weight buttons (only for non-sets)
+    if (product.category !== 'sets') {
+        // Add event listeners for weight buttons
+        document.querySelectorAll('.weight-btn').forEach(btn => {
+            btn.onclick = function() {
+                document.querySelectorAll('.weight-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                updateModalPrice();
+            };
+        });
+
+        // Add event listeners for sauce checkboxes
+        document.querySelectorAll('.sauce-option input').forEach(input => {
+            input.onchange = updateModalPrice;
+        });
+
+        // Initial price update
+        updateModalPrice();
+    }
+
     document.getElementById('product-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
 }
@@ -890,21 +1020,49 @@ function getBadgeText(badge) {
 function quickAdd(productId) {
     const product = products[productId];
     if (!product) return;
-    
-    const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        const cartItem = {
-            ...product,
-            weight: 100,
-            sauces: [],
-            quantity: 1,
-            cartId: Date.now()
-        };
-        cart.push(cartItem);
+
+    // Calculate price based on product type
+    let calculatedPrice = 0;
+    if (product.category === 'sets') {
+        calculatedPrice = product.price;
+    } else if (product.pricePer100g) {
+        calculatedPrice = product.pricePer100g;
+    } else if (product.price) {
+        calculatedPrice = product.price;
     }
-    
+
+    // For sets, use simplified logic
+    if (product.category === 'sets') {
+        const existingItem = cart.find(item => item.id === product.id);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            const cartItem = {
+                ...product,
+                quantity: 1,
+                price: calculatedPrice,
+                cartId: Date.now()
+            };
+            cart.push(cartItem);
+        }
+    } else {
+        const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
+        if (existingItem) {
+            existingItem.quantity += 1;
+            existingItem.price = Math.round(calculatedPrice);
+        } else {
+            const cartItem = {
+                ...product,
+                weight: 100,
+                sauces: [],
+                quantity: 1,
+                price: Math.round(calculatedPrice),
+                cartId: Date.now()
+            };
+            cart.push(cartItem);
+        }
+    }
+
     updateCartUI();
     updateCardQuantities();
 }
@@ -913,55 +1071,141 @@ function quickAdd(productId) {
 function increaseCardQuantity(productId) {
     const product = products[productId];
     if (!product) return;
-    
-    const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        const cartItem = {
-            ...product,
-            weight: 100,
-            sauces: [],
-            quantity: 1,
-            cartId: Date.now()
-        };
-        cart.push(cartItem);
+
+    const quantityElement = document.getElementById(`quantity-${productId}`);
+    if (quantityElement) {
+        let currentQuantity = parseInt(quantityElement.textContent) || 1;
+        currentQuantity += 1;
+        quantityElement.textContent = currentQuantity;
     }
-    
+
+    // Calculate price based on product type
+    let calculatedPrice = 0;
+    if (product.category === 'sets') {
+        calculatedPrice = product.price;
+    } else if (product.pricePer100g) {
+        calculatedPrice = product.pricePer100g;
+    } else if (product.price) {
+        calculatedPrice = product.price;
+    }
+
+    // Update cart immediately
+    if (product.category === 'sets') {
+        const existingItem = cart.find(item => item.id === product.id);
+        if (existingItem) {
+            existingItem.quantity = parseInt(quantityElement.textContent);
+        } else {
+            const cartItem = {
+                ...product,
+                quantity: parseInt(quantityElement.textContent),
+                price: calculatedPrice,
+                cartId: Date.now()
+            };
+            cart.push(cartItem);
+        }
+    } else {
+        const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
+        if (existingItem) {
+            existingItem.quantity = parseInt(quantityElement.textContent);
+            existingItem.price = Math.round(calculatedPrice);
+        } else {
+            const cartItem = {
+                ...product,
+                weight: 100,
+                sauces: [],
+                quantity: parseInt(quantityElement.textContent),
+                price: Math.round(calculatedPrice),
+                cartId: Date.now()
+            };
+            cart.push(cartItem);
+        }
+    }
+
+    saveCart();
+    updateCardPrice(productId);
     updateCartUI();
-    updateCardQuantities();
 }
 
 // Decrease card quantity
 function decreaseCardQuantity(productId) {
     const product = products[productId];
     if (!product) return;
-    
+
+    const quantityElement = document.getElementById(`quantity-${productId}`);
+    if (quantityElement) {
+        let currentQuantity = parseInt(quantityElement.textContent) || 1;
+        if (currentQuantity > 1) {
+            currentQuantity -= 1;
+            quantityElement.textContent = currentQuantity;
+        }
+    }
+
+    // Update cart immediately
+    if (product.category === 'sets') {
+        const existingItem = cart.find(item => item.id === product.id);
+        if (existingItem) {
+            if (parseInt(quantityElement.textContent) > 0) {
+                existingItem.quantity = parseInt(quantityElement.textContent);
+            } else {
+                cart = cart.filter(i => i.cartId !== existingItem.cartId);
+            }
+        }
+    } else {
+        const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
+        if (existingItem) {
+            if (parseInt(quantityElement.textContent) > 0) {
+                existingItem.quantity = parseInt(quantityElement.textContent);
+            } else {
+                cart = cart.filter(i => i.cartId !== existingItem.cartId);
+            }
+        }
+    }
+
+    // Update cart immediately
     const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
     if (existingItem) {
-        if (existingItem.quantity > 1) {
-            existingItem.quantity -= 1;
+        if (parseInt(quantityElement.textContent) > 0) {
+            existingItem.quantity = parseInt(quantityElement.textContent);
         } else {
             cart = cart.filter(i => i.cartId !== existingItem.cartId);
         }
     }
-    
+
+    saveCart();
+    updateCardPrice(productId);
     updateCartUI();
-    updateCardQuantities();
 }
 
 // Update card quantities display
 function updateCardQuantities() {
     Object.keys(products).forEach(productId => {
+        const product = products[productId];
         const quantityElement = document.getElementById(`quantity-${productId}`);
         if (quantityElement) {
-            const totalQuantity = cart
-                .filter(item => item.id === productId && item.weight === 100 && item.sauces.length === 0)
-                .reduce((sum, item) => sum + item.quantity, 0);
-            quantityElement.textContent = totalQuantity;
+            let totalQuantity = 0;
+
+            if (product.category === 'sets') {
+                // For sets, just sum all quantities
+                totalQuantity = cart
+                    .filter(item => item.id === productId)
+                    .reduce((sum, item) => sum + item.quantity, 0);
+            } else if (product.category === 'drinks') {
+                // For drinks, sum all quantities
+                totalQuantity = cart
+                    .filter(item => item.id === productId)
+                    .reduce((sum, item) => sum + item.quantity, 0);
+            } else {
+                // For regular products, filter by weight and no sauces
+                totalQuantity = cart
+                    .filter(item => item.id === productId && item.weight === 100 && item.sauces.length === 0)
+                    .reduce((sum, item) => sum + item.quantity, 0);
+            }
+
+            // Update to cart quantity, or reset to 1 if not in cart
+            quantityElement.textContent = totalQuantity > 0 ? totalQuantity : 1;
         }
     });
-    
+
     // Update sauce quantities
     sauces.forEach(sauce => {
         const quantityElement = document.getElementById(`quantity-sauce-${sauce.id}`);
@@ -970,23 +1214,149 @@ function updateCardQuantities() {
             const totalQuantity = cart
                 .filter(item => item.type === 'sauce' && item.sauceId === sauce.id && item.weight === selectedWeight)
                 .reduce((sum, item) => sum + item.quantity, 0);
-            quantityElement.textContent = totalQuantity;
+            quantityElement.textContent = totalQuantity > 0 ? totalQuantity : 1;
         }
     });
+}
+
+// Update card price based on displayed quantity
+function updateCardPrice(productId) {
+    const product = products[productId];
+    if (!product) return;
+
+    const priceElement = document.getElementById(`price-${productId}`);
+    const quantityElement = document.getElementById(`quantity-${productId}`);
+
+    if (priceElement && quantityElement) {
+        const displayedQuantity = parseInt(quantityElement.textContent) || 1;
+
+        if (product.category === 'sets') {
+            // Fixed price for sets
+            const totalPrice = product.price * displayedQuantity;
+            priceElement.textContent = `${totalPrice} грн`;
+        } else if (product.pricePer100g) {
+            // Price is per 100g, so multiply by quantity (each unit is 100g)
+            const totalPrice = Math.round(product.pricePer100g * displayedQuantity);
+            priceElement.textContent = `${totalPrice} грн`;
+        } else if (product.price) {
+            // Price is per item (drinks), so multiply by quantity
+            priceElement.textContent = `${product.price * displayedQuantity} грн`;
+        }
+    }
     
-    // Update drink quantities
-    Object.keys(products).forEach(productId => {
-        const product = products[productId];
-        if (product.category === 'drinks') {
-            const quantityElement = document.getElementById(`quantity-${productId}`);
-            if (quantityElement) {
-                const totalQuantity = cart
-                    .filter(item => item.id === productId)
-                    .reduce((sum, item) => sum + item.quantity, 0);
-                quantityElement.textContent = totalQuantity;
-            }
+    updateCartBadge();
+}
+
+// Update sauce card price based on displayed quantity
+function updateSauceCardPrice(sauceId) {
+    const priceElement = document.getElementById(`price-sauce-${sauceId}`);
+    const quantityElement = document.getElementById(`quantity-sauce-${sauceId}`);
+    
+    if (!priceElement || !quantityElement) return;
+    
+    const displayedQuantity = parseInt(quantityElement.textContent) || 1;
+    const selectedPrice = selectedSaucePrices[sauceId] || 40;
+    
+    const totalPrice = selectedPrice * displayedQuantity;
+    priceElement.textContent = `${totalPrice} грн`;
+    
+    updateCartBadge();
+}
+
+// Add product directly to cart with selected quantity
+function addToCartDirect(productId) {
+    // Check if this is a sauce (starts with 'sauce-')
+    if (productId.startsWith('sauce-')) {
+        const sauceId = productId.replace('sauce-', '');
+        addSauceToCartDirect(sauceId);
+        return;
+    }
+
+    const product = products[productId];
+    if (!product) return;
+
+    // Get current quantity from the display
+    const quantityElement = document.getElementById(`quantity-${productId}`);
+    const currentQuantity = quantityElement ? parseInt(quantityElement.textContent) : 1;
+
+    // Calculate price based on product type
+    let calculatedPrice = 0;
+    if (product.category === 'sets') {
+        calculatedPrice = product.price;
+    } else if (product.pricePer100g) {
+        calculatedPrice = product.pricePer100g;
+    } else if (product.price) {
+        calculatedPrice = product.price;
+    }
+
+    // For sets, use simplified logic
+    if (product.category === 'sets') {
+        const existingItem = cart.find(item => item.id === product.id);
+        if (existingItem) {
+            existingItem.quantity = currentQuantity;
+        } else {
+            const cartItem = {
+                ...product,
+                quantity: currentQuantity,
+                price: calculatedPrice,
+                cartId: Date.now()
+            };
+            cart.push(cartItem);
         }
-    });
+    } else {
+        const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
+        if (existingItem) {
+            existingItem.quantity = currentQuantity;
+            existingItem.price = Math.round(calculatedPrice);
+        } else {
+            const cartItem = {
+                ...product,
+                weight: 100,
+                sauces: [],
+                quantity: currentQuantity,
+                price: Math.round(calculatedPrice),
+                cartId: Date.now()
+            };
+            cart.push(cartItem);
+        }
+    }
+
+    saveCart();
+    updateCartUI();
+    updateCardQuantities();
+    updateCardPrice(productId);
+    showNotification('Додано в кошик!');
+}
+
+// Add sauce directly to cart (for Хочу button)
+function addSauceToCartDirect(sauceId) {
+    const sauce = sauces.find(s => s.id === sauceId);
+    if (!sauce) return;
+
+    const selectedWeight = selectedSauceWeights[sauceId] || 50;
+    const selectedPrice = selectedSaucePrices[sauceId] || sauce.price50g;
+
+    const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === selectedWeight);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        const cartItem = {
+            type: 'sauce',
+            sauceId: sauce.id,
+            name: sauce.name,
+            weight: selectedWeight,
+            price: selectedPrice,
+            quantity: 1,
+            cartId: Date.now()
+        };
+        cart.push(cartItem);
+    }
+
+    saveCart();
+    updateCartUI();
+    updateCardQuantities();
+    updateSauceCardPrice(sauceId);
+    showNotification('Додано в кошик!');
 }
 
 // Open sauce modal
@@ -1156,9 +1526,16 @@ function increaseSauceQuantity(sauceId) {
     const selectedWeight = selectedSauceWeights[sauceId] || 50;
     const selectedPrice = selectedSaucePrices[sauceId] || sauce.price50g;
     
+    const quantityElement = document.getElementById(`quantity-sauce-${sauceId}`);
+    if (quantityElement) {
+        let currentQuantity = parseInt(quantityElement.textContent) || 1;
+        currentQuantity += 1;
+        quantityElement.textContent = currentQuantity;
+    }
+    
     const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === selectedWeight);
     if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity = parseInt(quantityElement.textContent);
     } else {
         const cartItem = {
             type: 'sauce',
@@ -1166,30 +1543,29 @@ function increaseSauceQuantity(sauceId) {
             name: sauce.name,
             weight: selectedWeight,
             price: selectedPrice,
-            quantity: 1,
+            quantity: parseInt(quantityElement.textContent),
             cartId: Date.now()
         };
         cart.push(cartItem);
     }
     
+    saveCart();
     updateCartUI();
     updateCardQuantities();
+    updateSauceCardPrice(sauceId);
 }
 
-// Decrease sauce quantity
+// Decrease sauce quantity (only display, no cart update)
 function decreaseSauceQuantity(sauceId) {
-    const selectedWeight = selectedSauceWeights[sauceId] || 50;
-    const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === selectedWeight);
-    if (existingItem) {
-        if (existingItem.quantity > 1) {
-            existingItem.quantity -= 1;
-        } else {
-            cart = cart.filter(i => i.cartId !== existingItem.cartId);
+    const quantityElement = document.getElementById(`quantity-sauce-${sauceId}`);
+    if (quantityElement) {
+        let currentQuantity = parseInt(quantityElement.textContent) || 1;
+        if (currentQuantity > 1) {
+            currentQuantity -= 1;
+            quantityElement.textContent = currentQuantity;
+            updateSauceCardPrice(sauceId);
         }
     }
-    
-    updateCartUI();
-    updateCardQuantities();
 }
 
 // Add to cart from modal
@@ -1223,11 +1599,29 @@ function addToCartFromModal() {
         updateCartUI();
         updateCardQuantities();
         showNotification('Соус додано в кошик!');
+    } else if (currentProduct && currentProduct.category === 'sets') {
+        // Add set
+        const existingItem = cart.find(item => item.id === currentProduct.id);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            const cartItem = {
+                ...currentProduct,
+                quantity: 1,
+                price: currentProduct.price,
+                cartId: Date.now()
+            };
+            cart.push(cartItem);
+        }
+        closeProductModal();
+        updateCartUI();
+        updateCardQuantities();
+        showNotification('Сет додано в кошик!');
     } else if (currentProduct) {
         // Add regular product
         const selectedWeight = parseInt(document.querySelector('.weight-btn.active').dataset.weight);
         const selectedSauces = [];
-        
+
         document.querySelectorAll('.sauce-option input:checked').forEach(input => {
             const sauce = JSON.parse(input.dataset.sauce);
             const sauceWeight = parseInt(input.dataset.weight);
@@ -1238,7 +1632,7 @@ function addToCartFromModal() {
                 selectedPrice: saucePrice
             });
         });
-        
+
         addToCart(currentProduct, selectedWeight, selectedSauces);
         closeProductModal();
         showNotification('Додано в кошик!');
@@ -1259,6 +1653,15 @@ function addToCartFromModal() {
         updateCartUI();
         updateCardQuantities();
         showNotification('Напій додано в кошик!');
+    }
+}
+
+// Update cart badge
+function updateCartBadge() {
+    const cartBadge = document.getElementById('cart-badge');
+    if (cartBadge) {
+        const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartBadge.textContent = totalQuantity;
     }
 }
 
@@ -1287,10 +1690,14 @@ function updateCartUI() {
     } else {
         cartItems.innerHTML = cart.map(item => {
             let itemPrice, itemText;
-            
+
             if (item.type === 'sauce') {
                 itemPrice = item.price;
                 itemText = `${item.weight}г`;
+            } else if (item.category === 'sets') {
+                // Handle sets
+                itemPrice = item.price;
+                itemText = '';
             } else if (item.category === 'drinks') {
                 // Handle drinks
                 itemPrice = item.price;
@@ -1301,7 +1708,7 @@ function updateCartUI() {
                 const saucesText = item.sauces && item.sauces.length > 0 ? item.sauces.map(s => s.name).join(', ') : '';
                 itemText = `${item.weight}г${saucesText ? ', ' + saucesText : ''}`;
             }
-            
+
             const itemTotal = itemPrice * item.quantity;
             
             return `
@@ -1326,6 +1733,9 @@ function updateCartUI() {
     const total = cart.reduce((sum, item) => {
         let itemPrice;
         if (item.type === 'sauce') {
+            itemPrice = item.price;
+        } else if (item.category === 'sets') {
+            // Handle sets
             itemPrice = item.price;
         } else if (item.category === 'drinks') {
             // Handle drinks
@@ -1389,38 +1799,59 @@ function showNotification(message) {
 }
 
 // Category selection
-document.querySelectorAll('.category-item').forEach(item => {
-    item.addEventListener('click', function() {
-        document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        
-        // Filter products
-        const category = this.dataset.category;
-        const productCards = document.querySelectorAll('.product-card');
-        
-        productCards.forEach(card => {
-            const cardCategory = card.dataset.category;
-            
-            if (category === 'all' || cardCategory === category) {
-                card.style.display = 'block';
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryButtons = document.querySelectorAll('.category-item');
+    categoryButtons.forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+
+            // Filter products
+            const category = this.dataset.category;
+            const productCards = document.querySelectorAll('.product-card');
+
+            productCards.forEach(card => {
+                const cardCategory = card.dataset.category;
+
+                if (category === 'all' || cardCategory === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Scroll to appropriate section
+            if (category === 'sauces') {
+                document.getElementById('sauces').scrollIntoView({ behavior: 'smooth' });
             } else {
-                card.style.display = 'none';
+                document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
             }
         });
-        
-        // Scroll to appropriate section
-        if (category === 'sauces') {
-            document.getElementById('sauces').scrollIntoView({ behavior: 'smooth' });
-        } else {
-            document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
-        }
     });
 });
 
 // Toggle checkout form
 function toggleCheckoutForm() {
     const checkoutForm = document.getElementById('checkout-form');
+    if (!checkoutForm) return;
+    
     checkoutForm.classList.toggle('active');
+    
+    // Show payment and messenger sections when form opens
+    try {
+        const paymentSection = document.querySelector('.payment-section');
+        const messengerSection = document.querySelector('.messenger-section');
+        
+        if (checkoutForm.classList.contains('active')) {
+            if (paymentSection) paymentSection.style.display = 'block';
+            if (messengerSection) messengerSection.style.display = 'block';
+        } else {
+            if (paymentSection) paymentSection.style.display = 'none';
+            if (messengerSection) messengerSection.style.display = 'none';
+        }
+    } catch (e) {
+        console.log('Error toggling sections:', e);
+    }
     
     // Scroll to the form on mobile when it opens
     if (checkoutForm.classList.contains('active') && window.innerWidth <= 768) {
@@ -1441,7 +1872,161 @@ document.addEventListener('keydown', function(e) {
 // Initialize card quantities on page load
 document.addEventListener('DOMContentLoaded', function() {
     updateCardQuantities();
+    addUnitLabelsToProductCards();
+    updateAllCardPrices();
+    convertToSimpleProductCards();
 });
+
+// Add "за 100г" labels to all product cards
+function addUnitLabelsToProductCards() {
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+        const productImage = card.querySelector('.product-image');
+        if (productImage && !productImage.querySelector('.product-unit')) {
+            const category = card.dataset.category;
+            // Add unit label only for food products (not drinks)
+            if (category !== 'drinks' && category !== 'sauces' && category !== 'sets') {
+                const unitLabel = document.createElement('div');
+                unitLabel.className = 'product-unit';
+                unitLabel.textContent = 'За 100гр';
+                productImage.appendChild(unitLabel);
+            }
+        }
+    });
+}
+
+// Update all card prices to remove "/100g" suffix and add IDs
+function updateAllCardPrices() {
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+        const priceElement = card.querySelector('.product-price');
+        if (priceElement) {
+            const currentText = priceElement.textContent;
+            if (currentText.includes('/100г')) {
+                const newPrice = currentText.replace('/100г', '').trim();
+                priceElement.textContent = newPrice;
+            }
+
+            // Add ID to price element for dynamic updates
+            const onclick = card.getAttribute('onclick');
+            if (onclick) {
+                const match = onclick.match(/openProductModal\('([^']+)'\)/);
+                if (match) {
+                    const productId = match[1];
+                    priceElement.id = `price-${productId}`;
+                }
+            }
+        }
+    });
+}
+
+// Convert all product cards to new format with description and quantity selector
+function convertToSimpleProductCards() {
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+        const category = card.dataset.category;
+        // Only convert food products, not drinks, sauces, or sets
+        if (category !== 'drinks' && category !== 'sauces' && category !== 'sets') {
+            const productInfo = card.querySelector('.product-info');
+            const productTitle = card.querySelector('.product-title');
+
+            if (productInfo && productTitle) {
+                // Add description if not exists
+                if (!productInfo.querySelector('.product-description-new')) {
+                    const description = document.createElement('p');
+                    description.className = 'product-description-new';
+                    productInfo.insertBefore(description, productTitle.nextSibling);
+                }
+
+                // Update info class
+                productInfo.classList.add('product-info-new');
+
+                const productFooter = card.querySelector('.product-footer');
+                if (productFooter) {
+                    const priceElement = productFooter.querySelector('.product-price');
+                    const quantitySelector = productFooter.querySelector('.product-quantity');
+
+                    if (priceElement) {
+                        // Remove old structure
+                        if (quantitySelector) {
+                            quantitySelector.remove();
+                        }
+
+                        // Change footer class
+                        productFooter.classList.remove('product-footer');
+                        productFooter.classList.add('product-footer-new');
+
+                        // Get product ID
+                        const onclick = card.getAttribute('onclick');
+                        if (onclick) {
+                            const match = onclick.match(/openProductModal\('([^']+)'\)/);
+                            if (match) {
+                                const productId = match[1];
+
+                                // Clear footer
+                                productFooter.innerHTML = '';
+
+                                // Create price row
+                                const priceRow = document.createElement('div');
+                                priceRow.className = 'product-price-row';
+
+                                // Add price element
+                                const newPriceElement = document.createElement('div');
+                                newPriceElement.className = 'product-price-new';
+                                newPriceElement.id = `price-${productId}`;
+                                newPriceElement.textContent = priceElement.textContent.replace('/100г', '').trim();
+                                priceRow.appendChild(newPriceElement);
+
+                                // Create quantity selector
+                                const quantitySelectorNew = document.createElement('div');
+                                quantitySelectorNew.className = 'quantity-selector-new';
+
+                                const minusBtn = document.createElement('button');
+                                minusBtn.className = 'quantity-btn-new';
+                                minusBtn.textContent = '-';
+                                minusBtn.onclick = (e) => {
+                                    e.stopPropagation();
+                                    decreaseCardQuantity(productId);
+                                };
+
+                                const quantityValue = document.createElement('span');
+                                quantityValue.className = 'quantity-value-new';
+                                quantityValue.id = `quantity-${productId}`;
+                                quantityValue.textContent = '1';
+
+                                const plusBtn = document.createElement('button');
+                                plusBtn.className = 'quantity-btn-new';
+                                plusBtn.textContent = '+';
+                                plusBtn.onclick = (e) => {
+                                    e.stopPropagation();
+                                    increaseCardQuantity(productId);
+                                };
+
+                                quantitySelectorNew.appendChild(minusBtn);
+                                quantitySelectorNew.appendChild(quantityValue);
+                                quantitySelectorNew.appendChild(plusBtn);
+                                priceRow.appendChild(quantitySelectorNew);
+
+                                productFooter.appendChild(priceRow);
+
+                                // Create "Хочу" button
+                                const wantBtn = document.createElement('button');
+                                wantBtn.className = 'want-btn-new';
+                                wantBtn.textContent = 'Хочу';
+                                wantBtn.onclick = (e) => {
+                                    e.stopPropagation();
+                                    addToCartDirect(productId);
+                                };
+
+                                productFooter.appendChild(wantBtn);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
 
 // Add animation styles
 const style = document.createElement('style');
@@ -1607,8 +2192,8 @@ document.head.appendChild(style);
 
 
 
-function confirmOrder() {
-    console.log("CONFIRM ORDER ЗАПУЩЕН");
+function sendOrderToMessenger(messengerType) {
+    console.log("SEND ORDER TO MESSENGER:", messengerType);
     console.log("CART:", cart);
 
     const name = document.getElementById("customer-name").value.trim();
@@ -1617,17 +2202,7 @@ function confirmOrder() {
 
     // Проверяем поля
     if (!name || !surname || !phone) {
-        alert("Будь ласка, заповніть усі поля.");
-        return;
-    }
-
-    // Проверяем выбранный мессенджер
-    const messenger = document.querySelector(
-        'input[name="messenger"]:checked'
-    );
-
-    if (!messenger) {
-        alert("Оберіть месенджер.");
+        alert("Будь ласка, заповніть усі контактні поля.");
         return;
     }
 
@@ -1635,6 +2210,79 @@ function confirmOrder() {
     if (cart.length === 0) {
         alert("Ваш кошик порожній.");
         return;
+    }
+
+    // Получаем данные доставки
+    const deliveryMethod = document.querySelector('.toggle-group[data-group="delivery-method"] .toggle-btn.active').dataset.value;
+    let deliveryInfo = "";
+    
+    if (deliveryMethod === "courier") {
+        const city = document.getElementById("delivery-city").value;
+        const street = document.getElementById("delivery-street").value.trim();
+        const house = document.getElementById("delivery-house").value.trim();
+        const entrance = document.getElementById("delivery-entrance").value.trim();
+        const apartment = document.getElementById("delivery-apartment").value.trim();
+        const floor = document.getElementById("delivery-floor").value.trim();
+        const intercom = document.getElementById("delivery-intercom").value.trim();
+        
+        if (!street || !house) {
+            alert("Будь ласка, заповніть адресу доставки.");
+            return;
+        }
+        
+        deliveryInfo = `Доставка кур'єром\n`;
+        deliveryInfo += `Адреса: м. ${city}, вул. ${street}, буд. ${house}`;
+        if (entrance) deliveryInfo += `, під'їзд ${entrance}`;
+        if (apartment) deliveryInfo += `, кв. ${apartment}`;
+        if (floor) deliveryInfo += `, ${floor} поверх`;
+        if (intercom) deliveryInfo += `, домофон ${intercom}`;
+        deliveryInfo += "\n";
+    } else {
+        deliveryInfo = `Самовивіз\n`;
+        deliveryInfo += `Адреса: м. Чернівці, вул. Південно-Кільцева, 45А\n`;
+    }
+
+    // Получаем данные времени доставки
+    const deliveryTime = document.querySelector('.toggle-group[data-group="delivery-time"] .toggle-btn.active').dataset.value;
+    let timeInfo = "";
+    
+    if (deliveryTime === "asap") {
+        timeInfo = "Час: Якомога швидше\n";
+    } else {
+        const date = document.getElementById("scheduled-date").value;
+        const timeValue = document.getElementById("scheduled-time-value").value;
+        
+        if (!date || !timeValue) {
+            alert("Будь ласка, оберіть дату та час доставки.");
+            return;
+        }
+        
+        timeInfo = `Час: ${date} о ${timeValue}\n`;
+    }
+
+    // Получаем данные оплаты
+    const paymentMethod = document.querySelector('.toggle-group[data-group="payment-method"] .toggle-btn.active').dataset.value;
+    let paymentInfo = "";
+    
+    if (paymentMethod === "cash") {
+        paymentInfo = "Оплата: Готівка при отриманні\n";
+        const cashChange = document.getElementById("cash-change").value.trim();
+        const noChange = document.getElementById("no-change").checked;
+        
+        if (cashChange) {
+            paymentInfo += `Решта з: ${cashChange} грн\n`;
+        } else if (noChange) {
+            paymentInfo += "Без решти\n";
+        }
+    } else {
+        paymentInfo = "Оплата: Через термінал\n";
+    }
+
+    // Получаем комментарий
+    const comment = document.getElementById("comment-field").value.trim();
+    let commentInfo = "";
+    if (comment) {
+        commentInfo = `Коментар: ${comment}\n`;
     }
 
     // Создаём список заказа
@@ -1675,29 +2323,35 @@ function confirmOrder() {
     const message =
 `Нове замовлення
 
+👤 Контактні дані:
 Ім'я: ${name}
 Прізвище: ${surname}
 Телефон: ${phone}
 
-Замовлення:
+📍 Доставка:
+${deliveryInfo}
+⏰ ${timeInfo}
+💳 ${paymentInfo}
+${commentInfo}
+🛒 Замовлення:
 ${orderText}
-Разом: ${total} грн`;
+💰 Разом: ${total} грн`;
 
     // Telegram
-    if (messenger.value === "telegram") {
+    if (messengerType === "telegram") {
         // Check message length to avoid 400 error
         const maxLength = 3500; // Safe limit for Telegram URLs
         let finalMessage = message;
         
         if (message.length > maxLength) {
             // Truncate the order text if too long
-            const headerLength = message.indexOf('Замовлення:');
-            const footer = `\nРазом: ${total} грн`;
+            const headerLength = message.indexOf('🛒 Замовлення:');
+            const footer = `\n💰 Разом: ${total} грн`;
             const availableSpace = maxLength - headerLength - footer.length - 50; // 50 for safety
             
             if (availableSpace > 100) {
                 finalMessage = message.substring(0, headerLength) + 
-                    'Замовлення:\n' + 
+                    '🛒 Замовлення:\n' + 
                     orderText.substring(0, availableSpace) + 
                     '...\n(Замовлення скорочено через обмеження)\n' + 
                     footer;
@@ -1713,7 +2367,7 @@ ${orderText}
         window.open(telegramUrl, "_blank");
 
     // WhatsApp
-    } else if (messenger.value === "whatsapp") {
+    } else if (messengerType === "whatsapp") {
 
         const restaurantPhone = "380996615777";
 
@@ -1727,10 +2381,39 @@ ${orderText}
     }
 }
 
+function confirmOrder() {
+    const name = document.getElementById("customer-name").value.trim();
+    const surname = document.getElementById("customer-surname").value.trim();
+    const phone = document.getElementById("customer-phone").value.trim();
+
+    if (!name || !surname || !phone) {
+        alert("Будь ласка, заповніть усі поля.");
+        return;
+    }
+
+    if (cart.length === 0) {
+        alert("Ваш кошик порожній.");
+        return;
+    }
+
+    const messenger = document.querySelector('input[name="messenger"]:checked');
+    if (!messenger) {
+        alert("Будь ласка, оберіть спосіб зв'язку (Telegram або WhatsApp).");
+        return;
+    }
+
+    sendOrderToMessenger(messenger.value);
+}
+
 function getItemPrice(item) {
 
     // Если это соус
     if (item.type === "sauce") {
+        return Number(item.price);
+    }
+
+    // Если это сет
+    if (item.category === "sets") {
         return Number(item.price);
     }
 
@@ -1753,3 +2436,206 @@ function getItemPrice(item) {
 
     return Math.round(price);
 }
+
+// мінімальна дата — сьогодні
+document.addEventListener('DOMContentLoaded', function () {
+    const dateInput = document.getElementById('scheduled-date');
+    if (dateInput) {
+        dateInput.min = new Date().toISOString().split('T')[0];
+    }
+});
+
+// === ВІДОБРАЖЕННЯ ОБРАНОЇ ДАТИ ===
+function setupDateSelectDisplay(inputId, displayId, wrapperId, formatFn, placeholder) {
+    const input = document.getElementById(inputId);
+    const display = document.getElementById(displayId);
+    const wrapper = document.getElementById(wrapperId);
+    if (!input || !display || !wrapper) return; // защита от отсутствующих элементов
+
+    function update() {
+        if (input.value) {
+            display.textContent = formatFn(input.value);
+            display.classList.remove('placeholder');
+        } else {
+            display.textContent = placeholder;
+            display.classList.add('placeholder');
+        }
+    }
+
+    input.addEventListener('change', update);
+    input.addEventListener('focus', () => wrapper.classList.add('focused'));
+    input.addEventListener('blur', () => wrapper.classList.remove('focused'));
+
+    wrapper.addEventListener('click', () => {
+        if (input.showPicker) {
+            try { input.showPicker(); } catch (e) {}
+        } else {
+            input.focus();
+        }
+    });
+
+    update();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    setupDateSelectDisplay(
+        'scheduled-date',
+        'scheduled-date-display',
+        'date-wrapper',
+        (val) => {
+            const [y, m, d] = val.split('-');
+            return `${d}-${m}-${y}`;
+        },
+        'Виберіть дату'
+    );
+});
+
+// === КАСТОМНИЙ ВИБІР ЧАСУ (крок 20 хв, графік роботи) ===
+const WORKING_HOURS = {
+    weekday: { start: 8 * 60, end: 22 * 60 },
+    weekend: { start: 10 * 60, end: 22 * 60 }
+};
+const STEP_MINUTES = 20;
+
+function getWorkingRangeForDate(dateStr) {
+    const date = new Date(dateStr + 'T00:00:00');
+    const day = date.getDay();
+    return (day === 0 || day === 6) ? WORKING_HOURS.weekend : WORKING_HOURS.weekday;
+}
+
+function minutesToLabel(mins) {
+    const h = String(Math.floor(mins / 60)).padStart(2, '0');
+    const m = String(mins % 60).padStart(2, '0');
+    return `${h}:${m}`;
+}
+
+function buildTimeOptions() {
+    const dateInput = document.getElementById('scheduled-date');
+    const list = document.getElementById('time-dropdown-list');
+    const display = document.getElementById('scheduled-time-display');
+    const hiddenInput = document.getElementById('scheduled-time-value');
+    if (!dateInput || !list || !display || !hiddenInput) return;
+
+    list.innerHTML = '';
+
+    const selectedDate = dateInput.value;
+    if (!selectedDate) {
+        const item = document.createElement('div');
+        item.className = 'custom-dropdown-item';
+        item.textContent = 'Спочатку оберіть дату';
+        item.style.color = '#999';
+        item.style.cursor = 'default';
+        list.appendChild(item);
+        return;
+    }
+
+    const range = getWorkingRangeForDate(selectedDate);
+
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+    const isToday = selectedDate === todayStr;
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+    let start = range.start;
+    if (isToday && nowMinutes > start) {
+        start = Math.ceil(nowMinutes / STEP_MINUTES) * STEP_MINUTES;
+    }
+
+    let hasOptions = false;
+    for (let mins = start; mins <= range.end; mins += STEP_MINUTES) {
+        hasOptions = true;
+        const label = minutesToLabel(mins);
+        const item = document.createElement('div');
+        item.className = 'custom-dropdown-item';
+        item.textContent = label;
+        item.dataset.value = label;
+        item.addEventListener('click', () => {
+            display.textContent = label;
+            display.classList.remove('placeholder');
+            hiddenInput.value = label;
+            list.querySelectorAll('.custom-dropdown-item').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            closeTimeDropdown();
+        });
+        list.appendChild(item);
+    }
+
+    if (!hasOptions) {
+        const item = document.createElement('div');
+        item.className = 'custom-dropdown-item';
+        item.textContent = 'На сьогодні немає вільного часу';
+        item.style.color = '#999';
+        item.style.cursor = 'default';
+        list.appendChild(item);
+    }
+}
+
+function openTimeDropdown() {
+    buildTimeOptions();
+    const trigger = document.getElementById('time-trigger');
+    const list = document.getElementById('time-dropdown-list');
+    if (!trigger || !list) return;
+    trigger.classList.add('open');
+    list.classList.add('open');
+    setTimeout(() => {
+        list.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+}
+
+function closeTimeDropdown() {
+    const trigger = document.getElementById('time-trigger');
+    const list = document.getElementById('time-dropdown-list');
+    if (trigger) trigger.classList.remove('open');
+    if (list) list.classList.remove('open');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const timeTrigger = document.getElementById('time-trigger');
+    if (timeTrigger) {
+        timeTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const list = document.getElementById('time-dropdown-list');
+            const isOpen = list && list.classList.contains('open');
+            isOpen ? closeTimeDropdown() : openTimeDropdown();
+        });
+    }
+
+    document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('time-dropdown');
+        if (dropdown && !dropdown.contains(e.target)) {
+            closeTimeDropdown();
+        }
+    });
+
+    const dateInput = document.getElementById('scheduled-date');
+    if (dateInput) {
+        dateInput.addEventListener('change', () => {
+            const display = document.getElementById('scheduled-time-display');
+            const hidden = document.getElementById('scheduled-time-value');
+            if (display) {
+                display.textContent = 'Виберіть час*';
+                display.classList.add('placeholder');
+            }
+            if (hidden) hidden.value = '';
+        });
+    }
+
+    document.querySelectorAll('#cart-drawer .toggle-group[data-group="payment-method"] .toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const group = btn.closest('.toggle-group');
+            group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const isCash = btn.dataset.value === 'cash';
+            const cashRow = document.getElementById('cash-row');
+            if (cashRow) cashRow.style.display = isCash ? 'flex' : 'none';
+        });
+    });
+});
+
+function selectMessenger(type, btnEl) {
+    selectedMessenger = type;
+    document.querySelectorAll('.messenger-btn').forEach(b => b.classList.remove('selected'));
+    btnEl.classList.add('selected');
+}
+

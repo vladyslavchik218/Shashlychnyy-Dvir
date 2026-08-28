@@ -1,6 +1,1396 @@
 {% extends "base.html" %}
 
+{% block title %}Ваш кошик - Шашличний Двір{% endblock %}
+
 {% block content %}
-    <h1>Ваш кошик</h1>
-    <p>Тут будуть ваші замовлення</p>  
+<div class="basket-page">
+    <div class="basket-container">
+        <div class="basket-header">
+            <a href="/" class="back-to-menu">← Повернутися до меню</a>
+            <h1>Ваш кошик</h1>
+            <p class="basket-subtitle">Перевірте ваші замовлення перед оформленням</p>
+        </div>
+
+        <div class="basket-content">
+            <div class="basket-items" id="basket-items">
+                <!-- Товари будуть динамічно завантажені з localStorage -->
+            </div>
+
+            <div class="basket-sidebar">
+                <div class="basket-summary">
+                    <h3>Підсумок замовлення</h3>
+                    <div class="summary-row">
+                        <span id="items-count">Товари (0)</span>
+                        <span id="subtotal">0 грн</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Всього до сплати</span>
+                        <span class="total-final" id="total-final">0 грн</span>
+                    </div>
+                    <button class="basket-checkout-btn" onclick="handleCheckout()">Оформити замовлення</button>
+                </div>
+
+                <div class="basket-info">
+                    <div class="info-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <div>
+                            <strong>Безкоштовна доставка</strong>
+                            <p>Від 800 гривень в межах міста</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <div>
+                            <strong>Платна доставка</strong>
+                            <p>До 800 гривень в межах міста</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <div>
+                            <strong>Доставка в приміську зону</strong>
+                            <p>200 грн</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Checkout Form Modal -->
+<div class="checkout-modal" id="checkout-modal" style="display:none;">
+    <div class="checkout-modal-content">
+        <div class="checkout-modal-header">
+            <h2>Оформлення замовлення</h2>
+            <button class="close-modal-btn" onclick="closeCheckoutModal()">×</button>
+        </div>
+
+        <div class="checkout-modal-body">
+            <!-- 1. Контактні дані -->
+            <div class="form-section">
+                <div class="section-header">
+                    <span class="badge">1</span>
+                    <h3>Контактні дані</h3>
+                </div>
+                <div class="form-group">
+                    <label>Ім'я</label>
+                    <input id="customer-name" type="text" placeholder="Ваше ім'я">
+                </div>
+                <div class="form-group">
+                    <label>Прізвище</label>
+                    <input id="customer-surname" type="text" placeholder="Ваше прізвище">
+                </div>
+                <div class="form-group">
+                    <label>Номер телефону</label>
+                    <input id="customer-phone" type="tel" placeholder="+380 XX XXX XX XX">
+                </div>
+            </div>
+
+            <!-- 2. Інформація про доставку -->
+            <div class="form-section">
+                <div class="section-header">
+                    <span class="badge">2</span>
+                    <h3>Інформація про доставку</h3>
+                </div>
+
+                <div class="toggle-group" data-group="delivery-method">
+                    <button type="button" class="toggle-btn active" data-value="courier">Доставка кур'єром</button>
+                    <button type="button" class="toggle-btn" data-value="pickup">Самовивіз</button>
+                </div>
+
+                <p class="hint" id="delivery-hint">Час доставки може бути збільшено, про це Вас повідомить оператор</p>
+
+                <div id="delivery-address-fields" style="display:flex; flex-direction:column; gap:12px;">
+                    <div class="form-group">
+                        <label>Місто</label>
+                        <select id="delivery-city">
+                            <option>Чернівці</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input id="delivery-street" type="text" placeholder="*Введіть вулицю доставки">
+                        </div>
+                        <div class="form-group form-group--small">
+                            <input id="delivery-house" type="text" placeholder="*№ будинку">
+                        </div>
+                    </div>
+
+                    <div class="form-grid-3">
+                        <input id="delivery-entrance" type="text" placeholder="Під'їзд">
+                        <input id="delivery-apartment" type="text" placeholder="Квартира">
+                        <input id="delivery-floor" type="text" placeholder="Поверх">
+                    </div>
+                </div>
+
+                <div id="pickup-address-info" style="display:none;">
+                    <div class="pickup-address-card">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <div>
+                            <strong>Забрати за адресою:</strong>
+                            <p>м. Чернівці, вул. Південно-Кільцева, 45А</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toggle-group" data-group="delivery-time">
+                    <button type="button" class="toggle-btn active" data-value="asap">Якомога швидше</button>
+                    <button type="button" class="toggle-btn" data-value="scheduled">На час</button>
+                </div>
+
+                <div id="scheduled-time-fields" style="display:none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Дата</label>
+                            <div class="date-select-wrapper" id="date-wrapper">
+                                <span class="date-select-display" id="scheduled-date-display">Виберіть дату</span>
+                                <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                                <input id="scheduled-date" type="date" class="date-select-input">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Час</label>
+                            <div class="date-select-wrapper" id="time-wrapper">
+                                <span class="date-select-display placeholder" id="scheduled-time-display">Виберіть час*</span>
+                                <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                                <div class="custom-dropdown-list" id="time-dropdown-list"></div>
+                            </div>
+                            <input type="hidden" id="scheduled-time-value">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Спосіб оплати -->
+            <div class="form-section">
+                <div class="section-header">
+                    <span class="badge">3</span>
+                    <h3>Спосіб оплати</h3>
+                </div>
+
+                <div class="toggle-group" data-group="payment-method">
+                    <button type="button" class="toggle-btn active" data-value="cash">Готівка при отриманні</button>
+                    <button type="button" class="toggle-btn" data-value="terminal">Оплата через термінал</button>
+                </div>
+
+                <div class="cash-row" id="cash-row">
+                    <div class="form-group form-group--inline">
+                        <label>Решта з</label>
+                        <input id="cash-change" type="text" placeholder="Вкажіть суму">
+                    </div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="no-change">
+                        Без решти
+                    </label>
+                </div>
+            </div>
+
+            <!-- 4. Спосіб зв'язку -->
+            <div class="form-section messenger-section">
+                <div class="section-header">
+                    <span class="badge">4</span>
+                    <h3>Спосіб зв'язку</h3>
+                </div>
+                <p>Оберіть спосіб зв'язку для підтвердження замовлення:</p>
+                <label>
+                    <input type="radio" name="messenger" value="telegram">
+                    Telegram
+                </label>
+                <label>
+                    <input type="radio" name="messenger" value="whatsapp">
+                    WhatsApp
+                </label>
+            </div>
+
+            <!-- 5. Коментар -->
+            <div class="form-section">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="add-comment-toggle" onchange="toggleComment()">
+                    Додати коментар до замовлення
+                </label>
+                <textarea id="comment-field" class="comment-textarea" placeholder="Ваш коментар (особливі побажання, алергії тощо)..." style="display:none;"></textarea>
+            </div>
+        </div>
+
+        <div class="checkout-modal-footer">
+            <button type="button" class="submit-order-btn" onclick="confirmOrder()">Підтвердити замовлення</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.checkout-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.checkout-modal-content {
+    background: #FFFFFF;
+    border-radius: 24px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.checkout-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #F0E6D8;
+}
+
+.checkout-modal-header h2 {
+    margin: 0;
+    color: #264653;
+    font-size: 28px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+}
+
+.close-modal-btn {
+    background: #F5E6D3;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    color: #264653;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-modal-btn:hover {
+    background: #E76F51;
+    color: white;
+    transform: rotate(90deg);
+}
+
+.form-section {
+    margin-bottom: 35px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.badge {
+    background: linear-gradient(135deg, #E76F51, #F4A261);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(231, 111, 81, 0.3);
+}
+
+.section-header h3 {
+    margin: 0;
+    color: #264653;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'Syne', sans-serif;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #264653;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #E5D9C7;
+    border-radius: 12px;
+    background: #FAF8F5;
+    font-size: 15px;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #E76F51;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(231, 111, 81, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #A8B0B6;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-group--small {
+    flex: 0 0 120px;
+}
+
+.form-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+@media (max-width: 600px) {
+    .form-grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-group--small {
+        flex: 1;
+    }
+}
+
+.toggle-group {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    background: #FAF8F5;
+    padding: 6px;
+    border-radius: 12px;
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6B7A80;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.toggle-btn:hover {
+    background: #E5D9C7;
+}
+
+.toggle-btn.active {
+    background: linear-gradient(135deg, #E76F51, #F4A261);
+    color: white;
+    box-shadow: 0 4px 12px rgba(231, 111, 81, 0.3);
+}
+
+.hint {
+    color: #6B7A80;
+    font-size: 13px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #FFF8E7;
+    border-left: 4px solid #F4A261;
+    border-radius: 8px;
+}
+
+.pickup-address-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #FDF6EB, #FFF8E7);
+    border-radius: 16px;
+    border: 2px solid #E5D9C7;
+}
+
+.pickup-address-card svg {
+    flex-shrink: 0;
+    color: #E76F51;
+}
+
+.pickup-address-card p {
+    margin: 5px 0 0 0;
+    color: #264653;
+    font-weight: 500;
+}
+
+.messenger-section {
+    background: #FAF8F5;
+    padding: 20px;
+    border-radius: 16px;
+    border: 2px solid #E5D9C7;
+}
+
+.messenger-section p {
+    margin: 0 0 15px 0;
+    color: #264653;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.messenger-section label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 10px;
+    border: 2px solid #E5D9C7;
+    transition: all 0.3s ease;
+}
+
+.messenger-section label:hover {
+    border-color: #E76F51;
+    background: #FFF8E7;
+}
+
+.messenger-section label input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #E76F51;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    padding: 12px 16px;
+    background: #FAF8F5;
+    border-radius: 10px;
+    border: 2px solid #E5D9C7;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label:hover {
+    border-color: #E76F51;
+    background: #FFF8E7;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #E76F51;
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #E5D9C7;
+    border-radius: 12px;
+    background: #FAF8F5;
+    font-size: 15px;
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100px;
+    resize: vertical;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: #E76F51;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(231, 111, 81, 0.1);
+}
+
+.checkout-modal-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #F0E6D8;
+}
+
+.submit-order-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #E76F51, #F4A261);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Syne', sans-serif;
+    box-shadow: 0 8px 24px rgba(231, 111, 81, 0.3);
+}
+
+.submit-order-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(231, 111, 81, 0.4);
+}
+
+.submit-order-btn:active {
+    transform: translateY(0);
+}
+
+.date-select-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.date-select-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border: 2px solid #E5D9C7;
+    border-radius: 12px;
+    background: #FAF8F5;
+    font-size: 15px;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.3s ease;
+    color: #264653;
+}
+
+.date-select-display:hover {
+    border-color: #E76F51;
+    background: white;
+    box-shadow: 0 4px 12px rgba(231, 111, 81, 0.1);
+}
+
+.date-select-display.placeholder {
+    color: #A8B0B6;
+}
+
+.date-select-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.chevron-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    color: #6B7A80;
+    transition: transform 0.3s ease;
+}
+
+.date-select-wrapper:hover .chevron-icon {
+    transform: translateY(-50%) rotate(180deg);
+    color: #E76F51;
+}
+
+
+
+.custom-dropdown-list {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #E5D9C7;
+    border-radius: 12px;
+    max-height: 250px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-dropdown-list.open {
+    display: block;
+}
+
+.custom-dropdown-list div {
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 15px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #264653;
+    border-bottom: 1px solid #F0E6D8;
+}
+
+.custom-dropdown-list div:last-child {
+    border-bottom: none;
+}
+
+.custom-dropdown-list div:hover {
+    background: linear-gradient(135deg, #FFF8E7, #FDF6EB);
+    color: #E76F51;
+    padding-left: 20px;
+}
+
+.custom-dropdown-list div:active {
+    background: #E76F51;
+    color: white;
+}
+
+.cash-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+    padding: 15px;
+    background: #FAF8F5;
+    border-radius: 12px;
+    border: 2px solid #E5D9C7;
+}
+
+.form-group--inline {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group--inline label {
+    margin-bottom: 0;
+    white-space: nowrap;
+    min-width: 80px;
+}
+
+.form-group--inline input {
+    flex: 1;
+}
+
+/* Custom scrollbar */
+.checkout-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.checkout-modal-content::-webkit-scrollbar-track {
+    background: #F0E6D8;
+    border-radius: 4px;
+}
+
+.checkout-modal-content::-webkit-scrollbar-thumb {
+    background: #E76F51;
+    border-radius: 4px;
+}
+
+.checkout-modal-content::-webkit-scrollbar-thumb:hover {
+    background: #D65A3E;
+}
+
+.custom-dropdown-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-dropdown-list::-webkit-scrollbar-track {
+    background: #F0E6D8;
+    border-radius: 3px;
+}
+
+.custom-dropdown-list::-webkit-scrollbar-thumb {
+    background: #E76F51;
+    border-radius: 3px;
+}
+</style>
+
+<script>
+// Load cart from localStorage
+let basketCart = JSON.parse(localStorage.getItem('cart')) || [];
+
+// Render basket items
+function renderBasket() {
+    const basketItems = document.getElementById('basket-items');
+
+    if (basketCart.length === 0) {
+        showEmptyBasket();
+        updateSummary();
+        return;
+    }
+
+    basketItems.innerHTML = '';
+
+    basketCart.forEach((item, index) => {
+        const itemElement = createBasketItem(item, index);
+        basketItems.appendChild(itemElement);
+    });
+
+    updateSummary();
+}
+
+function createBasketItem(item, index) {
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'basket-item';
+    itemDiv.dataset.cartId = item.cartId;
+
+    // Calculate price based on item type
+    let itemPrice = 0;
+    if (item.type === 'sauce') {
+        itemPrice = item.price || 0;
+    } else if (item.pricePer100g && item.weight) {
+        // Calculate price based on weight for shashlik items
+        itemPrice = (item.pricePer100g * item.weight) / 100;
+    } else if (item.price) {
+        itemPrice = item.price;
+    } else if (item.pricePer100g) {
+        // Default to 100g if no weight specified
+        itemPrice = item.pricePer100g;
+    }
+
+    // Get image based on item type with better fallback logic
+    let imageUrl = '/static/images/placeholder.jpg';
+    if (item.type === 'sauce') {
+        imageUrl = item.image || '/static/images/sauce-mustard-correct.jpg';
+    } else if (item.image) {
+        imageUrl = item.image;
+    }
+
+    // Calculate item total
+    const itemTotal = Math.round(itemPrice * item.quantity);
+
+    // Get weight display
+    const weightDisplay = item.weight ? `${item.weight}г` : '';
+
+    // Get description
+    const description = item.description || '';
+
+    // Add sauces info if exists
+    let saucesInfo = '';
+    if (item.sauces && item.sauces.length > 0) {
+        const sauceNames = item.sauces.map(s => s.name).join(', ');
+        saucesInfo = `<p class="basket-item-sauces">Соуси: ${sauceNames}</p>`;
+    }
+
+    itemDiv.innerHTML = `
+        <div class="basket-item-image">
+            <img src="${imageUrl}" alt="${item.name}" onerror="this.src='/static/images/placeholder.jpg'">
+        </div>
+        <div class="basket-item-details">
+            <div class="basket-item-header">
+                <h3 class="basket-item-name">${item.name}</h3>
+                <button class="basket-item-remove" onclick="removeItem(${item.cartId})">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            ${description ? `<p class="basket-item-description">${description}</p>` : ''}
+            ${saucesInfo}
+            <div class="basket-item-meta">
+                ${weightDisplay ? `<span class="basket-item-weight">${weightDisplay}</span>` : ''}
+                <span class="basket-item-price">${Math.round(itemPrice)} грн</span>
+            </div>
+            <div class="basket-item-quantity">
+                <button class="quantity-btn" onclick="updateQuantity(${item.cartId}, -1)">−</button>
+                <span class="quantity-value">${item.quantity}</span>
+                <button class="quantity-btn" onclick="updateQuantity(${item.cartId}, 1)">+</button>
+            </div>
+            <div class="basket-item-total">
+                <span>Разом: </span>
+                <span class="total-amount">${itemTotal} грн</span>
+            </div>
+        </div>
+    `;
+
+    return itemDiv;
+}
+
+function updateQuantity(cartId, change) {
+    const item = basketCart.find(i => i.cartId === cartId);
+    if (!item) return;
+
+    const newQuantity = item.quantity + change;
+
+    if (newQuantity <= 0) {
+        removeItem(cartId);
+        return;
+    }
+
+    if (newQuantity > 99) return;
+
+    item.quantity = newQuantity;
+    saveCart();
+    renderBasket();
+}
+
+function removeItem(cartId) {
+    const itemElement = document.querySelector(`[data-cart-id="${cartId}"]`);
+    if (itemElement) {
+        itemElement.style.opacity = '0';
+        itemElement.style.transform = 'translateX(20px)';
+
+        setTimeout(() => {
+            basketCart = basketCart.filter(i => i.cartId !== cartId);
+            saveCart();
+            renderBasket();
+        }, 300);
+    } else {
+        basketCart = basketCart.filter(i => i.cartId !== cartId);
+        saveCart();
+        renderBasket();
+    }
+}
+
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(basketCart));
+}
+
+function updateSummary() {
+    let subtotal = 0;
+    let itemCount = 0;
+
+    basketCart.forEach(item => {
+        let itemPrice = 0;
+        if (item.type === 'sauce') {
+            itemPrice = item.price || 0;
+        } else if (item.pricePer100g && item.weight) {
+            // Calculate price based on weight for shashlik items
+            itemPrice = (item.pricePer100g * item.weight) / 100;
+        } else if (item.price) {
+            itemPrice = item.price;
+        } else if (item.pricePer100g) {
+            // Default to 100g if no weight specified
+            itemPrice = item.pricePer100g;
+        }
+
+        subtotal += Math.round(itemPrice * item.quantity);
+        itemCount += item.quantity;
+    });
+
+    // Update UI
+    document.getElementById('items-count').textContent = `Товари (${itemCount})`;
+    document.getElementById('subtotal').textContent = `${subtotal} грн`;
+    document.getElementById('total-final').textContent = `${subtotal} грн`;
+}
+
+function showEmptyBasket() {
+    const basketItems = document.getElementById('basket-items');
+    basketItems.innerHTML = `
+        <div class="empty-basket-message">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="80" height="80">
+                <circle cx="9" cy="21" r="1"/>
+                <circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <h3>Ваш кошик порожній</h3>
+            <p>Додайте щось смачне з нашого меню</p>
+            <a href="/" class="back-to-menu-btn">Перейти до меню</a>
+        </div>
+    `;
+}
+
+function handleCheckout() {
+    if (basketCart.length === 0) {
+        alert('Ваш кошик порожній!');
+        return;
+    }
+
+    // Open checkout modal
+    document.getElementById('checkout-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    // Initialize time select after modal is visible
+    setTimeout(() => {
+        setupTimeSelect();
+    }, 100);
+}
+
+function closeCheckoutModal() {
+    document.getElementById('checkout-modal').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function getItemPrice(item) {
+    // Если это соус
+    if (item.type === "sauce") {
+        return Number(item.price);
+    }
+
+    // Если это напій (сік, квас, мохіто)
+    if (item.category === "drinks" || item.category === "draft") {
+        return Number(item.price);
+    }
+
+    // Если это обычное блюдо
+    let price = (Number(item.pricePer100g) * Number(item.weight)) / 100;
+
+    // Добавляем соусы к блюду
+    if (item.sauces && item.sauces.length > 0) {
+        price += item.sauces.reduce((sum, sauce) => {
+            const saucePrice = sauce.selectedPrice ? Number(sauce.selectedPrice) : Number(sauce.price50g);
+            return sum + saucePrice;
+        }, 0);
+    }
+
+    return Math.round(price);
+}
+
+function confirmOrder() {
+    const name = document.getElementById("customer-name").value.trim();
+    const surname = document.getElementById("customer-surname").value.trim();
+    const phone = document.getElementById("customer-phone").value.trim();
+
+    // Проверяем поля
+    if (!name || !surname || !phone) {
+        alert("Будь ласка, заповніть усі поля.");
+        return;
+    }
+
+    // Проверяем выбранный мессенджер
+    const messenger = document.querySelector('input[name="messenger"]:checked');
+
+    if (!messenger) {
+        alert("Оберіть месенджер.");
+        return;
+    }
+
+    // Проверяем корзину
+    if (basketCart.length === 0) {
+        alert("Ваш кошик порожній.");
+        return;
+    }
+
+    // Get delivery method
+    const deliveryMethod = document.querySelector('.toggle-group[data-group="delivery-method"] .toggle-btn.active').dataset.value;
+
+    // Get delivery address if courier
+    let deliveryAddress = '';
+    if (deliveryMethod === 'courier') {
+        const street = document.getElementById('delivery-street').value.trim();
+        const house = document.getElementById('delivery-house').value.trim();
+
+        if (!street || !house) {
+            alert('Будь ласка, вкажіть вулицю та номер будинку для доставки.');
+            return;
+        }
+
+        const entrance = document.getElementById('delivery-entrance').value.trim();
+        const apartment = document.getElementById('delivery-apartment').value.trim();
+        const floor = document.getElementById('delivery-floor').value.trim();
+
+        deliveryAddress = `м. Чернівці, вул. ${street}, ${house}`;
+        if (entrance) deliveryAddress += `, під'їзд ${entrance}`;
+        if (apartment) deliveryAddress += `, кв. ${apartment}`;
+        if (floor) deliveryAddress += `, ${floor} поверх`;
+    } else {
+        deliveryAddress = 'Самовивіз: м. Чернівці, вул. Південно-Кільцева, 45А';
+    }
+
+    // Get delivery time
+    const deliveryTimeMethod = document.querySelector('.toggle-group[data-group="delivery-time"] .toggle-btn.active').dataset.value;
+    let deliveryTime = '';
+
+    if (deliveryTimeMethod === 'scheduled') {
+        const date = document.getElementById('scheduled-date').value;
+        const time = document.getElementById('scheduled-time-value').value;
+
+        if (!date || !time) {
+            alert('Будь ласка, оберіть дату та час доставки.');
+            return;
+        }
+
+        const [y, m, d] = date.split('-');
+        deliveryTime = `${d}-${m}-${y} о ${time}`;
+    } else {
+        deliveryTime = 'Якомога швидше';
+    }
+
+    // Get comment
+    const comment = document.getElementById('comment-field').value.trim();
+
+    // Get payment method
+    const paymentMethod = document.querySelector('.toggle-group[data-group="payment-method"] .toggle-btn.active').dataset.value;
+    let paymentInfo = '';
+
+    if (paymentMethod === 'cash') {
+        const cashChange = document.getElementById('cash-change').value.trim();
+        const noChange = document.getElementById('no-change').checked;
+
+        paymentInfo = '💳 Готівка при отриманні';
+        if (cashChange) {
+            paymentInfo += ` (Решта з ${cashChange} грн)`;
+        }
+        if (noChange) {
+            paymentInfo += ' (Без решти)';
+        }
+    } else if (paymentMethod === 'terminal') {
+        paymentInfo = '💳 Оплата через термінал';
+    } else if (paymentMethod === 'card') {
+        paymentInfo = '💳 Оплата карткою';
+    }
+
+    // Создаём список заказа
+    let orderText = "";
+    let total = 0;
+
+    basketCart.forEach(item => {
+        const itemPrice = getItemPrice(item);
+        const itemTotal = itemPrice * item.quantity;
+
+        // Формуємо текст для товару
+        let itemText = `• ${item.name}`;
+
+        // Додаємо вагу для звичайних товарів
+        if (item.type !== 'sauce' && item.weight) {
+            itemText += ` (${item.weight}г)`;
+        }
+
+        // Додаємо соуси, якщо є
+        if (item.sauces && item.sauces.length > 0) {
+            const sauceDetails = item.sauces.map(s => {
+                const weight = s.selectedWeight ? s.selectedWeight : '50';
+                return `${s.name} (${weight}г)`;
+            }).join(', ');
+            itemText += ` + ${sauceDetails}`;
+        }
+
+        itemText += ` × ${item.quantity} — ${itemTotal} грн\n`;
+        orderText += itemText;
+
+        total += itemTotal;
+    });
+
+    // Формируем сообщение
+    let message =
+`Нове замовлення
+
+👤 Ім'я: ${name}
+👤 Прізвище: ${surname}
+📱 Телефон: ${phone}
+
+📍 Доставка: ${deliveryAddress}
+⏰ Час: ${deliveryTime}`;
+
+    if (comment) {
+        message += `\n💬 Коментар: ${comment}`;
+    }
+
+    message += `\n
+� Оплата: ${paymentInfo}
+
+�🛒 Замовлення:
+${orderText}
+💰 Разом: ${total} грн`;
+
+    // Telegram
+    if (messenger.value === "telegram") {
+        const maxLength = 3500;
+        let finalMessage = message;
+
+        if (message.length > maxLength) {
+            const headerLength = message.indexOf('🛒 Замовлення:');
+            const footer = `\n💰 Разом: ${total} грн`;
+            const availableSpace = maxLength - headerLength - footer.length - 50;
+
+            if (availableSpace > 100) {
+                finalMessage = message.substring(0, headerLength) +
+                    '🛒 Замовлення:\n' +
+                    orderText.substring(0, availableSpace) +
+                    '...\n(Замовлення скорочено через обмеження)\n' +
+                    footer;
+            } else {
+                finalMessage = message.substring(0, maxLength - 50) + '...';
+            }
+        }
+
+        const telegramUrl =
+            "https://t.me/shahlk_cv?text=" +
+            encodeURIComponent(finalMessage);
+
+        window.open(telegramUrl, "_blank");
+
+    // WhatsApp
+    } else if (messenger.value === "whatsapp") {
+        const restaurantPhone = "380996615777";
+
+        const whatsappUrl =
+            "https://wa.me/" +
+            restaurantPhone +
+            "?text=" +
+            encodeURIComponent(message);
+
+        window.open(whatsappUrl, "_blank");
+    }
+
+    // Очищаем корзину после успешного заказа
+    basketCart = [];
+    saveCart();
+    renderBasket();
+    closeCheckoutModal();
+    alert('Замовлення відправлено! Дякуємо за замовлення!');
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    renderBasket();
+    setupDeliveryMethodToggle();
+    setupDeliveryTimeToggle();
+    setupDateSelect();
+    setupPaymentMethodToggle();
+});
+
+// Setup delivery method toggle
+function setupDeliveryMethodToggle() {
+    const toggleButtons = document.querySelectorAll('.toggle-group[data-group="delivery-method"] .toggle-btn');
+    const deliveryFields = document.getElementById('delivery-address-fields');
+    const pickupInfo = document.getElementById('pickup-address-info');
+
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            toggleButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const value = this.dataset.value;
+            if (value === 'courier') {
+                deliveryFields.style.display = 'flex';
+                pickupInfo.style.display = 'none';
+            } else {
+                deliveryFields.style.display = 'none';
+                pickupInfo.style.display = 'block';
+            }
+        });
+    });
+}
+
+// Setup delivery time toggle
+function setupDeliveryTimeToggle() {
+    const toggleButtons = document.querySelectorAll('.toggle-group[data-group="delivery-time"] .toggle-btn');
+    const scheduledFields = document.getElementById('scheduled-time-fields');
+
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            toggleButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const value = this.dataset.value;
+            if (value === 'scheduled') {
+                scheduledFields.style.display = 'block';
+            } else {
+                scheduledFields.style.display = 'none';
+            }
+        });
+    });
+}
+
+// Setup date select
+function setupDateSelect() {
+    const dateInput = document.getElementById('scheduled-date');
+    const dateDisplay = document.getElementById('scheduled-date-display');
+    const dateWrapper = document.getElementById('date-wrapper');
+
+    if (dateInput) {
+        dateInput.min = new Date().toISOString().split('T')[0];
+
+        dateInput.addEventListener('change', function() {
+            if (this.value) {
+                const [y, m, d] = this.value.split('-');
+                dateDisplay.textContent = `${d}-${m}-${y}`;
+                dateDisplay.classList.remove('placeholder');
+            } else {
+                dateDisplay.textContent = 'Виберіть дату';
+                dateDisplay.classList.add('placeholder');
+            }
+        });
+
+        dateWrapper.addEventListener('click', function() {
+            if (dateInput.showPicker) {
+                try { dateInput.showPicker(); } catch (e) {}
+            } else {
+                dateInput.focus();
+            }
+        });
+    }
+}
+
+// Setup time select
+function setupTimeSelect() {
+    const timeWrapper = document.getElementById('time-wrapper');
+    const timeDropdownList = document.getElementById('time-dropdown-list');
+    const timeDisplay = document.getElementById('scheduled-time-display');
+    const timeValue = document.getElementById('scheduled-time-value');
+
+    if (!timeWrapper || !timeDropdownList) {
+        console.log('Time select elements not found');
+        return;
+    }
+
+    const WORKING_HOURS = {
+        weekday: { start: 8 * 60, end: 22 * 60 },
+        weekend: { start: 10 * 60, end: 22 * 60 }
+    };
+
+    function minutesToLabel(mins) {
+        const h = String(Math.floor(mins / 60)).padStart(2, '0');
+        const m = String(mins % 60).padStart(2, '0');
+        return `${h}:${m}`;
+    }
+
+    function buildTimeOptions() {
+        const dateInput = document.getElementById('scheduled-date');
+        const list = document.getElementById('time-dropdown-list');
+
+        if (!dateInput || !list) return;
+
+        list.innerHTML = '';
+
+        const selectedDate = dateInput.value || new Date().toISOString().split('T')[0];
+        const date = new Date(selectedDate + 'T00:00:00');
+        const day = date.getDay();
+        const range = (day === 0 || day === 6) ? WORKING_HOURS.weekend : WORKING_HOURS.weekday;
+
+        const now = new Date();
+        const isToday = selectedDate === now.toISOString().split('T')[0];
+        const currentMinutes = isToday ? now.getHours() * 60 + now.getMinutes() : 0;
+
+        // Round to nearest 15 minutes
+        const roundedMinutes = Math.ceil(currentMinutes / 15) * 15;
+
+        // Add 15 minutes and round to nearest 15
+        let startMinutes = roundedMinutes + 15;
+        startMinutes = Math.ceil(startMinutes / 15) * 15;
+
+        // Ensure we're within working hours
+        startMinutes = Math.max(range.start, startMinutes);
+        const endMinutes = range.end;
+
+        if (startMinutes >= endMinutes) {
+            const noOption = document.createElement('div');
+            noOption.textContent = 'Немає доступного часу';
+            noOption.style.color = '#E76F51';
+            noOption.style.fontWeight = 'bold';
+            list.appendChild(noOption);
+            return;
+        }
+
+        for (let mins = startMinutes; mins <= endMinutes; mins += 15) {
+            const option = document.createElement('div');
+            option.textContent = minutesToLabel(mins);
+            option.addEventListener('click', function() {
+                timeDisplay.textContent = this.textContent;
+                timeDisplay.classList.remove('placeholder');
+                timeValue.value = this.textContent;
+                timeDropdownList.classList.remove('open');
+            });
+            list.appendChild(option);
+        }
+    }
+
+    // Click to open dropdown
+    timeWrapper.addEventListener('click', function(e) {
+        e.stopPropagation();
+        buildTimeOptions();
+        timeDropdownList.classList.toggle('open');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!timeWrapper.contains(e.target)) {
+            timeDropdownList.classList.remove('open');
+        }
+    });
+
+    // Update time options when date changes
+    const dateInput = document.getElementById('scheduled-date');
+    if (dateInput) {
+        dateInput.addEventListener('change', buildTimeOptions);
+    }
+}
+
+// Toggle comment field
+function toggleComment() {
+    const commentField = document.getElementById('comment-field');
+    const addCommentToggle = document.getElementById('add-comment-toggle');
+
+    if (addCommentToggle.checked) {
+        commentField.style.display = 'block';
+    } else {
+        commentField.style.display = 'none';
+    }
+}
+
+// Setup payment method toggle
+function setupPaymentMethodToggle() {
+    const toggleButtons = document.querySelectorAll('.toggle-group[data-group="payment-method"] .toggle-btn');
+    const cashRow = document.getElementById('cash-row');
+
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            toggleButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const value = this.dataset.value;
+            if (value === 'cash') {
+                cashRow.style.display = 'flex';
+            } else {
+                cashRow.style.display = 'none';
+            }
+        });
+    });
+}
+</script>
 {% endblock %}
