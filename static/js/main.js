@@ -2420,7 +2420,12 @@ ${orderText}
             "https://t.me/shahlk_cv?text=" +
             encodeURIComponent(finalMessage);
 
-        window.open(telegramUrl, "_blank");
+        // Use direct location change for mobile devices to avoid popup blocking
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            window.location.href = telegramUrl;
+        } else {
+            window.open(telegramUrl, "_blank");
+        }
 
     // WhatsApp
     } else if (messengerType === "whatsapp") {
@@ -2433,7 +2438,12 @@ ${orderText}
             "?text=" +
             encodeURIComponent(message);
 
-        window.open(whatsappUrl, "_blank");
+        // Use direct location change for mobile devices to avoid popup blocking
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            window.location.href = whatsappUrl;
+        } else {
+            window.open(whatsappUrl, "_blank");
+        }
     }
 }
 
