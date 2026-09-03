@@ -2529,8 +2529,15 @@ function setupDateSelectDisplay(inputId, displayId, wrapperId, formatFn, placeho
     input.addEventListener('blur', () => wrapper.classList.remove('focused'));
 
     wrapper.addEventListener('click', () => {
-        if (input.showPicker) {
-            try { input.showPicker(); } catch (e) {}
+        // Mobile-friendly approach
+        if (input.type === 'date') {
+            // On mobile, just clicking the input should trigger the native picker
+            input.click();
+            input.focus();
+        } else if (input.showPicker) {
+            try { input.showPicker(); } catch (e) {
+                input.focus();
+            }
         } else {
             input.focus();
         }

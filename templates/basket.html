@@ -1098,7 +1098,7 @@ function createBasketItem(item, index) {
                     </svg>
                 </button>
             </div>
-            ${description ? `<p class="basket-item-description">${description}</p>` : ''}
+            ${description && item.category === 'sets' ? `<p class="basket-item-description">${description}</p>` : ''}
             ${saucesInfo}
             <div class="basket-item-meta">
                 ${weightDisplay ? `<span class="basket-item-weight">${weightDisplay}</span>` : ''}
@@ -1551,8 +1551,15 @@ function setupDateSelect() {
         });
 
         dateWrapper.addEventListener('click', function() {
-            if (dateInput.showPicker) {
-                try { dateInput.showPicker(); } catch (e) {}
+            // Mobile-friendly approach
+            if (dateInput.type === 'date') {
+                // On mobile, just clicking the input should trigger the native picker
+                dateInput.click();
+                dateInput.focus();
+            } else if (dateInput.showPicker) {
+                try { dateInput.showPicker(); } catch (e) {
+                    dateInput.focus();
+                }
             } else {
                 dateInput.focus();
             }

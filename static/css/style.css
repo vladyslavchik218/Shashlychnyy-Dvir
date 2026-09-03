@@ -4843,6 +4843,39 @@ main {
     border: none;
     padding: 0;
     margin: 0;
+    z-index: 1;
+}
+
+/* Mobile fix for date picker */
+@media (hover: none) and (pointer: coarse) {
+    #cart-drawer .date-select-input {
+        opacity: 0.01;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    
+    #cart-drawer .date-select-display {
+        pointer-events: none;
+    }
+    
+    #cart-drawer .chevron-icon {
+        pointer-events: none;
+    }
+    
+    /* General mobile fix for all date select wrappers */
+    .date-select-input {
+        opacity: 0.01;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    
+    .date-select-display {
+        pointer-events: none;
+    }
+    
+    .chevron-icon {
+        pointer-events: none;
+    }
 }
 
 #cart-drawer .custom-dropdown-list {
@@ -4910,6 +4943,39 @@ main {
     border: none;
     padding: 0;
     margin: 0;
+    z-index: 1;
+}
+
+/* Mobile fix for date picker */
+@media (hover: none) and (pointer: coarse) {
+    #cart-drawer .date-select-input {
+        opacity: 0.01;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    
+    #cart-drawer .date-select-display {
+        pointer-events: none;
+    }
+    
+    #cart-drawer .chevron-icon {
+        pointer-events: none;
+    }
+    
+    /* General mobile fix for all date select wrappers */
+    .date-select-input {
+        opacity: 0.01;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    
+    .date-select-display {
+        pointer-events: none;
+    }
+    
+    .chevron-icon {
+        pointer-events: none;
+    }
 }
 
 /* === CUSTOM DROPDOWN (Час) === */
@@ -5982,6 +6048,23 @@ main {
 #cart-drawer .custom-dropdown-list {
     background: var(--wood-dark);
     border-color: var(--border-color);
+}
+
+/* General mobile fix for date picker (outside cart drawer) */
+@media (hover: none) and (pointer: coarse) {
+    .date-select-input {
+        opacity: 0.01;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    
+    .date-select-display {
+        pointer-events: none;
+    }
+    
+    .chevron-icon {
+        pointer-events: none;
+    }
 }
 
 #cart-drawer .custom-dropdown-item {
