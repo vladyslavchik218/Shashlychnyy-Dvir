@@ -1,8 +1,29 @@
+
 {% extends "base.html" %}
 
 {% block title %}Ваш кошик - Шашличний Двір{% endblock %}
 
 {% block content %}
+<style>
+.basket-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+.basket-header h1 {
+    text-align: center !important;
+    width: 100% !important;
+}
+
+.basket-header p {
+    text-align: center !important;
+    width: 100% !important;
+}
+</style>
 <div class="basket-page">
     <div class="basket-container">
         <div class="basket-header">
@@ -29,38 +50,38 @@
                     </div>
                     <button class="basket-checkout-btn" onclick="handleCheckout()">Оформити замовлення</button>
                 </div>
+            </div>
+        </div>
 
-                <div class="basket-info">
-                    <div class="info-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
-                        </svg>
-                        <div>
-                            <strong>Безкоштовна доставка</strong>
-                            <p>Від 800 гривень в межах міста</p>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
-                        </svg>
-                        <div>
-                            <strong>Платна доставка</strong>
-                            <p>До 800 гривень в межах міста</p>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
-                        </svg>
-                        <div>
-                            <strong>Доставка в приміську зону</strong>
-                            <p>200 грн</p>
-                        </div>
-                    </div>
+        <div class="delivery-cards-section">
+            <div class="delivery-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <div class="delivery-card-content">
+                    <strong>Безкоштовна доставка</strong>
+                    <p>Від 800 гривень в межах міста</p>
+                </div>
+            </div>
+            <div class="delivery-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <div class="delivery-card-content">
+                    <strong>Платна доставка</strong>
+                    <p>До 800 гривень в межах міста</p>
+                </div>
+            </div>
+            <div class="delivery-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <div class="delivery-card-content">
+                    <strong>Доставка в приміську зону</strong>
+                    <p>200 грн</p>
                 </div>
             </div>
         </div>
@@ -127,10 +148,16 @@
                         </div>
                     </div>
 
-                    <div class="form-grid-3">
-                        <input id="delivery-entrance" type="text" placeholder="Під'їзд">
-                        <input id="delivery-apartment" type="text" placeholder="Квартира">
-                        <input id="delivery-floor" type="text" placeholder="Поверх">
+                    <div class="form-grid-4">
+                        <div class="form-group">
+                            <input id="delivery-entrance" type="text" placeholder="Під'їзд">
+                        </div>
+                        <div class="form-group">
+                            <input id="delivery-apartment" type="text" placeholder="Квартира">
+                        </div>
+                        <div class="form-group">
+                            <input id="delivery-floor" type="text" placeholder="Поверх">
+                        </div>
                     </div>
                 </div>
 
@@ -157,7 +184,7 @@
                         <div class="form-group">
                             <label>Дата</label>
                             <div class="date-select-wrapper" id="date-wrapper">
-                                <span class="date-select-display" id="scheduled-date-display">Виберіть дату</span>
+                                <span class="date-select-display" id="scheduled-date-display" style="position: relative; z-index: 2;">Виберіть дату</span>
                                 <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M6 9l6 6 6-6"/>
                                 </svg>
@@ -166,8 +193,8 @@
                         </div>
                         <div class="form-group">
                             <label>Час</label>
-                            <div class="date-select-wrapper" id="time-wrapper">
-                                <span class="date-select-display placeholder" id="scheduled-time-display">Виберіть час*</span>
+                            <div class="date-select-wrapper" id="time-wrapper" style="position: relative; cursor: pointer;">
+                                <span class="date-select-display placeholder" id="scheduled-time-display" style="position: relative; z-index: 2;">Виберіть час*</span>
                                 <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M6 9l6 6 6-6"/>
                                 </svg>
@@ -262,6 +289,15 @@
     padding: 40px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     position: relative;
+    z-index: 1001;
+}
+
+@media (max-width: 480px) {
+    .checkout-modal-content {
+        border-radius: 16px;
+        max-height: 95vh;
+        padding: 20px;
+    }
 }
 
 .checkout-modal-header {
@@ -279,6 +315,12 @@
     font-size: 28px;
     font-weight: 700;
     font-family: 'Syne', sans-serif;
+}
+
+@media (max-width: 480px) {
+    .checkout-modal-header h2 {
+        font-size: 20px;
+    }
 }
 
 .close-modal-btn {
@@ -304,6 +346,12 @@
 
 .form-section {
     margin-bottom: 35px;
+}
+
+@media (max-width: 480px) {
+    .form-section {
+        margin-bottom: 20px;
+    }
 }
 
 .section-header {
@@ -335,8 +383,20 @@
     font-family: 'Syne', sans-serif;
 }
 
+@media (max-width: 480px) {
+    .section-header h3 {
+        font-size: 16px;
+    }
+}
+
 .form-group {
     margin-bottom: 18px;
+}
+
+@media (max-width: 480px) {
+    .form-group {
+        margin-bottom: 14px;
+    }
 }
 
 .form-group label {
@@ -359,6 +419,16 @@
     font-family: 'Space Grotesk', sans-serif;
     transition: all 0.3s ease;
     box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 14px 16px;
+        font-size: 14px;
+        border-radius: 12px;
+    }
 }
 
 .form-group input:focus,
@@ -426,6 +496,14 @@
     font-weight: 600;
     color: #6B7A80;
     font-family: 'Space Grotesk', sans-serif;
+}
+
+@media (max-width: 480px) {
+    .toggle-btn {
+        padding: 14px 20px;
+        font-size: 14px;
+        border-radius: 10px;
+    }
 }
 
 .toggle-btn:hover {
@@ -510,14 +588,15 @@
 .checkbox-label {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     margin-bottom: 15px;
     cursor: pointer;
-    padding: 12px 16px;
+    padding: 8px 12px;
     background: #FAF8F5;
-    border-radius: 10px;
+    border-radius: 8px;
     border: 2px solid #E5D9C7;
     transition: all 0.3s ease;
+    font-size: 14px;
 }
 
 .checkbox-label:hover {
@@ -573,6 +652,14 @@
     box-shadow: 0 8px 24px rgba(231, 111, 81, 0.3);
 }
 
+@media (max-width: 480px) {
+    .submit-order-btn {
+        padding: 16px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
+}
+
 .submit-order-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 32px rgba(231, 111, 81, 0.4);
@@ -620,6 +707,7 @@
     opacity: 0;
     cursor: pointer;
     z-index: 1;
+    pointer-events: none;
 }
 
 .chevron-icon {
@@ -632,6 +720,7 @@
     pointer-events: none;
     color: #6B7A80;
     transition: transform 0.3s ease;
+    z-index: 1;
 }
 
 .date-select-wrapper:hover .chevron-icon {
@@ -652,7 +741,7 @@
     max-height: 250px;
     overflow-y: auto;
     display: none;
-    z-index: 1000;
+    z-index: 9999;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
     animation: slideDown 0.2s ease;
 }
@@ -668,8 +757,9 @@
     }
 }
 
-.custom-dropdown-list.open {
-    display: block;
+.custom-dropdown-list.open,
+#time-dropdown-list.open {
+    display: block !important;
 }
 
 .custom-dropdown-list div {
@@ -680,6 +770,8 @@
     font-family: 'Space Grotesk', sans-serif;
     color: #264653;
     border-bottom: 1px solid #F0E6D8;
+    position: relative;
+    z-index: 10000;
 }
 
 .custom-dropdown-list div:last-child {
@@ -723,6 +815,7 @@
 
 .form-group--inline input {
     flex: 1;
+    min-width: 80px;
 }
 
 /* Custom scrollbar */
@@ -757,7 +850,170 @@
     background: #E76F51;
     border-radius: 3px;
 }
+
+/* === Темна модалка оформлення замовлення === */
+
+.checkout-modal-content {
+    background: var(--secondary-bg);
+    color: var(--text-dark);
+}
+
+.checkout-modal-header {
+    border-bottom: 2px solid var(--border-color);
+}
+
+.checkout-modal-header h2 {
+    color: var(--text-dark);
+}
+
+.close-modal-btn {
+    background: var(--wood-dark);
+    color: var(--text-dark);
+}
+
+.close-modal-btn:hover {
+    background: var(--accent-fire);
+    color: var(--white);
+}
+
+.section-header h3 {
+    color: var(--text-dark);
+}
+
+.form-group label {
+    color: var(--text-dark);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+.comment-textarea {
+    background: var(--wood-dark);
+    border: 2px solid var(--border-color);
+    color: var(--text-dark);
+}
+
+.form-group input::placeholder,
+.comment-textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus,
+.comment-textarea:focus {
+    outline: none;
+    border-color: var(--accent-fire);
+    background: var(--wood-light);
+    box-shadow: 0 0 0 3px rgba(212, 90, 42, 0.15);
+}
+
+.toggle-group {
+    background: var(--wood-dark);
+}
+
+.toggle-btn {
+    color: var(--text-muted);
+}
+
+.toggle-btn:hover {
+    background: var(--wood-light);
+}
+
+.toggle-btn.active {
+    background: linear-gradient(135deg, var(--accent-fire), var(--accent-fire-hover));
+    color: var(--white);
+}
+
+.hint {
+    background: var(--wood-dark);
+    border-left: 4px solid var(--accent-fire);
+    color: var(--text-muted);
+}
+
+.pickup-address-card {
+    background: var(--wood-dark);
+    border: 2px solid var(--border-color);
+}
+
+.pickup-address-card p,
+.pickup-address-card strong {
+    color: var(--text-dark);
+}
+
+.messenger-section {
+    background: var(--wood-dark);
+    border: 2px solid var(--border-color);
+}
+
+.messenger-section p {
+    color: var(--text-dark);
+}
+
+.messenger-section label {
+    background: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-dark);
+}
+
+.messenger-section label:hover {
+    border-color: var(--accent-fire);
+    background: var(--wood-light);
+}
+
+.checkbox-label {
+    background: var(--wood-dark);
+    border: 2px solid var(--border-color);
+    color: var(--text-dark);
+}
+
+.checkbox-label:hover {
+    border-color: var(--accent-fire);
+    background: var(--wood-light);
+}
+
+.checkout-modal-footer {
+    border-top: 2px solid var(--border-color);
+}
+
+.date-select-display {
+    background: var(--wood-dark);
+    border: 2px solid var(--border-color);
+    color: var(--text-dark);
+}
+
+.date-select-display.placeholder {
+    color: var(--text-muted);
+}
+
+.date-select-display:hover {
+    background: var(--wood-light);
+    border-color: var(--accent-fire);
+}
+
+.custom-dropdown-list {
+    background: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+}
+
+.custom-dropdown-list div {
+    color: var(--text-dark);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.custom-dropdown-list div:hover {
+    background: var(--wood-light);
+    color: var(--accent-fire);
+}
+
+.cash-row {
+    background: var(--wood-dark);
+    border: 2px solid var(--border-color);
+}
 </style>
+
+{% block scripts %}
+{% endblock %}
 
 <script>
 // Load cart from localStorage
@@ -792,6 +1048,8 @@ function createBasketItem(item, index) {
     let itemPrice = 0;
     if (item.type === 'sauce') {
         itemPrice = item.price || 0;
+    } else if (item.category === 'sets') {
+        itemPrice = item.price || 0;
     } else if (item.pricePer100g && item.weight) {
         // Calculate price based on weight for shashlik items
         itemPrice = (item.pricePer100g * item.weight) / 100;
@@ -814,7 +1072,8 @@ function createBasketItem(item, index) {
     const itemTotal = Math.round(itemPrice * item.quantity);
 
     // Get weight display
-    const weightDisplay = item.weight ? `${item.weight}г` : '';
+    // Get weight display - масштабуємо вагу відповідно до кількості
+    const weightDisplay = item.weight ? `${item.weight * item.quantity}г` : '';
 
     // Get description
     const description = item.description || '';
@@ -843,7 +1102,6 @@ function createBasketItem(item, index) {
             ${saucesInfo}
             <div class="basket-item-meta">
                 ${weightDisplay ? `<span class="basket-item-weight">${weightDisplay}</span>` : ''}
-                <span class="basket-item-price">${Math.round(itemPrice)} грн</span>
             </div>
             <div class="basket-item-quantity">
                 <button class="quantity-btn" onclick="updateQuantity(${item.cartId}, -1)">−</button>
@@ -898,6 +1156,11 @@ function removeItem(cartId) {
 
 function saveCart() {
     localStorage.setItem('cart', JSON.stringify(basketCart));
+    
+    // Sync with main cart if it exists
+    if (typeof cart !== 'undefined') {
+        cart = [...basketCart];
+    }
 }
 
 function updateSummary() {
@@ -907,6 +1170,8 @@ function updateSummary() {
     basketCart.forEach(item => {
         let itemPrice = 0;
         if (item.type === 'sauce') {
+            itemPrice = item.price || 0;
+        } else if (item.category === 'sets') {
             itemPrice = item.price || 0;
         } else if (item.pricePer100g && item.weight) {
             // Calculate price based on weight for shashlik items
@@ -953,11 +1218,6 @@ function handleCheckout() {
     // Open checkout modal
     document.getElementById('checkout-modal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
-
-    // Initialize time select after modal is visible
-    setTimeout(() => {
-        setupTimeSelect();
-    }, 100);
 }
 
 function closeCheckoutModal() {
@@ -968,6 +1228,11 @@ function closeCheckoutModal() {
 function getItemPrice(item) {
     // Если это соус
     if (item.type === "sauce") {
+        return Number(item.price);
+    }
+
+    // Если это сет
+    if (item.category === "sets") {
         return Number(item.price);
     }
 
@@ -1182,11 +1447,32 @@ ${orderText}
     saveCart();
     renderBasket();
     closeCheckoutModal();
+
     alert('Замовлення відправлено! Дякуємо за замовлення!');
 }
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Force center alignment on parent elements
+    const basketContainer = document.querySelector('.basket-container');
+    if (basketContainer) {
+        basketContainer.style.textAlign = 'center';
+    }
+
+    const basketPage = document.querySelector('.basket-page');
+    if (basketPage) {
+        basketPage.style.textAlign = 'center';
+    }
+
+    // Always load from localStorage first to ensure latest data
+    // Always load from localStorage first to ensure latest data
+    basketCart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Sync with main cart if it exists (after we load from localStorage)
+    if (typeof cart !== 'undefined') {
+        cart = basketCart;
+    }
+
     renderBasket();
     setupDeliveryMethodToggle();
     setupDeliveryTimeToggle();
@@ -1228,8 +1514,15 @@ function setupDeliveryTimeToggle() {
             this.classList.add('active');
 
             const value = this.dataset.value;
+            console.log('Delivery time toggle clicked, value:', value);
             if (value === 'scheduled') {
                 scheduledFields.style.display = 'block';
+                console.log('Scheduled fields displayed, setting up time select...');
+                // Re-initialize time select when fields become visible
+                setTimeout(() => {
+                    console.log('Calling setupTimeSelect after timeout');
+                    setupTimeSelect();
+                }, 300);
             } else {
                 scheduledFields.style.display = 'none';
             }
@@ -1268,14 +1561,23 @@ function setupDateSelect() {
 }
 
 // Setup time select
+let timeSelectInitialized = false;
+
 function setupTimeSelect() {
+    console.log('Setting up time select...');
     const timeWrapper = document.getElementById('time-wrapper');
     const timeDropdownList = document.getElementById('time-dropdown-list');
     const timeDisplay = document.getElementById('scheduled-time-display');
     const timeValue = document.getElementById('scheduled-time-value');
 
     if (!timeWrapper || !timeDropdownList) {
-        console.log('Time select elements not found');
+        console.log('Time select elements not found - they may be hidden');
+        return;
+    }
+
+    // Only initialize once
+    if (timeSelectInitialized) {
+        console.log('Time select already initialized, skipping setup');
         return;
     }
 
@@ -1291,10 +1593,14 @@ function setupTimeSelect() {
     }
 
     function buildTimeOptions() {
+        console.log('Building time options...');
         const dateInput = document.getElementById('scheduled-date');
         const list = document.getElementById('time-dropdown-list');
 
-        if (!dateInput || !list) return;
+        if (!dateInput || !list) {
+            console.log('Date input or list not found');
+            return;
+        }
 
         list.innerHTML = '';
 
@@ -1307,14 +1613,9 @@ function setupTimeSelect() {
         const isToday = selectedDate === now.toISOString().split('T')[0];
         const currentMinutes = isToday ? now.getHours() * 60 + now.getMinutes() : 0;
 
-        // Round to nearest 15 minutes
         const roundedMinutes = Math.ceil(currentMinutes / 15) * 15;
-
-        // Add 15 minutes and round to nearest 15
         let startMinutes = roundedMinutes + 15;
         startMinutes = Math.ceil(startMinutes / 15) * 15;
-
-        // Ensure we're within working hours
         startMinutes = Math.max(range.start, startMinutes);
         const endMinutes = range.end;
 
@@ -1330,18 +1631,33 @@ function setupTimeSelect() {
         for (let mins = startMinutes; mins <= endMinutes; mins += 15) {
             const option = document.createElement('div');
             option.textContent = minutesToLabel(mins);
-            option.addEventListener('click', function() {
-                timeDisplay.textContent = this.textContent;
-                timeDisplay.classList.remove('placeholder');
-                timeValue.value = this.textContent;
-                timeDropdownList.classList.remove('open');
-            });
+            option.dataset.time = minutesToLabel(mins);
             list.appendChild(option);
         }
+        console.log('Time options built, total options:', list.children.length);
     }
+
+    // Event delegation for time selection
+    timeDropdownList.addEventListener('click', function(e) {
+        const option = e.target.closest('div');
+        if (option && option.dataset.time) {
+            console.log('Time option clicked:', option.dataset.time);
+            timeDisplay.textContent = option.dataset.time;
+            timeDisplay.classList.remove('placeholder');
+            timeValue.value = option.dataset.time;
+            timeDropdownList.classList.remove('open');
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    });
 
     // Click to open dropdown
     timeWrapper.addEventListener('click', function(e) {
+        if (e.target === timeDropdownList || timeDropdownList.contains(e.target)) {
+            return; // Don't toggle if clicking inside the dropdown
+        }
+        console.log('Time wrapper clicked');
+        e.preventDefault();
         e.stopPropagation();
         buildTimeOptions();
         timeDropdownList.classList.toggle('open');
@@ -1357,8 +1673,16 @@ function setupTimeSelect() {
     // Update time options when date changes
     const dateInput = document.getElementById('scheduled-date');
     if (dateInput) {
-        dateInput.addEventListener('change', buildTimeOptions);
+        dateInput.addEventListener('change', function() {
+            timeDisplay.textContent = 'Виберіть час*';
+            timeDisplay.classList.add('placeholder');
+            timeValue.value = '';
+            buildTimeOptions();
+        });
     }
+
+    timeSelectInitialized = true;
+    console.log('Time select setup complete');
 }
 
 // Toggle comment field

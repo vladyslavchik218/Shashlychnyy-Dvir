@@ -1,5 +1,5 @@
 // Cart functionality
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let cart = [];
 let currentProduct = null;
 let currentSauce = null;
 let currentDrink = null;
@@ -50,6 +50,7 @@ function handleStickyCategories() {
 // Initialize on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
     initStickyCategories();
+    loadCart();
 });
 
 // Store selected sauce weights and prices
@@ -68,6 +69,28 @@ function loadCart() {
         cart = JSON.parse(savedCart);
         updateCartUI();
         updateCardQuantities();
+    }
+}
+
+// Listen for localStorage changes from other tabs/windows
+window.addEventListener('storage', function(e) {
+    if (e.key === 'cart' && e.newValue) {
+        cart = JSON.parse(e.newValue);
+        updateCartUI();
+        updateCardQuantities();
+    }
+});
+
+// Sync cart with localStorage (called periodically)
+function syncCart() {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+        if (JSON.stringify(cart) !== JSON.stringify(parsedCart)) {
+            cart = parsedCart;
+            updateCartUI();
+            updateCardQuantities();
+        }
     }
 }
 
@@ -188,13 +211,17 @@ function decreaseDrinkQuantity(drinkId) {
         if (currentQuantity > 1) {
             currentQuantity -= 1;
             quantityElement.textContent = currentQuantity;
+        } else {
+            // Don't go below 1 on the display
+            currentQuantity = 1;
         }
     }
 
     const existingItem = cart.find(item => item.id === drinkId);
     if (existingItem) {
-        if (parseInt(quantityElement.textContent) > 0) {
-            existingItem.quantity = parseInt(quantityElement.textContent);
+        const displayedQuantity = parseInt(quantityElement.textContent);
+        if (displayedQuantity > 0) {
+            existingItem.quantity = displayedQuantity;
         } else {
             cart = cart.filter(i => i.cartId !== existingItem.cartId);
         }
@@ -258,39 +285,39 @@ const products = {
     'set-4-persons': {
         id: 'set-4-persons',
         name: 'Сет на 4 особи',
-        description: 'Шашлик 700г, Ребра 700г, Ковбаски 700г, Овочі печені 500г, Картопля печена 600г, Соус',
-        price: 1100,
-        originalPrice: 3200,
-        image: '/static/images/kovbasku.jpg',
+        description: 'Шашлик 600г, Ребра 500г, Овочі печені 500г, Картопля печена 600г, Лаваш 2 шт, Соус 100г',
+        price: 1420,
+        originalPrice: 1250,
+        image: '/static/images/4-set.jpg',
         badges: ['hit'],
         category: 'sets'
     },
     'set-6-persons': {
         id: 'set-6-persons',
         name: 'Сет на 6 осіб',
-        description: 'Шашлик 1000г, Ребра 1000г, Ковбаски 1000г, Овочі печені 700г, Картопля печена 800г, Соус',
-        price: 1600,
-        originalPrice: 4800,
-        image: '/static/images/kovbasku.jpg',
+        description: 'Шашлик 1кг, Ребра 600г, Ковбаски 600г, Овочі печені 700г, Картопля печена 1кг, Лаваш 3 шт, Соус 200г',
+        price: 2290,
+        originalPrice: 4100,
+        image: '/static/images/6-set.jpg',
         badges: ['popular'],
         category: 'sets'
     },
     'set-10-persons': {
         id: 'set-10-persons',
         name: 'Сет на 10 осіб',
-        description: 'Шашлик 1.5кг, Ковбаски 1кг, Реберця 1кг, Скумбрія печена 1кг, Картопля по-селянськи 1кг, Овочі печені 1кг, Соус',
-        price: 2200,
-        originalPrice: 6500,
-        image: '/static/images/kovbasku.jpg',
+        description: 'Шашлик з свинного ошийка 2кг, Шашлик курячий 1кг, Ковбаски 1кг, Реберця 500г, Картопля по-селянськи 1.5кг, Овочі печені 1кг, Лаваш 5 шт, Соус',
+        price: 4685,
+        originalPrice: 7300,
+        image: '/static/images/10-set.jpg',
         badges: ['new'],
         category: 'sets'
     },
     'pork-neck': {
         id: 'pork-neck',
         name: 'Шашлик зі свинного ошийка',
-        description: '123',
+        description: 'Соковитий свинний ошийок на мангалі',
         pricePer100g: 85,
-        image: '/static/images/pork-neck.jpg',
+        image: '/static/images/chicken-fillet.jpg',
         badges: ['hit'],
         category: 'shashlik'
     },
@@ -301,7 +328,7 @@ const products = {
         pricePer100g: 80,
         image: '/static/images/chicken-fillet.jpg',
         badges: [],
-        category: 'chicken'
+        category: 'shashlik'
     },
     'chicken-thigh': {
         id: 'chicken-thigh',
@@ -310,7 +337,7 @@ const products = {
         pricePer100g: 80,
         image: '/static/images/chicken-thigh.jpg',
         badges: [],
-        category: 'chicken'
+        category: 'shashlik'
     },
     'pork-sausages': {
         id: 'pork-sausages',
@@ -337,7 +364,7 @@ const products = {
         pricePer100g: 50,
         image: '/static/images/chicken-wings.jpg',
         badges: ['new', 'smoker'],
-        category: 'chicken'
+        category: 'shashlik'
     },
     'chicken-legs': {
         id: 'chicken-legs',
@@ -346,16 +373,16 @@ const products = {
         pricePer100g: 50,
         image: '/static/images/chicken-legs.jpg',
         badges: [],
-        category: 'chicken'
+        category: 'shashlik'
     },
     'chicken-thigh-grill': {
         id: 'chicken-thigh-grill',
         name: 'Стегно куряче',
         description: 'Ціле куряче стегно на кістці',
-        pricePer100g: 80,
+        pricePer100g: 50,
         image: '/static/images/chicken-thigh-grill.jpg',
         badges: ['smoker'],
-        category: 'chicken'
+        category: 'shashlik'
     },
     'grilled-vegetables': {
         id: 'grilled-vegetables',
@@ -490,7 +517,7 @@ const products = {
         description: 'Натуральний вишневий сік 1 л',
         price: 108,
         volume: '1 л',
-        image: '/static/images/cherry-juice.jpg',
+        image: '/static/images/cherry-1L.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'juices'
@@ -501,7 +528,7 @@ const products = {
         description: 'Натуральний мульти-фруктовий сік 1 л',
         price: 108,
         volume: '1 л',
-        image: '/static/images/multifruit-juice.jpg',
+        image: '/static/images/multi-1L.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'juices'
@@ -512,7 +539,7 @@ const products = {
         description: 'Натуральний томатний сік 1 л',
         price: 108,
         volume: '1 л',
-        image: '/static/images/tomato-juice.jpg',
+        image: '/static/images/tomato-1L.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'juices'
@@ -523,7 +550,7 @@ const products = {
         description: 'Натуральний вишневий сік 0.5 л',
         price: 59,
         volume: '0.5 л',
-        image: '/static/images/cherry-juice.jpg',
+        image: '/static/images/cherry-0.5.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'juices'
@@ -534,7 +561,7 @@ const products = {
         description: 'Натуральний мульти-фруктовий сік 0.5 л',
         price: 59,
         volume: '0.5 л',
-        image: '/static/images/multifruit-juice.jpg',
+        image: '/static/images/multi-0.5.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'juices'
@@ -545,7 +572,7 @@ const products = {
         description: 'Натуральний томатний сік 0.5 л',
         price: 59,
         volume: '0.5 л',
-        image: '/static/images/tomato-juice.jpg',
+        image: '/static/images/tomato-0.5.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'juices'
@@ -556,7 +583,7 @@ const products = {
         description: 'Традиційний український квас 0,5 л',
         price: 30,
         volume: '0.5 л',
-        image: '/static/images/kvass.jpg',
+        image: '/static/images/kvas.jpg',
         badges: ['popular'],
         category: 'drinks',
         subcategory: 'draft'
@@ -567,7 +594,7 @@ const products = {
         description: 'Традиційний український квас 1 л',
         price: 60,
         volume: '1 л',
-        image: '/static/images/kvass.jpg',
+        image: '/static/images/kvas.jpg',
         badges: ['popular'],
         category: 'drinks',
         subcategory: 'draft'
@@ -578,7 +605,7 @@ const products = {
         description: 'Освіжаючий мохіто 0,5 л',
         price: 30,
         volume: '0.5 л',
-        image: '/static/images/mojito.jpg',
+        image: '/static/images/moxito.jpg',
         badges: ['hit'],
         category: 'drinks',
         subcategory: 'draft'
@@ -589,19 +616,19 @@ const products = {
         description: 'Освіжаючий мохіто 1 л',
         price: 69,
         volume: '1 л',
-        image: '/static/images/mojito.jpg',
+        image: '/static/images/moxito.jpg',
         badges: ['hit'],
         category: 'drinks',
         subcategory: 'draft'
     },
     // Backward compatibility aliases
     'kvass': {
-        id: 'kvass',
+        id: 'kvas',
         name: 'Квас',
         description: 'Традиційний український квас',
         price: 30,
         volume: '0.5 л',
-        image: '/static/images/kvass.jpg',
+        image: '/static/images/kvas.jpg',
         badges: ['popular'],
         category: 'drinks',
         subcategory: 'draft'
@@ -612,7 +639,7 @@ const products = {
         description: 'Освіжаючий мохіто',
         price: 30,
         volume: '0.5 л',
-        image: '/static/images/mojito.jpg',
+        image: '/static/images/moxito.jpg',
         badges: ['hit'],
         category: 'drinks',
         subcategory: 'draft'
@@ -635,7 +662,7 @@ const products = {
         description: 'Coca-Cola 0,5 л',
         price: 37,
         volume: '0.5 л',
-        image: '/static/images/cola.jpg',
+        image: '/static/images/cola-0.5.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'carbonated'
@@ -646,7 +673,7 @@ const products = {
         description: 'Coca-Cola 1,25 л',
         price: 62,
         volume: '1.25 л',
-        image: '/static/images/cola.jpg',
+        image: '/static/images/cola-1.25.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'carbonated'
@@ -658,7 +685,7 @@ const products = {
         description: 'Pepsi 0,5 л',
         price: 35,
         volume: '0.5 л',
-        image: '/static/images/pepsi.jpg',
+        image: '/static/images/pepsi-0.5.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'carbonated'
@@ -669,7 +696,7 @@ const products = {
         description: 'Pepsi 0,7 л',
         price: 41,
         volume: '0.7 л',
-        image: '/static/images/pepsi.jpg',
+        image: '/static/images/pepsi-0.75.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'carbonated'
@@ -680,7 +707,7 @@ const products = {
         description: 'Pepsi 1,25 л',
         price: 59,
         volume: '1.25 л',
-        image: '/static/images/pepsi.jpg',
+        image: '/static/images/pepsi-1.25L.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'carbonated'
@@ -691,7 +718,7 @@ const products = {
         description: 'Pepsi 0,3 л скло',
         price: 43,
         volume: '0.3 л',
-        image: '/static/images/pepsi.jpg',
+        image: '/static/images/pepsi-glass.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'carbonated'
@@ -725,7 +752,7 @@ const products = {
         description: 'Lipton Зелений 0,5 л',
         price: 35,
         volume: '0.5 л',
-        image: '/static/images/lipton-green.jpg',
+        image: '/static/images/lipton-green-tea.jpg',
         badges: [],
         category: 'drinks',
         subcategory: 'tea'
@@ -734,15 +761,15 @@ const products = {
 
 // Sauces data
 const sauces = [
-    { id: 'garlic', name: 'Часниковий', price50g: 40, price100g: 70, image: '/static/images/sauce-ketchup.jpg' },
-    { id: 'spicy', name: 'Гострий', price50g: 40, price100g: 70, image: '/static/images/sauce-spicy.jpg' },
-    { id: 'curry', name: 'Карі', price50g: 40, price100g: 70, image: '/static/images/sauce-curry.jpg' },
-    { id: 'lingonberry', name: 'Брусничний', price50g: 40, price100g: 70, image: '/static/images/sauce-lingonberry.jpg' },
-    { id: 'tartar', name: 'Тартар', price50g: 40, price100g: 70, image: '/static/images/sauce-tartar.jpg' },
-    { id: 'signature', name: 'Фірмовий', price50g: 40, price100g: 70, image: '/static/images/sauce-signature.jpg' },
-    { id: 'cheese', name: 'Сирний', price50g: 40, price100g: 70, image: '/static/images/sauce-cheese.jpg' },
-    { id: 'mustard', name: 'Французька гірчиця', price50g: 40, price100g: 70, image: '/static/images/sauce-mustard.jpg' },
-    { id: 'sweet-chili', name: 'Солодкий чилі', price50g: 40, price100g: 70, image: '/static/images/sauce-mustard-correct.jpg' }
+    { id: 'garlic', name: 'Часниковий', price50g: 35, price100g: 60, image: '/static/images/sauce-ketchup.jpg' },
+    { id: 'spicy', name: 'Гострий', price50g: 35, price100g: 60, image: '/static/images/sauce-spicy.jpg' },
+    { id: 'curry', name: 'Карі', price50g: 35, price100g: 60, image: '/static/images/sauce-curry.jpg' },
+    { id: 'lingonberry', name: 'Брусничний', price50g: 35, price100g: 60, image: '/static/images/sauce-lingonberry.jpg' },
+    { id: 'tartar', name: 'Тартар', price50g: 35, price100g: 60, image: '/static/images/sauce-tartar.jpg' },
+    { id: 'signature', name: 'Фірмовий', price50g: 35, price100g: 60, image: '/static/images/sauce-signature.jpg' },
+    { id: 'cheese', name: 'Сирний', price50g: 35, price100g: 60, image: '/static/images/sauce-cheese.jpg' },
+    { id: 'mustard', name: 'Французька гірчиця', price50g: 35, price100g: 60, image: '/static/images/sauce-mustard.jpg' },
+    { id: 'sweet-chili', name: 'Солодкий чилі', price50g: 35, price100g: 60, image: '/static/images/sauce-mustard-correct.jpg' }
 ];
 
 // Add quantity property to cart items
@@ -779,6 +806,7 @@ function addToCart(product, weight, selectedSauces) {
         cart.push(cartItem);
     }
 
+    saveCart();
     updateCartUI();
 }
 
@@ -819,6 +847,8 @@ function closeCart() {
 
 // Open product modal
 function openProductModal(productId) {
+    return;
+
     const product = products[productId];
     if (!product) return;
     
@@ -1036,6 +1066,7 @@ function quickAdd(productId) {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
             existingItem.quantity += 1;
+            existingItem.price = calculatedPrice;
         } else {
             const cartItem = {
                 ...product,
@@ -1063,6 +1094,7 @@ function quickAdd(productId) {
         }
     }
 
+    saveCart();
     updateCartUI();
     updateCardQuantities();
 }
@@ -1094,6 +1126,7 @@ function increaseCardQuantity(productId) {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
             existingItem.quantity = parseInt(quantityElement.textContent);
+            existingItem.price = calculatedPrice;
         } else {
             const cartItem = {
                 ...product,
@@ -1132,42 +1165,32 @@ function decreaseCardQuantity(productId) {
     if (!product) return;
 
     const quantityElement = document.getElementById(`quantity-${productId}`);
-    if (quantityElement) {
-        let currentQuantity = parseInt(quantityElement.textContent) || 1;
-        if (currentQuantity > 1) {
-            currentQuantity -= 1;
-            quantityElement.textContent = currentQuantity;
-        }
-    }
+    const currentDisplayedQuantity = parseInt(quantityElement.textContent) || 1;
 
     // Update cart immediately
     if (product.category === 'sets') {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
-            if (parseInt(quantityElement.textContent) > 0) {
-                existingItem.quantity = parseInt(quantityElement.textContent);
+            if (existingItem.quantity > 1) {
+                existingItem.quantity -= 1;
+                quantityElement.textContent = existingItem.quantity;
             } else {
+                // Remove item from cart
                 cart = cart.filter(i => i.cartId !== existingItem.cartId);
+                quantityElement.textContent = 1; // Reset display to 1
             }
         }
     } else {
         const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
         if (existingItem) {
-            if (parseInt(quantityElement.textContent) > 0) {
-                existingItem.quantity = parseInt(quantityElement.textContent);
+            if (existingItem.quantity > 1) {
+                existingItem.quantity -= 1;
+                quantityElement.textContent = existingItem.quantity;
             } else {
+                // Remove item from cart
                 cart = cart.filter(i => i.cartId !== existingItem.cartId);
+                quantityElement.textContent = 1; // Reset display to 1
             }
-        }
-    }
-
-    // Update cart immediately
-    const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
-    if (existingItem) {
-        if (parseInt(quantityElement.textContent) > 0) {
-            existingItem.quantity = parseInt(quantityElement.textContent);
-        } else {
-            cart = cart.filter(i => i.cartId !== existingItem.cartId);
         }
     }
 
@@ -1294,6 +1317,7 @@ function addToCartDirect(productId) {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
             existingItem.quantity = currentQuantity;
+            existingItem.price = calculatedPrice;
         } else {
             const cartItem = {
                 ...product,
@@ -1555,17 +1579,39 @@ function increaseSauceQuantity(sauceId) {
     updateSauceCardPrice(sauceId);
 }
 
-// Decrease sauce quantity (only display, no cart update)
+// Decrease sauce quantity
 function decreaseSauceQuantity(sauceId) {
+    const sauce = sauces.find(s => s.id === sauceId);
+    if (!sauce) return;
+
+    const selectedWeight = selectedSauceWeights[sauceId] || 50;
+    const selectedPrice = selectedSaucePrices[sauceId] || sauce.price50g;
+
     const quantityElement = document.getElementById(`quantity-sauce-${sauceId}`);
     if (quantityElement) {
         let currentQuantity = parseInt(quantityElement.textContent) || 1;
         if (currentQuantity > 1) {
             currentQuantity -= 1;
             quantityElement.textContent = currentQuantity;
-            updateSauceCardPrice(sauceId);
+        } else {
+            // Don't go below 1 on the display
+            currentQuantity = 1;
         }
     }
+
+    const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === selectedWeight);
+    if (existingItem) {
+        const displayedQuantity = parseInt(quantityElement.textContent);
+        if (displayedQuantity > 0) {
+            existingItem.quantity = displayedQuantity;
+        } else {
+            cart = cart.filter(i => i.cartId !== existingItem.cartId);
+        }
+    }
+
+    saveCart();
+    updateCardQuantities();
+    updateSauceCardPrice(sauceId);
 }
 
 // Add to cart from modal
@@ -1573,13 +1619,13 @@ function addToCartFromModal() {
     if (currentSauce) {
         // Add sauce
         const selectedWeight = parseInt(document.querySelector('.weight-btn.active').dataset.weight);
-        
-        const existingItem = cart.find(item => 
-            item.type === 'sauce' && 
-            item.sauceId === currentSauce.id && 
+
+        const existingItem = cart.find(item =>
+            item.type === 'sauce' &&
+            item.sauceId === currentSauce.id &&
             item.weight === selectedWeight
         );
-        
+
         if (existingItem) {
             existingItem.quantity += 1;
         } else {
@@ -1594,7 +1640,8 @@ function addToCartFromModal() {
             };
             cart.push(cartItem);
         }
-        
+
+        saveCart();
         closeProductModal();
         updateCartUI();
         updateCardQuantities();
@@ -1613,6 +1660,7 @@ function addToCartFromModal() {
             };
             cart.push(cartItem);
         }
+        saveCart();
         closeProductModal();
         updateCartUI();
         updateCardQuantities();
@@ -1649,6 +1697,7 @@ function addToCartFromModal() {
             };
             cart.push(cartItem);
         }
+        saveCart();
         closeProductModal();
         updateCartUI();
         updateCardQuantities();
@@ -1670,11 +1719,11 @@ function updateCartUI() {
     const cartBadge = document.getElementById('cart-badge');
     const cartItems = document.getElementById('cart-items');
     const totalPrice = document.getElementById('total-price');
-    
+
     // Update badge
     const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartBadge.textContent = totalQuantity;
-    
+
     // Update cart items
     if (cart.length === 0) {
         cartItems.innerHTML = `
@@ -1710,7 +1759,7 @@ function updateCartUI() {
             }
 
             const itemTotal = itemPrice * item.quantity;
-            
+
             return `
             <div class="cart-item">
                 <div class="cart-item-info">
@@ -1728,7 +1777,7 @@ function updateCartUI() {
             </div>
         `}).join('');
     }
-    
+
     // Update total price
     const total = cart.reduce((sum, item) => {
         let itemPrice;
@@ -1747,6 +1796,9 @@ function updateCartUI() {
         return sum + (itemPrice * item.quantity);
     }, 0);
     totalPrice.textContent = total + ' грн';
+
+    // Save cart to localStorage
+    saveCart();
 }
 
 // Increase quantity
@@ -1754,7 +1806,9 @@ function increaseQuantity(cartId) {
     const item = cart.find(item => item.cartId === cartId);
     if (item) {
         item.quantity += 1;
+        saveCart();
         updateCartUI();
+        updateCardQuantities();
     }
 }
 
@@ -1767,7 +1821,9 @@ function decreaseQuantity(cartId) {
         } else {
             cart = cart.filter(i => i.cartId !== cartId);
         }
+        saveCart();
         updateCartUI();
+        updateCardQuantities();
     }
 }
 
@@ -2403,6 +2459,12 @@ function confirmOrder() {
     }
 
     sendOrderToMessenger(messenger.value);
+
+    // Clear cart after successful order
+    cart = [];
+    saveCart();
+    updateCartUI();
+    updateCardQuantities();
 }
 
 function getItemPrice(item) {
@@ -2639,3 +2701,31 @@ function selectMessenger(type, btnEl) {
     btnEl.classList.add('selected');
 }
 
+document.querySelectorAll('.product-card').forEach(card => {
+  const unitPrice  = parseFloat(card.dataset.unitPrice);
+  const unitWeight = parseFloat(card.dataset.unitWeight);
+
+  const qtyValueEl = card.querySelector('.quantity-value-new');
+  const weightEl    = card.querySelector('.product-unit');
+  const priceEl     = card.querySelector('.product-price-new');
+
+  let qty = parseInt(qtyValueEl.textContent, 10) || 1;
+
+  function render() {
+    qtyValueEl.textContent = qty;
+    if (weightEl) weightEl.textContent = `${unitWeight * qty}г`;
+    if (priceEl)  priceEl.textContent = `${unitPrice * qty} грн`;
+  }
+
+  card.querySelector('.qty-plus').addEventListener('click', () => {
+    qty++;
+    render();
+  });
+
+  card.querySelector('.qty-minus').addEventListener('click', () => {
+    if (qty > 1) {
+      qty--;
+      render();
+    }
+  });
+});

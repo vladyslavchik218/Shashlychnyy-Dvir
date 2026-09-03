@@ -61,9 +61,6 @@
         <button class="category-item" data-category="sets">
             <span>Сети</span>
         </button>
-        <button class="category-item" data-category="chicken">
-            <span>Курка</span>
-        </button>
         <button class="category-item" data-category="sides">
             <span>Гарніри</span>
         </button>
@@ -85,7 +82,6 @@
     <div class="catalog-container">
         <div class="section-header">
             <h2 class="section-title">З МАНГАЛУ</h2>
-            <p class="section-subtitle">Свіжі страви на справжньому вугіллі</p>
         </div>
         
         <div class="products-grid">
@@ -100,10 +96,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Сет на 4 особи</h3>
-                    <p class="product-description-new">Шашлик 500г, Ребра 500г, Овочі печені 500г, Картопля печена 500г, Соуси: Класичний 50г, Вершково-часниковий 50г</p>
+                    <p class="product-description-new">Шашлик 600г, Ребра 500г, Овочі печені 500г, Картопля печена 600г, Лаваш 2 шт, Соус 100г</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-set-4-persons">1230 грн</div>
+                            <div class="product-price-new" id="price-set-4-persons">1420 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('set-4-persons')">-</button>
@@ -128,10 +124,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Сет на 6 осіб</h3>
-                    <p class="product-description-new">Шашлик 700г, Ребра 700г, Ковбаски 700г, Овочі печені 500г, Картопля печена 600г, Соус</p>
+                    <p class="product-description-new">Шашлик 1кг, Ребра 600г, Ковбаски 600г, Овочі печені 700г, Картопля печена 1кг, Лаваш 3шт, Соус 200г</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-set-6-persons">1890 грн</div>
+                            <div class="product-price-new" id="price-set-6-persons">2290 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('set-6-persons')">-</button>
@@ -146,7 +142,7 @@
             </div>
 
             <!-- Set Card 3 -->
-            <div class="product-card" data-category="sets" onclick="openProductModal('set-10-persons')">
+            <div class="product-card" data-category="sets" data-id="set-10-persons" onclick="openProductModal('set-10-persons')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/10-set.jpg') }}" alt="Сет на 10 осіб" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
@@ -156,10 +152,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Сет на 10 осіб</h3>
-                    <p class="product-description-new">Шашлик 1.5кг, Ковбаски 1кг, Реберця 1кг, Картопля по-селянськи 1кг, Овочі печені 1кг, Соус</p>
+                    <p class="product-description-new">Шашлик з свинного ошийка 2кг, Шашлик курячий 1кг, Ковбаски 1кг, Реберця 500г, Картопля по-селянськи 1.5кг, Овочі печені 1кг, Лаваш 5 шт, Соус</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-set-10-persons">3315 грн</div>
+                            <div class="product-price-new" id="price-set-10-persons">4685 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('set-10-persons')">-</button>
@@ -202,7 +198,7 @@
             </div>
             
             <!-- Product Card 2 -->
-            <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-fillet')">
+            <div class="product-card" data-category="shashlik" onclick="openProductModal('chicken-fillet')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/chicken-shahluk.jpg') }}" alt="Шашлик з філе курячого" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍗</div>
@@ -227,7 +223,7 @@
             </div>
             
             <!-- Product Card 3 -->
-            <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-thigh')">
+            <div class="product-card" data-category="shashlik" onclick="openProductModal('chicken-thigh')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/chicken-thigh.jpg') }}" alt="Шашлик з стегна курячого" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍗</div>
@@ -305,7 +301,7 @@
             </div>
 
             <!-- Product Card 6 -->
-            <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-wings')">
+            <div class="product-card" data-category="shashlik" onclick="openProductModal('chicken-wings')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/chicken-wings.jpg') }}" alt="Крильця курячі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍗</div>
@@ -334,7 +330,7 @@
             </div>
             
             <!-- Product Card 7 -->
-            <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-legs')">
+            <div class="product-card" data-category="shashlik" onclick="openProductModal('chicken-legs')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/chicken-legs.jpg') }}" alt="Гомілки курячі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍗</div>
@@ -359,7 +355,7 @@
             </div>
             
             <!-- Product Card 8 -->
-            <div class="product-card" data-category="chicken" onclick="openProductModal('chicken-thigh-grill')">
+            <div class="product-card" data-category="shashlik" onclick="openProductModal('chicken-thigh-grill')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/chicken-thigh-grill.jpg') }}" alt="Стегно куряче" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍗</div>
@@ -779,7 +775,6 @@
     <div class="catalog-container">
         <div class="section-header">
             <h2 class="section-title sauces-title">СОУСИ</h2>
-            <p class="section-subtitle">40 грн/50г, 70 грн/100г</p>
         </div>
         
         <div class="products-grid">
@@ -1042,7 +1037,6 @@
     <div class="catalog-container">
         <div class="section-header">
             <h2 class="section-title">НАПОЇ</h2>
-            <p class="section-subtitle">Освіжаючі напої для вашого комфорту</p>
         </div>
         
         <div class="subcategories">
@@ -1059,7 +1053,7 @@
                 <span>Газовані напої</span>
             </button>
             <button class="subcategory-item" data-subcategory="tea">
-                <span>Чай</span>
+                <span>Холодний чай</span>
             </button>
         </div>
         
