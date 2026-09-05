@@ -51,7 +51,32 @@ function handleStickyCategories() {
 document.addEventListener('DOMContentLoaded', function() {
     initStickyCategories();
     loadCart();
+    wrapPriceAndUnit();
 });
+
+// Wrap price and unit elements in a wrapper for better layout
+function wrapPriceAndUnit() {
+    const priceRows = document.querySelectorAll('.product-price-row-with-btn');
+    priceRows.forEach(row => {
+        const priceElement = row.querySelector('.product-price-new');
+        const unitElement = row.querySelector('.product-unit');
+
+        if (priceElement && !row.querySelector('.product-price-unit-wrapper')) {
+            // Create wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'product-price-unit-wrapper';
+
+            // Move price element into wrapper
+            row.insertBefore(wrapper, row.firstChild);
+            wrapper.appendChild(priceElement);
+            
+            // If unit element exists, move it into wrapper as well
+            if (unitElement) {
+                wrapper.appendChild(unitElement);
+            }
+        }
+    });
+}
 
 // Store selected sauce weights and prices
 let selectedSauceWeights = {};
@@ -183,21 +208,7 @@ function increaseDrinkQuantity(drinkId) {
         quantityElement.textContent = currentQuantity;
     }
 
-    const existingItem = cart.find(item => item.id === drinkId);
-    if (existingItem) {
-        existingItem.quantity = parseInt(quantityElement.textContent);
-    } else {
-        const cartItem = {
-            ...drink,
-            quantity: parseInt(quantityElement.textContent),
-            cartId: Date.now()
-        };
-        cart.push(cartItem);
-    }
-
-    saveCart();
-    updateCartUI();
-    updateCardQuantities();
+    // Only update display, don't add to cart
     updateCardPrice(drinkId);
 }
 
@@ -211,25 +222,11 @@ function decreaseDrinkQuantity(drinkId) {
         if (currentQuantity > 1) {
             currentQuantity -= 1;
             quantityElement.textContent = currentQuantity;
-        } else {
-            // Don't go below 1 on the display
-            currentQuantity = 1;
         }
+        // Don't go below 1 on the display
     }
 
-    const existingItem = cart.find(item => item.id === drinkId);
-    if (existingItem) {
-        const displayedQuantity = parseInt(quantityElement.textContent);
-        if (displayedQuantity > 0) {
-            existingItem.quantity = displayedQuantity;
-        } else {
-            cart = cart.filter(i => i.cartId !== existingItem.cartId);
-        }
-    }
-
-    saveCart();
-    updateCartUI();
-    updateCardQuantities();
+    // Only update display, don't modify cart
     updateCardPrice(drinkId);
 }
 
@@ -326,7 +323,10 @@ const products = {
         id: 'pork-neck',
         name: 'Шашлик зі свинного ошийка',
         description: 'Соковитий свинний ошийок на мангалі',
+        pricePerUnit: 85,
         pricePer100g: 85,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/chicken-fillet.jpg',
         badges: ['hit'],
         category: 'shashlik'
@@ -335,7 +335,10 @@ const products = {
         id: 'chicken-fillet',
         name: 'Шашлик з філе курячого',
         description: 'Ніжне куряче філе з прянощами',
+        pricePerUnit: 80,
         pricePer100g: 80,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/chicken-fillet.jpg',
         badges: [],
         category: 'shashlik'
@@ -344,7 +347,10 @@ const products = {
         id: 'chicken-thigh',
         name: 'Шашлик з стегна курячого',
         description: 'Соковите куряче стегно на мангалі',
+        pricePerUnit: 80,
         pricePer100g: 80,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/chicken-thigh.jpg',
         badges: [],
         category: 'shashlik'
@@ -353,7 +359,10 @@ const products = {
         id: 'pork-sausages',
         name: 'Ковбаски свинні',
         description: 'Домашні ковбаски з власного м\'ясного цеху',
+        pricePerUnit: 55,
         pricePer100g: 55,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/pork-sausages.jpg',
         badges: [],
         category: 'shashlik'
@@ -362,7 +371,10 @@ const products = {
         id: 'pork-ribs',
         name: 'Ребра свинні',
         description: 'М\'ясні ребра в соусі BBQ з копченням',
+        pricePerUnit: 60,
         pricePer100g: 60,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/pork-ribs.jpg',
         badges: ['popular', 'smoker'],
         category: 'shashlik'
@@ -371,7 +383,10 @@ const products = {
         id: 'chicken-wings',
         name: 'Крильця курячі',
         description: 'Хрусткі крильця в соусі BBQ з копченням',
+        pricePerUnit: 50,
         pricePer100g: 50,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/chicken-wings.jpg',
         badges: ['new', 'smoker'],
         category: 'shashlik'
@@ -380,7 +395,10 @@ const products = {
         id: 'chicken-legs',
         name: 'Гомілки курячі',
         description: 'Соковиті гомілки на мангалі',
+        pricePerUnit: 50,
         pricePer100g: 50,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/chicken-legs.jpg',
         badges: [],
         category: 'shashlik'
@@ -389,7 +407,10 @@ const products = {
         id: 'chicken-thigh-grill',
         name: 'Стегно куряче',
         description: 'Ціле куряче стегно на кістці',
+        pricePerUnit: 50,
         pricePer100g: 50,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/chicken-thigh-grill.jpg',
         badges: ['smoker'],
         category: 'shashlik'
@@ -398,7 +419,10 @@ const products = {
         id: 'grilled-vegetables',
         name: 'Овочі печені',
         description: 'Перець, кабачок, печериці на мангалі',
+        pricePerUnit: 60,
         pricePer100g: 60,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/grilled-vegetables.jpg',
         badges: ['veg'],
         category: 'sides'
@@ -407,7 +431,10 @@ const products = {
         id: 'baked-potatoes',
         name: 'Картопля печена',
         description: 'Молода картопля в фользі з травами',
+        pricePerUnit: 25,
         pricePer100g: 25,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/baked-potatoes.jpg',
         badges: [],
         category: 'sides'
@@ -416,7 +443,10 @@ const products = {
         id: 'marinated-onions',
         name: 'Цибуля маринована',
         description: 'Хрустка маринована цибуля з травами',
+        pricePerUnit: 15,
         pricePer100g: 15,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/marinated-onions.jpg',
         badges: [],
         category: 'sides'
@@ -426,6 +456,7 @@ const products = {
         name: 'Вірменський лаваш',
         description: 'Смачний лаваш для шашлику',
         pricePerUnit: 25,
+        pricePer100g: 25,
         unitWeight: 125,
         isPerPiece: true,
         image: '/static/images/lavash-uwu.jpg',
@@ -436,7 +467,10 @@ const products = {
         id: 'bell-pepper',
         name: 'Болгарський перець',
         description: 'Солодкий соковитий перець, запечений на грилі',
+        pricePerUnit: 60,
         pricePer100g: 60,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/bell-pepper.jpg',
         badges: ['veg'],
         category: 'grill'
@@ -445,7 +479,10 @@ const products = {
         id: 'mushrooms',
         name: 'Шампіньйони',
         description: 'Соковиті гриби, смажені на грилі з часником',
+        pricePerUnit: 60,
         pricePer100g: 60,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/mushrooms.jpg',
         badges: ['veg'],
         category: 'grill'
@@ -454,7 +491,10 @@ const products = {
         id: 'zucchini',
         name: 'Кабачок',
         description: 'Ніжний кабачок, запечений на грилі з часником',
+        pricePerUnit: 60,
         pricePer100g: 60,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/zucchini.jpg',
         badges: ['veg'],
         category: 'grill'
@@ -463,7 +503,10 @@ const products = {
         id: 'bean-pepper',
         name: 'Стручковий перець',
         description: 'Хрусткий перець, смажений на грилі',
+        pricePerUnit: 60,
         pricePer100g: 60,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/bean-pepper.jpg',
         badges: ['veg'],
         category: 'grill'
@@ -472,7 +515,10 @@ const products = {
         id: 'cherry-tomatoes',
         name: 'Чері помідори',
         description: 'Солодкі чері, запечені на грилі з базиліком',
+        pricePerUnit: 60,
         pricePer100g: 60,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/cherry-tomatoes.jpg',
         badges: ['veg'],
         category: 'grill'
@@ -481,7 +527,10 @@ const products = {
         id: 'corn',
         name: 'Кукурудза',
         description: 'Солодка кукурудза, запечена на грилі з маслом',
+        pricePerUnit: 60,
         pricePer100g: 60,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/corn.jpg',
         badges: ['veg'],
         category: 'grill'
@@ -490,7 +539,10 @@ const products = {
         id: 'pork-chop',
         name: 'Костиця',
         description: 'Соковита свиняча костиця на кістці',
+        pricePerUnit: 70,
         pricePer100g: 70,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/pork-chop.jpg',
         badges: ['smoker'],
         category: 'shashlik'
@@ -499,7 +551,10 @@ const products = {
         id: 'pork-liver',
         name: 'Пічеревина',
         description: 'Ніжна свиняча печінка на мангалі',
+        pricePerUnit: 55,
         pricePer100g: 55,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/pork-liver.jpg',
         badges: ['smoker'],
         category: 'shashlik'
@@ -508,7 +563,10 @@ const products = {
         id: 'pork-tenderloin',
         name: 'Полядвиця',
         description: 'Найніжніша частина свинини на грилі',
+        pricePerUnit: 60,
         pricePer100g: 60,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/pork-tenderloin.jpg',
         badges: ['smoker'],
         category: 'shashlik'
@@ -517,7 +575,10 @@ const products = {
         id: 'rib-strip',
         name: 'Ребро полоска',
         description: 'Смажені ребра-полоски з копченням',
+        pricePerUnit: 48,
         pricePer100g: 48,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/rib-strip.jpg',
         badges: ['smoker'],
         category: 'shashlik'
@@ -526,7 +587,10 @@ const products = {
         id: 'grill-sausages',
         name: 'Ковбаски гриль',
         description: 'Домашні ковбаски гриль з власного м\'ясного цеху',
+        pricePerUnit: 55,
         pricePer100g: 55,
+        unitWeight: 100,
+        isPerPiece: true,
         image: '/static/images/grill-sausages.jpg',
         badges: ['smoker'],
         category: 'shashlik'
@@ -803,25 +867,31 @@ function addToCart(product, weight, selectedSauces) {
 
     if (existingItem) {
         existingItem.quantity += 1;
+        // Don't update price - it should remain the unit price
+        // Don't update weight - it should remain the unit weight
     } else {
         // Calculate price based on weight or fixed price for sets
         let calculatedPrice = 0;
         if (product.category === 'sets') {
             calculatedPrice = product.price;
+        } else if (product.isPerPiece && weight) {
+            calculatedPrice = (product.pricePerUnit * weight) / product.unitWeight;
         } else if (product.pricePer100g && weight) {
             calculatedPrice = (product.pricePer100g * weight) / 100;
         } else if (product.price) {
             calculatedPrice = product.price;
+        } else if (product.isPerPiece) {
+            calculatedPrice = product.pricePerUnit;
         } else if (product.pricePer100g) {
             calculatedPrice = product.pricePer100g;
         }
 
         const cartItem = {
             ...product,
-            weight,
+            weight, // Store the selected weight as unit weight
             sauces: selectedSauces,
             quantity: 1,
-            price: Math.round(calculatedPrice), // Store calculated price
+            price: Math.round(calculatedPrice), // Store calculated price for unit weight
             cartId: Date.now()
         };
         cart.push(cartItem);
@@ -943,6 +1013,8 @@ function openProductModal(productId) {
         if (product.originalPrice) {
             document.getElementById('modal-product-price').textContent += ` (замість ${product.originalPrice} грн)`;
         }
+    } else if (product.isPerPiece) {
+        document.getElementById('modal-product-price').textContent = product.pricePerUnit + ' грн/' + product.unitWeight + 'г';
     } else {
         document.getElementById('modal-product-price').textContent = product.pricePer100g + ' грн/100г';
     }
@@ -1036,7 +1108,7 @@ function updateModalPrice() {
         });
     });
     
-    let totalPrice = (currentProduct.pricePer100g * selectedWeight / 100);
+    let totalPrice = (currentProduct.isPerPiece ? currentProduct.pricePerUnit : currentProduct.pricePer100g) * selectedWeight / (currentProduct.isPerPiece ? currentProduct.unitWeight : 100);
     
     selectedSauces.forEach(sauce => {
         totalPrice += sauce.selectedPrice;
@@ -1089,7 +1161,8 @@ function quickAdd(productId) {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
             existingItem.quantity += 1;
-            existingItem.price = calculatedPrice;
+            // Don't update price - it should remain the unit price
+            // Don't update weight - it should remain the unit weight
         } else {
             const cartItem = {
                 ...product,
@@ -1104,11 +1177,12 @@ function quickAdd(productId) {
         const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
         if (existingItem) {
             existingItem.quantity += 1;
-            existingItem.price = Math.round(calculatedPrice);
+            // Don't update price - it should remain the unit price
+            // Don't update weight - it should remain the unit weight (100g)
         } else {
             const cartItem = {
                 ...product,
-                weight: 100,
+                weight: 100, // Store unit weight (100g)
                 sauces: [],
                 quantity: 1,
                 price: Math.round(calculatedPrice),
@@ -1135,55 +1209,8 @@ function increaseCardQuantity(productId) {
         quantityElement.textContent = currentQuantity;
     }
 
-    // Calculate price based on product type
-    let calculatedPrice = 0;
-    if (product.category === 'sets') {
-        calculatedPrice = product.price;
-    } else if (product.isPerPiece) {
-        calculatedPrice = product.pricePerUnit;
-    } else if (product.pricePer100g) {
-        calculatedPrice = product.pricePer100g;
-    } else if (product.price) {
-        calculatedPrice = product.price;
-    }
-
-    // Update cart immediately
-    if (product.category === 'sets' || product.isPerPiece) {
-        const existingItem = cart.find(item => item.id === product.id);
-        if (existingItem) {
-            existingItem.quantity = parseInt(quantityElement.textContent);
-            existingItem.price = calculatedPrice;
-        } else {
-            const cartItem = {
-                ...product,
-                weight: product.isPerPiece ? product.unitWeight : undefined,
-                quantity: parseInt(quantityElement.textContent),
-                price: calculatedPrice,
-                cartId: Date.now()
-            };
-            cart.push(cartItem);
-        }
-    } else {
-        const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
-        if (existingItem) {
-            existingItem.quantity = parseInt(quantityElement.textContent);
-            existingItem.price = Math.round(calculatedPrice);
-        } else {
-            const cartItem = {
-                ...product,
-                weight: 100,
-                sauces: [],
-                quantity: parseInt(quantityElement.textContent),
-                price: Math.round(calculatedPrice),
-                cartId: Date.now()
-            };
-            cart.push(cartItem);
-        }
-    }
-
-    saveCart();
+    // Only update display, don't add to cart
     updateCardPrice(productId);
-    updateCartUI();
 }
 
 // Decrease card quantity
@@ -1192,38 +1219,17 @@ function decreaseCardQuantity(productId) {
     if (!product) return;
 
     const quantityElement = document.getElementById(`quantity-${productId}`);
-    const currentDisplayedQuantity = parseInt(quantityElement.textContent) || 1;
-
-    // Update cart immediately
-    if (product.category === 'sets' || product.isPerPiece) {
-        const existingItem = cart.find(item => item.id === product.id);
-        if (existingItem) {
-            if (existingItem.quantity > 1) {
-                existingItem.quantity -= 1;
-                quantityElement.textContent = existingItem.quantity;
-            } else {
-                // Remove item from cart
-                cart = cart.filter(i => i.cartId !== existingItem.cartId);
-                quantityElement.textContent = 1; // Reset display to 1
-            }
+    if (quantityElement) {
+        let currentQuantity = parseInt(quantityElement.textContent) || 1;
+        if (currentQuantity > 1) {
+            currentQuantity -= 1;
+            quantityElement.textContent = currentQuantity;
         }
-    } else {
-        const existingItem = cart.find(item => item.id === product.id && item.weight === 100 && item.sauces.length === 0);
-        if (existingItem) {
-            if (existingItem.quantity > 1) {
-                existingItem.quantity -= 1;
-                quantityElement.textContent = existingItem.quantity;
-            } else {
-                // Remove item from cart
-                cart = cart.filter(i => i.cartId !== existingItem.cartId);
-                quantityElement.textContent = 1; // Reset display to 1
-            }
-        }
+        // Don't go below 1 on the display
     }
 
-    saveCart();
+    // Only update display, don't modify cart
     updateCardPrice(productId);
-    updateCartUI();
 }
 
 // Update card quantities display
@@ -1241,13 +1247,20 @@ function updateCardQuantities() {
                     .reduce((sum, item) => sum + item.quantity, 0);
             } else {
                 // For regular products, filter by weight and no sauces
-                totalQuantity = cart
-                    .filter(item => item.id === productId && item.weight === 100 && item.sauces.length === 0)
-                    .reduce((sum, item) => sum + item.quantity, 0);
+                // For isPerPiece items, we need to calculate based on unit weight
+                if (product.isPerPiece) {
+                    totalQuantity = cart
+                        .filter(item => item.id === productId && item.sauces.length === 0)
+                        .reduce((sum, item) => sum + (item.weight / product.unitWeight), 0);
+                } else {
+                    totalQuantity = cart
+                        .filter(item => item.id === productId && item.weight === 100 && item.sauces.length === 0)
+                        .reduce((sum, item) => sum + item.quantity, 0);
+                }
             }
 
             // Update to cart quantity, or reset to 1 if not in cart
-            quantityElement.textContent = totalQuantity > 0 ? totalQuantity : 1;
+            quantityElement.textContent = totalQuantity > 0 ? Math.round(totalQuantity) : 1;
         }
     });
 
@@ -1266,7 +1279,7 @@ function updateCardQuantities() {
     // Update per-piece weight labels (e.g. lavash) to match current quantity
     Object.keys(products).forEach(productId => {
         const product = products[productId];
-        if (product.isPerPiece) {
+        if (product.isPerPiece || product.pricePer100g) {
             updateCardPrice(productId);
         }
     });
@@ -1296,12 +1309,19 @@ function updateCardPrice(productId) {
             const card = priceElement.closest('.product-card');
             const unitLabel = card ? card.querySelector('.product-unit') : null;
             if (unitLabel) {
-                unitLabel.textContent = `За ${product.unitWeight * displayedQuantity}гр`;
+                unitLabel.textContent = 'За 100гр';
             }
         } else if (product.pricePer100g) {
             // Price is per 100g, so multiply by quantity (each unit is 100g)
             const totalPrice = Math.round(product.pricePer100g * displayedQuantity);
             priceElement.textContent = `${totalPrice} грн`;
+
+            // Update the weight label on the card (100г -> 200г -> ...)
+            const card = priceElement.closest('.product-card');
+            const unitLabel = card ? card.querySelector('.product-unit') : null;
+            if (unitLabel) {
+                unitLabel.textContent = 'За 100гр';
+            }
         } else if (product.price) {
             // Price is per item (drinks), so multiply by quantity
             priceElement.textContent = `${product.price * displayedQuantity} грн`;
@@ -1361,6 +1381,8 @@ function addToCartDirect(productId) {
         if (existingItem) {
             existingItem.quantity = currentQuantity;
             existingItem.price = calculatedPrice;
+            // Store unit weight, not multiplied by quantity
+            existingItem.weight = product.isPerPiece ? product.unitWeight : undefined;
         } else {
             const cartItem = {
                 ...product,
@@ -1376,10 +1398,11 @@ function addToCartDirect(productId) {
         if (existingItem) {
             existingItem.quantity = currentQuantity;
             existingItem.price = Math.round(calculatedPrice);
+            existingItem.weight = 100; // Store unit weight (100g)
         } else {
             const cartItem = {
                 ...product,
-                weight: 100,
+                weight: 100, // Store unit weight (100g)
                 sauces: [],
                 quantity: currentQuantity,
                 price: Math.round(calculatedPrice),
@@ -1404,9 +1427,14 @@ function addSauceToCartDirect(sauceId) {
     const selectedWeight = selectedSauceWeights[sauceId] || 50;
     const selectedPrice = selectedSaucePrices[sauceId] || sauce.price50g;
 
+    // Get current quantity from the display
+    const quantityElement = document.getElementById(`quantity-sauce-${sauceId}`);
+    const currentQuantity = quantityElement ? parseInt(quantityElement.textContent) : 1;
+
     const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === selectedWeight);
     if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity = currentQuantity;
+        existingItem.price = selectedPrice;
     } else {
         const cartItem = {
             type: 'sauce',
@@ -1414,7 +1442,7 @@ function addSauceToCartDirect(sauceId) {
             name: sauce.name,
             weight: selectedWeight,
             price: selectedPrice,
-            quantity: 1,
+            quantity: currentQuantity,
             cartId: Date.now()
         };
         cart.push(cartItem);
@@ -1510,36 +1538,15 @@ function updateSauceModalPrice() {
 function increaseSauceQuantity(sauceId) {
     const sauce = sauces.find(s => s.id === sauceId);
     if (!sauce) return;
-    
-    const selectedWeight = selectedSauceWeights[sauceId] || 50;
-    const selectedPrice = selectedSaucePrices[sauceId] || sauce.price50g;
-    
+
     const quantityElement = document.getElementById(`quantity-sauce-${sauceId}`);
     if (quantityElement) {
         let currentQuantity = parseInt(quantityElement.textContent) || 1;
         currentQuantity += 1;
         quantityElement.textContent = currentQuantity;
     }
-    
-    const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === selectedWeight);
-    if (existingItem) {
-        existingItem.quantity = parseInt(quantityElement.textContent);
-    } else {
-        const cartItem = {
-            type: 'sauce',
-            sauceId: sauce.id,
-            name: sauce.name,
-            weight: selectedWeight,
-            price: selectedPrice,
-            quantity: parseInt(quantityElement.textContent),
-            cartId: Date.now()
-        };
-        cart.push(cartItem);
-    }
-    
-    saveCart();
-    updateCartUI();
-    updateCardQuantities();
+
+    // Only update display, don't add to cart
     updateSauceCardPrice(sauceId);
 }
 
@@ -1548,33 +1555,17 @@ function decreaseSauceQuantity(sauceId) {
     const sauce = sauces.find(s => s.id === sauceId);
     if (!sauce) return;
 
-    const selectedWeight = selectedSauceWeights[sauceId] || 50;
-    const selectedPrice = selectedSaucePrices[sauceId] || sauce.price50g;
-
     const quantityElement = document.getElementById(`quantity-sauce-${sauceId}`);
     if (quantityElement) {
         let currentQuantity = parseInt(quantityElement.textContent) || 1;
         if (currentQuantity > 1) {
             currentQuantity -= 1;
             quantityElement.textContent = currentQuantity;
-        } else {
-            // Don't go below 1 on the display
-            currentQuantity = 1;
         }
+        // Don't go below 1 on the display
     }
 
-    const existingItem = cart.find(item => item.type === 'sauce' && item.sauceId === sauceId && item.weight === selectedWeight);
-    if (existingItem) {
-        const displayedQuantity = parseInt(quantityElement.textContent);
-        if (displayedQuantity > 0) {
-            existingItem.quantity = displayedQuantity;
-        } else {
-            cart = cart.filter(i => i.cartId !== existingItem.cartId);
-        }
-    }
-
-    saveCart();
-    updateCardQuantities();
+    // Only update display, don't modify cart
     updateSauceCardPrice(sauceId);
 }
 
@@ -1592,6 +1583,7 @@ function addToCartFromModal() {
 
         if (existingItem) {
             existingItem.quantity += 1;
+            // Don't update price - it should remain the unit price
         } else {
             const cartItem = {
                 type: 'sauce',
@@ -1615,6 +1607,7 @@ function addToCartFromModal() {
         const existingItem = cart.find(item => item.id === currentProduct.id);
         if (existingItem) {
             existingItem.quantity += 1;
+            // Don't update price - it should remain the unit price
         } else {
             const cartItem = {
                 ...currentProduct,
@@ -1653,10 +1646,12 @@ function addToCartFromModal() {
         const existingItem = cart.find(item => item.id === currentDrink.id);
         if (existingItem) {
             existingItem.quantity += 1;
+            // Don't update price - it should remain the unit price
         } else {
             const cartItem = {
                 ...currentDrink,
                 quantity: 1,
+                price: currentDrink.price,
                 cartId: Date.now()
             };
             cart.push(cartItem);
@@ -1706,7 +1701,7 @@ function updateCartUI() {
 
             if (item.type === 'sauce') {
                 itemPrice = item.price;
-                itemText = `${item.weight}г`;
+                itemText = `${item.weight * item.quantity}г`;
             } else if (item.category === 'sets') {
                 // Handle sets
                 itemPrice = item.price;
@@ -1718,12 +1713,12 @@ function updateCartUI() {
             } else if (item.isPerPiece) {
                 // Handle per-piece items (e.g. lavash)
                 itemPrice = item.price;
-                itemText = item.weight ? `${item.weight}г` : '';
+                itemText = item.weight ? `${item.weight * item.quantity}г` : '';
             } else {
-                // Handle regular products
-                itemPrice = Math.round((item.pricePer100g * item.weight / 100) + (item.sauces ? item.sauces.reduce((sum, sauce) => sum + sauce.price50g, 0) : 0));
+                // Handle regular products - use stored price instead of recalculating
+                itemPrice = item.price;
                 const saucesText = item.sauces && item.sauces.length > 0 ? item.sauces.map(s => s.name).join(', ') : '';
-                itemText = `${item.weight}г${saucesText ? ', ' + saucesText : ''}`;
+                itemText = `${item.weight * item.quantity}г${saucesText ? ', ' + saucesText : ''}`;
             }
 
             const itemTotal = itemPrice * item.quantity;
@@ -1761,8 +1756,8 @@ function updateCartUI() {
             // Handle per-piece items (e.g. lavash)
             itemPrice = item.price;
         } else {
-            // Handle regular products
-            itemPrice = Math.round((item.pricePer100g * item.weight / 100) + (item.sauces ? item.sauces.reduce((sum, sauce) => sum + sauce.price50g, 0) : 0));
+            // Handle regular products - use stored price instead of recalculating
+            itemPrice = item.price;
         }
         return sum + (itemPrice * item.quantity);
     }, 0);
@@ -1777,6 +1772,7 @@ function increaseQuantity(cartId) {
     const item = cart.find(item => item.cartId === cartId);
     if (item) {
         item.quantity += 1;
+        // Don't update price - it should remain the unit price
         saveCart();
         updateCartUI();
         updateCardQuantities();
@@ -1789,6 +1785,7 @@ function decreaseQuantity(cartId) {
     if (item) {
         if (item.quantity > 1) {
             item.quantity -= 1;
+            // Don't update price - it should remain the unit price
         } else {
             cart = cart.filter(i => i.cartId !== cartId);
         }
@@ -1909,21 +1906,19 @@ function addUnitLabelsToProductCards() {
     const productCards = document.querySelectorAll('.product-card');
     productCards.forEach(card => {
         const productImage = card.querySelector('.product-image');
-        if (productImage && !productImage.querySelector('.product-unit')) {
+        if (productImage) {
             const category = card.dataset.category;
             // Add unit label only for food products (not drinks)
             if (category !== 'drinks' && category !== 'sauces' && category !== 'sets') {
-                // Try to resolve the underlying product to check for per-piece pricing
-                const onclick = card.getAttribute('onclick');
-                const match = onclick ? onclick.match(/open(?:Product|Drink)Modal\('([^']+)'\)/) : null;
-                const productId = match ? match[1] : null;
-                const product = productId ? products[productId] : null;
+                // Remove existing unit label if any
+                const existingLabel = productImage.querySelector('.product-unit');
+                if (existingLabel) {
+                    existingLabel.remove();
+                }
 
                 const unitLabel = document.createElement('div');
                 unitLabel.className = 'product-unit';
-                unitLabel.textContent = (product && product.isPerPiece)
-                    ? `За ${product.unitWeight}гр`
-                    : 'За 100гр';
+                unitLabel.textContent = 'За 100гр';
                 productImage.appendChild(unitLabel);
             }
         }
@@ -1964,6 +1959,11 @@ function convertToSimpleProductCards() {
         if (category !== 'drinks' && category !== 'sauces' && category !== 'sets') {
             const productInfo = card.querySelector('.product-info');
             const productTitle = card.querySelector('.product-title');
+
+            // Skip cards that already have the new format
+            if (card.querySelector('.product-footer-new') || card.querySelector('.product-price-row-with-btn')) {
+                return;
+            }
 
             if (productInfo && productTitle) {
                 // Add description if not exists
@@ -2473,24 +2473,8 @@ function getItemPrice(item) {
         return Number(item.price);
     }
 
-    // Если это товар з фіксованою ціною за штуку (напр. лаваш)
-    if (item.isPerPiece) {
-        return Number(item.price);
-    }
-
-    // Если это обычное блюдо
-    let price = (Number(item.pricePer100g) * Number(item.weight)) / 100;
-
-    // Добавляем соусы к блюду
-    if (item.sauces && item.sauces.length > 0) {
-        price += item.sauces.reduce((sum, sauce) => {
-            // Use selectedPrice if available, otherwise fall back to price50g
-            const saucePrice = sauce.selectedPrice ? Number(sauce.selectedPrice) : Number(sauce.price50g);
-            return sum + saucePrice;
-        }, 0);
-    }
-
-    return Math.round(price);
+    // Для всіх інших товарів використовуємо збережену ціну
+    return Number(item.price);
 }
 
 // мінімальна дата — сьогодні

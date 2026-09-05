@@ -1044,21 +1044,8 @@ function createBasketItem(item, index) {
     itemDiv.className = 'basket-item';
     itemDiv.dataset.cartId = item.cartId;
 
-    // Calculate price based on item type
-    let itemPrice = 0;
-    if (item.type === 'sauce') {
-        itemPrice = item.price || 0;
-    } else if (item.category === 'sets') {
-        itemPrice = item.price || 0;
-    } else if (item.pricePer100g && item.weight) {
-        // Calculate price based on weight for shashlik items
-        itemPrice = (item.pricePer100g * item.weight) / 100;
-    } else if (item.price) {
-        itemPrice = item.price;
-    } else if (item.pricePer100g) {
-        // Default to 100g if no weight specified
-        itemPrice = item.pricePer100g;
-    }
+    // Use stored price instead of recalculating
+    let itemPrice = item.price || 0;
 
     // Get image based on item type with better fallback logic
     let imageUrl = '/static/images/placeholder.jpg';
@@ -1071,8 +1058,7 @@ function createBasketItem(item, index) {
     // Calculate item total
     const itemTotal = Math.round(itemPrice * item.quantity);
 
-    // Get weight display
-    // Get weight display - масштабуємо вагу відповідно до кількості
+    // Get weight display - multiply by quantity to show total weight
     const weightDisplay = item.weight ? `${item.weight * item.quantity}г` : '';
 
     // Get description
@@ -1132,6 +1118,7 @@ function updateQuantity(cartId, change) {
     if (newQuantity > 99) return;
 
     item.quantity = newQuantity;
+    // Don't update price or weight - they should remain the unit price/weight
     saveCart();
     renderBasket();
 }
@@ -1168,20 +1155,8 @@ function updateSummary() {
     let itemCount = 0;
 
     basketCart.forEach(item => {
-        let itemPrice = 0;
-        if (item.type === 'sauce') {
-            itemPrice = item.price || 0;
-        } else if (item.category === 'sets') {
-            itemPrice = item.price || 0;
-        } else if (item.pricePer100g && item.weight) {
-            // Calculate price based on weight for shashlik items
-            itemPrice = (item.pricePer100g * item.weight) / 100;
-        } else if (item.price) {
-            itemPrice = item.price;
-        } else if (item.pricePer100g) {
-            // Default to 100g if no weight specified
-            itemPrice = item.pricePer100g;
-        }
+        // Use stored price instead of recalculating
+        let itemPrice = item.price || 0;
 
         subtotal += Math.round(itemPrice * item.quantity);
         itemCount += item.quantity;

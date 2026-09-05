@@ -979,18 +979,7 @@ button, .category-item, .product-card {
     gap: 6px;
 }
 
-.product-unit {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(255, 247, 237, 0.9);
-    padding: 4px 8px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #E4CBB4;
-    z-index: 10;
-}
+
 
 .want-btn {
     width: 100%;
@@ -1052,9 +1041,17 @@ button, .category-item, .product-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 3px;
+    gap: 8px;
     flex-wrap: nowrap;
     min-width: 0;
+}
+
+.product-price-unit-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    flex-shrink: 1;
 }
 
 .quantity-and-want {
@@ -1066,112 +1063,30 @@ button, .category-item, .product-card {
     align-items: center;
 }
 
-/* Fix for specific cards - much smaller image */
-.product-card[data-id="pork-neck"] .product-image {
-    height: 200px;
-}
-
-.product-card[data-id="set-2-persons"] .product-image,
-.product-card[data-id="set-4-persons"] .product-image,
-.product-card[data-id="set-6-persons"] .product-image,
-.product-card[data-id="set-10-persons"] .product-image {
+/* Ensure all product cards have consistent image height */
+.product-card .product-image {
     height: 300px;
 }
 
-.product-card[data-id="pork-neck"] .product-info-new,
-.product-card[data-id="set-2-persons"] .product-info-new,
-.product-card[data-id="set-4-persons"] .product-info-new,
-.product-card[data-id="set-6-persons"] .product-info-new,
-.product-card[data-id="set-10-persons"] .product-info-new {
-    padding: 16px 12px 12px 12px;
-}
-
-.product-card[data-id="pork-neck"] .product-footer-new,
-.product-card[data-id="set-2-persons"] .product-footer-new,
-.product-card[data-id="set-4-persons"] .product-footer-new,
-.product-card[data-id="set-6-persons"] .product-footer-new,
-.product-card[data-id="set-10-persons"] .product-footer-new {
-    gap: 12px;
-}
-
-/* Fix for pork-neck card to remove extra bottom space */
-.product-card[data-id="pork-neck"] {
-    height: auto;
-    min-height: auto;
-}
-
-/* Fix for set-2-persons card to make it symmetrical with other set cards */
-.product-card[data-id="set-2-persons"] {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-}
-
-.product-card[data-id="set-2-persons"] .product-info-new {
+/* Ensure all product cards have consistent padding and layout */
+.product-card .product-info-new {
+    padding: 16px 12px;
     display: flex;
     flex-direction: column;
     flex: 1;
     gap: 8px;
 }
 
-.product-card[data-id="set-2-persons"] .product-description-new {
-    min-height: 42px;
-    line-height: 1.5;
-}
-
-.product-card[data-id="set-2-persons"] .product-footer-new {
+.product-card .product-footer-new {
     margin-top: auto;
-}
-
-.product-card[data-id="pork-neck"] .product-info-new {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 8px;
-    padding: 14px 12px;
-}
-
-.product-card[data-id="pork-neck"] .product-footer-new {
-    gap: 8px;
-    margin-top: 0;
-}
-
-/* Make chicken-fillet card larger with more padding */
-.product-card[data-id="chicken-fillet"] .product-info-new {
-    padding: 18px 16px;
     gap: 12px;
 }
 
-.product-card[data-id="chicken-fillet"] .product-description-new {
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 12px;
-}
-
-.product-card[data-id="chicken-fillet"] .product-price-new {
-    font-size: 18px;
-}
-
-.product-card[data-id="chicken-fillet"] .quantity-selector-new {
-    gap: 4px;
-    padding: 4px;
-}
-
-.product-card[data-id="chicken-fillet"] .quantity-btn-new {
-    width: 28px;
-    height: 28px;
-    font-size: 14px;
-}
-
-.product-card[data-id="chicken-fillet"] .quantity-value-new {
-    font-size: 14px;
-    min-width: 24px;
-}
-
-.product-card[data-id="chicken-fillet"] .want-btn-new {
-    padding: 8px 16px;
-    font-size: 12px;
-    min-height: 36px;
+/* Ensure all product cards have consistent structure */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    height: auto;
 }
 
 
@@ -2500,6 +2415,10 @@ button, .category-item, .product-card {
         gap: 6px;
     }
 
+    .product-price-unit-wrapper {
+        align-items: flex-start;
+    }
+
     .quantity-and-want {
         width: 100%;
         justify-content: space-between;
@@ -2597,6 +2516,10 @@ button, .category-item, .product-card {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
+    }
+
+    .product-price-unit-wrapper {
+        align-items: flex-start;
     }
 
     .quantity-and-want {
@@ -2943,6 +2866,10 @@ button, .category-item, .product-card {
         gap: 8px;
     }
 
+    .product-price-unit-wrapper {
+        align-items: flex-start;
+    }
+
     .quantity-and-want {
         width: 100%;
         justify-content: space-between;
@@ -3192,6 +3119,10 @@ button, .category-item, .product-card {
         gap: 10px;
     }
 
+    .product-price-unit-wrapper {
+        align-items: flex-start;
+    }
+
     .quantity-and-want {
         width: 100%;
         justify-content: space-between;
@@ -3358,6 +3289,10 @@ button, .category-item, .product-card {
         gap: 8px;
     }
 
+    .product-price-unit-wrapper {
+        align-items: flex-start;
+    }
+
     .quantity-and-want {
         width: 100%;
         justify-content: space-between;
@@ -3522,6 +3457,10 @@ button, .category-item, .product-card {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
+    }
+
+    .product-price-unit-wrapper {
+        align-items: flex-start;
     }
 
     .quantity-and-want {
@@ -5748,9 +5687,16 @@ main {
 
 /* Единица измерения */
 .product-unit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
     background: rgba(23, 17, 13, 0.9);
     color: #F5E6D3;
     border: 1px solid #4A3528;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    z-index: 10;
 }
 
 /* Блок количества */
