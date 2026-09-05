@@ -787,7 +787,7 @@ button, .category-item, .product-card {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 24px;
-    align-items: stretch;
+    align-items: start;
 }
 
 .product-card.featured {
@@ -795,7 +795,7 @@ button, .category-item, .product-card {
 }
 
 .product-card.featured .product-image {
-    height: 300px;
+    height: 350px;
 }
 
 .product-card.featured .product-title {
@@ -817,7 +817,7 @@ button, .category-item, .product-card {
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: auto;
     box-sizing: border-box;
 }
 
@@ -829,6 +829,25 @@ button, .category-item, .product-card {
     /* Specific styles defined in hover and other selectors */
     display: flex;
     flex-direction: column;
+    height: auto;
+    min-height: auto;
+}
+
+.product-card[data-category="shashlik"] .product-info-new,
+.product-card[data-category="chicken"] .product-info-new,
+.product-card[data-category="sides"] .product-info-new,
+.product-card[data-category="grill"] .product-info-new {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 8px;
+}
+
+.product-card[data-category="shashlik"] .product-footer-new,
+.product-card[data-category="chicken"] .product-footer-new,
+.product-card[data-category="sides"] .product-footer-new,
+.product-card[data-category="grill"] .product-footer-new {
+    margin-top: auto;
 }
 
 .product-card[data-category="shashlik"]::before,
@@ -918,7 +937,7 @@ button, .category-item, .product-card {
 
 .product-image {
     position: relative;
-    height: 320px;
+    height: 400px;
     overflow: hidden;
     background: linear-gradient(135deg, var(--wood-light) 0%, var(--wood-dark) 100%);
     display: flex;
@@ -1048,14 +1067,19 @@ button, .category-item, .product-card {
 }
 
 /* Fix for specific cards - much smaller image */
-.product-card[data-id="pork-neck"] .product-image,
+.product-card[data-id="pork-neck"] .product-image {
+    height: 200px;
+}
+
+.product-card[data-id="set-2-persons"] .product-image,
 .product-card[data-id="set-4-persons"] .product-image,
 .product-card[data-id="set-6-persons"] .product-image,
 .product-card[data-id="set-10-persons"] .product-image {
-    height: 250px;
+    height: 300px;
 }
 
 .product-card[data-id="pork-neck"] .product-info-new,
+.product-card[data-id="set-2-persons"] .product-info-new,
 .product-card[data-id="set-4-persons"] .product-info-new,
 .product-card[data-id="set-6-persons"] .product-info-new,
 .product-card[data-id="set-10-persons"] .product-info-new {
@@ -1063,10 +1087,91 @@ button, .category-item, .product-card {
 }
 
 .product-card[data-id="pork-neck"] .product-footer-new,
+.product-card[data-id="set-2-persons"] .product-footer-new,
 .product-card[data-id="set-4-persons"] .product-footer-new,
 .product-card[data-id="set-6-persons"] .product-footer-new,
 .product-card[data-id="set-10-persons"] .product-footer-new {
     gap: 12px;
+}
+
+/* Fix for pork-neck card to remove extra bottom space */
+.product-card[data-id="pork-neck"] {
+    height: auto;
+    min-height: auto;
+}
+
+/* Fix for set-2-persons card to make it symmetrical with other set cards */
+.product-card[data-id="set-2-persons"] {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+
+.product-card[data-id="set-2-persons"] .product-info-new {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 8px;
+}
+
+.product-card[data-id="set-2-persons"] .product-description-new {
+    min-height: 42px;
+    line-height: 1.5;
+}
+
+.product-card[data-id="set-2-persons"] .product-footer-new {
+    margin-top: auto;
+}
+
+.product-card[data-id="pork-neck"] .product-info-new {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 14px 12px;
+}
+
+.product-card[data-id="pork-neck"] .product-footer-new {
+    gap: 8px;
+    margin-top: 0;
+}
+
+/* Make chicken-fillet card larger with more padding */
+.product-card[data-id="chicken-fillet"] .product-info-new {
+    padding: 18px 16px;
+    gap: 12px;
+}
+
+.product-card[data-id="chicken-fillet"] .product-description-new {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.product-card[data-id="chicken-fillet"] .product-price-new {
+    font-size: 18px;
+}
+
+.product-card[data-id="chicken-fillet"] .quantity-selector-new {
+    gap: 4px;
+    padding: 4px;
+}
+
+.product-card[data-id="chicken-fillet"] .quantity-btn-new {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+}
+
+.product-card[data-id="chicken-fillet"] .quantity-value-new {
+    font-size: 14px;
+    min-width: 24px;
+}
+
+.product-card[data-id="chicken-fillet"] .want-btn-new {
+    padding: 8px 16px;
+    font-size: 12px;
+    min-height: 36px;
 }
 
 
@@ -1286,10 +1391,10 @@ button, .category-item, .product-card {
 
 .product-title {
     font-family: 'Syne', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    line-height: 1.4;
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    line-height: 1.3;
     color: #E4CBB4;
 }
 
@@ -1959,7 +2064,7 @@ button, .category-item, .product-card {
     }
     
     .product-card.featured .product-image {
-        height: 200px;
+        height: 250px;
     }
     
     .cart-drawer {
@@ -2093,20 +2198,20 @@ button, .category-item, .product-card {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
-    
+
     .product-image {
-        height: 120px;
+        height: 160px;
     }
-    
+
     .product-info {
         padding: 10px;
     }
-    
+
     .product-title {
-        font-size: 14px;
-        line-height: 1.2;
+        font-size: 16px;
+        line-height: 1.3;
     }
-    
+
     .product-description {
         font-size: 11px;
         line-height: 1.3;
@@ -2280,7 +2385,7 @@ button, .category-item, .product-card {
     }
 
     .product-image {
-        height: 140px;
+        height: 180px;
     }
 
     .product-info {
@@ -2288,7 +2393,7 @@ button, .category-item, .product-card {
     }
 
     .product-title {
-        font-size: 15px;
+        font-size: 16px;
     }
 
     .product-description {
@@ -2369,7 +2474,7 @@ button, .category-item, .product-card {
     }
 
     .product-image {
-        height: 140px;
+        height: 180px;
     }
 
     .product-info-new {
@@ -2472,7 +2577,7 @@ button, .category-item, .product-card {
     }
 
     .product-image {
-        height: 150px;
+        height: 190px;
     }
 
     .product-info-new {
@@ -2816,7 +2921,7 @@ button, .category-item, .product-card {
     }
 
     .product-image {
-        height: 180px;
+        height: 220px;
     }
 
     .product-info-new {
@@ -3015,11 +3120,11 @@ button, .category-item, .product-card {
     }
 
     .product-title {
-        font-size: 7px;
+        font-size: 14px;
     }
 
     .product-description {
-        font-size: 5px;
+        font-size: 12px;
     }
 
     .section-title {
@@ -3065,7 +3170,7 @@ button, .category-item, .product-card {
     }
 
     .product-image {
-        height: 200px;
+        height: 240px;
     }
 
     .product-info-new {
@@ -3231,7 +3336,7 @@ button, .category-item, .product-card {
     }
 
     .product-image {
-        height: 160px;
+        height: 200px;
     }
 
     .product-info-new {
@@ -3397,7 +3502,7 @@ button, .category-item, .product-card {
     }
 
     .product-image {
-        height: 220px;
+        height: 260px;
     }
 
     .product-info-new {
@@ -3601,15 +3706,15 @@ button, .category-item, .product-card {
     }
 
     .product-image {
-        height: 120px;
+        height: 160px;
     }
 
     .product-title {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .product-description {
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .product-price {
@@ -3728,9 +3833,9 @@ button, .category-item, .product-card {
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
-    
+
     .product-image {
-        height: 160px;
+        height: 200px;
     }
 }
 
@@ -4281,25 +4386,31 @@ main {
         height: 100vh;
         transition: right 0.3s ease;
     }
-    
+
     .cart-drawer.open {
         right: 0;
     }
-    
+
     /* Better cart items on mobile */
     .cart-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
-    
+
     .cart-item-info {
         width: 100%;
     }
-    
+
     .cart-item-controls {
         width: 100%;
         justify-content: space-between;
+    }
+
+    /* Fix for set-2-persons card on mobile */
+    .product-card[data-id="set-2-persons"] .product-description-new {
+        min-height: 36px;
+        font-size: 11px;
     }
 }
     .cart-drawer {

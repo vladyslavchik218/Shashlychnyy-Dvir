@@ -282,6 +282,16 @@ function selectSauceWeight(sauceId, weight, price) {
 
 // Product data (in real app, this would come from backend)
 const products = {
+    'set-2-persons': {
+        id: 'set-2-persons',
+        name: 'Сет на 2 особи',
+        description: 'Шашлик свинний 400г, Ковбаски 300г, Картопля печена 500г, Лаваш 1 шт, Соус 50г',
+        price: 690,
+        originalPrice: 1250,
+        image: '/static/images/2-set.jpg',
+        badges: ['hit'],
+        category: 'sets'
+    },
     'set-4-persons': {
         id: 'set-4-persons',
         name: 'Сет на 4 особи',
@@ -408,6 +418,17 @@ const products = {
         description: 'Хрустка маринована цибуля з травами',
         pricePer100g: 15,
         image: '/static/images/marinated-onions.jpg',
+        badges: [],
+        category: 'sides'
+    },
+    'lavash-uwu': {
+        id: 'lavash-uwu',
+        name: 'Вірменський лаваш',
+        description: 'Смачний лаваш для шашлику',
+        pricePerUnit: 25,
+        unitWeight: 125,
+        isPerPiece: true,
+        image: '/static/images/lavash-uwu.jpg',
         badges: [],
         category: 'sides'
     },
@@ -1055,14 +1076,16 @@ function quickAdd(productId) {
     let calculatedPrice = 0;
     if (product.category === 'sets') {
         calculatedPrice = product.price;
+    } else if (product.isPerPiece) {
+        calculatedPrice = product.pricePerUnit;
     } else if (product.pricePer100g) {
         calculatedPrice = product.pricePer100g;
     } else if (product.price) {
         calculatedPrice = product.price;
     }
 
-    // For sets, use simplified logic
-    if (product.category === 'sets') {
+    // For sets and per-piece items, use simplified logic
+    if (product.category === 'sets' || product.isPerPiece) {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
             existingItem.quantity += 1;
@@ -1070,6 +1093,7 @@ function quickAdd(productId) {
         } else {
             const cartItem = {
                 ...product,
+                weight: product.isPerPiece ? product.unitWeight : undefined,
                 quantity: 1,
                 price: calculatedPrice,
                 cartId: Date.now()
@@ -1115,6 +1139,8 @@ function increaseCardQuantity(productId) {
     let calculatedPrice = 0;
     if (product.category === 'sets') {
         calculatedPrice = product.price;
+    } else if (product.isPerPiece) {
+        calculatedPrice = product.pricePerUnit;
     } else if (product.pricePer100g) {
         calculatedPrice = product.pricePer100g;
     } else if (product.price) {
@@ -1122,7 +1148,7 @@ function increaseCardQuantity(productId) {
     }
 
     // Update cart immediately
-    if (product.category === 'sets') {
+    if (product.category === 'sets' || product.isPerPiece) {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
             existingItem.quantity = parseInt(quantityElement.textContent);
@@ -1130,6 +1156,7 @@ function increaseCardQuantity(productId) {
         } else {
             const cartItem = {
                 ...product,
+                weight: product.isPerPiece ? product.unitWeight : undefined,
                 quantity: parseInt(quantityElement.textContent),
                 price: calculatedPrice,
                 cartId: Date.now()
@@ -1168,7 +1195,7 @@ function decreaseCardQuantity(productId) {
     const currentDisplayedQuantity = parseInt(quantityElement.textContent) || 1;
 
     // Update cart immediately
-    if (product.category === 'sets') {
+    if (product.category === 'sets' || product.isPerPiece) {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
             if (existingItem.quantity > 1) {
@@ -1207,13 +1234,8 @@ function updateCardQuantities() {
         if (quantityElement) {
             let totalQuantity = 0;
 
-            if (product.category === 'sets') {
-                // For sets, just sum all quantities
-                totalQuantity = cart
-                    .filter(item => item.id === productId)
-                    .reduce((sum, item) => sum + item.quantity, 0);
-            } else if (product.category === 'drinks') {
-                // For drinks, sum all quantities
+            if (product.category === 'sets' || product.category === 'drinks' || product.isPerPiece) {
+                // For sets, drinks, and per-piece items, just sum all quantities
                 totalQuantity = cart
                     .filter(item => item.id === productId)
                     .reduce((sum, item) => sum + item.quantity, 0);
@@ -1240,6 +1262,14 @@ function updateCardQuantities() {
             quantityElement.textContent = totalQuantity > 0 ? totalQuantity : 1;
         }
     });
+
+    // Update per-piece weight labels (e.g. lavash) to match current quantity
+    Object.keys(products).forEach(productId => {
+        const product = products[productId];
+        if (product.isPerPiece) {
+            updateCardPrice(productId);
+        }
+    });
 }
 
 // Update card price based on displayed quantity
@@ -1257,6 +1287,17 @@ function updateCardPrice(productId) {
             // Fixed price for sets
             const totalPrice = product.price * displayedQuantity;
             priceElement.textContent = `${totalPrice} грн`;
+        } else if (product.isPerPiece) {
+            // Price per unit (e.g. lavash), multiplied by quantity
+            const totalPrice = Math.round(product.pricePerUnit * displayedQuantity);
+            priceElement.textContent = `${totalPrice} грн`;
+
+            // Update the weight label on the card (125г -> 250г -> ...)
+            const card = priceElement.closest('.product-card');
+            const unitLabel = card ? card.querySelector('.product-unit') : null;
+            if (unitLabel) {
+                unitLabel.textContent = `За ${product.unitWeight * displayedQuantity}гр`;
+            }
         } else if (product.pricePer100g) {
             // Price is per 100g, so multiply by quantity (each unit is 100g)
             const totalPrice = Math.round(product.pricePer100g * displayedQuantity);
@@ -1306,14 +1347,16 @@ function addToCartDirect(productId) {
     let calculatedPrice = 0;
     if (product.category === 'sets') {
         calculatedPrice = product.price;
+    } else if (product.isPerPiece) {
+        calculatedPrice = product.pricePerUnit;
     } else if (product.pricePer100g) {
         calculatedPrice = product.pricePer100g;
     } else if (product.price) {
         calculatedPrice = product.price;
     }
 
-    // For sets, use simplified logic
-    if (product.category === 'sets') {
+    // For sets and per-piece items, use simplified logic
+    if (product.category === 'sets' || product.isPerPiece) {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
             existingItem.quantity = currentQuantity;
@@ -1321,6 +1364,7 @@ function addToCartDirect(productId) {
         } else {
             const cartItem = {
                 ...product,
+                weight: product.isPerPiece ? product.unitWeight : undefined,
                 quantity: currentQuantity,
                 price: calculatedPrice,
                 cartId: Date.now()
@@ -1438,86 +1482,6 @@ function openSauceModal(sauceId) {
     
     // Store current sauce
     currentSauce = sauce;
-    
-    // Add event listeners for weight buttons
-    weightSelector.querySelectorAll('.weight-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            weightSelector.querySelectorAll('.weight-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            updateSauceModalPrice();
-        });
-    });
-    
-    document.getElementById('product-modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-}
-
-// Update sauce modal price
-function updateSauceModalPrice() {
-    if (!currentSauce) return;
-    
-    const selectedWeight = parseInt(document.querySelector('.weight-btn.active').dataset.weight);
-    const price = selectedWeight === 50 ? currentSauce.price50g : currentSauce.price100g;
-    
-    document.getElementById('modal-product-price').textContent = price + ' грн';
-}
-
-// Open sauce modal
-function openSauceModal(sauceId) {
-    const sauce = sauces.find(s => s.id === sauceId);
-    if (!sauce) return;
-    
-    const modalImage = document.getElementById('modal-product-image');
-    const modalPlaceholder = document.getElementById('modal-placeholder');
-    
-    modalImage.src = sauce.image;
-    modalImage.style.display = 'block';
-    modalPlaceholder.style.display = 'none';
-    
-    modalImage.onerror = function() {
-        this.style.display = 'none';
-        modalPlaceholder.style.display = 'flex';
-        const sauceEmojis = {
-            'garlic': '🧄',
-            'spicy': '🌶️',
-            'curry': '🍛',
-            'lingonberry': '🫐',
-            'tartar': '🥄',
-            'signature': '⭐',
-            'cheese': '🧀',
-            'mustard': '🌾',
-            'sweet-chili': '🌶️'
-        };
-        modalPlaceholder.textContent = sauceEmojis[sauceId] || '🥫';
-    };
-    
-    document.getElementById('modal-product-title').textContent = sauce.name;
-    document.getElementById('modal-product-description').textContent = 'Оберіть вагу соусу';
-    document.getElementById('modal-product-price').textContent = sauce.price50g + ' грн/50г';
-    
-    // Clear badges
-    const badgesContainer = document.getElementById('modal-badges');
-    badgesContainer.innerHTML = '';
-    
-    // Add weight selector
-    const weightSelector = document.createElement('div');
-    weightSelector.className = 'weight-selector';
-    weightSelector.innerHTML = `
-        <h3>Вага</h3>
-        <div class="weight-options">
-            <button class="weight-btn active" data-weight="50">50г</button>
-            <button class="weight-btn" data-weight="100">100г</button>
-        </div>
-    `;
-    
-    // Replace options
-    const modalOptions = document.querySelector('.modal-options');
-    modalOptions.innerHTML = '';
-    modalOptions.appendChild(weightSelector);
-    
-    // Store current sauce
-    currentSauce = sauce;
-    currentProduct = null;
     
     // Add event listeners for weight buttons
     weightSelector.querySelectorAll('.weight-btn').forEach(btn => {
@@ -1751,6 +1715,10 @@ function updateCartUI() {
                 // Handle drinks
                 itemPrice = item.price;
                 itemText = item.volume || '';
+            } else if (item.isPerPiece) {
+                // Handle per-piece items (e.g. lavash)
+                itemPrice = item.price;
+                itemText = item.weight ? `${item.weight}г` : '';
             } else {
                 // Handle regular products
                 itemPrice = Math.round((item.pricePer100g * item.weight / 100) + (item.sauces ? item.sauces.reduce((sum, sauce) => sum + sauce.price50g, 0) : 0));
@@ -1788,6 +1756,9 @@ function updateCartUI() {
             itemPrice = item.price;
         } else if (item.category === 'drinks') {
             // Handle drinks
+            itemPrice = item.price;
+        } else if (item.isPerPiece) {
+            // Handle per-piece items (e.g. lavash)
             itemPrice = item.price;
         } else {
             // Handle regular products
@@ -1942,9 +1913,17 @@ function addUnitLabelsToProductCards() {
             const category = card.dataset.category;
             // Add unit label only for food products (not drinks)
             if (category !== 'drinks' && category !== 'sauces' && category !== 'sets') {
+                // Try to resolve the underlying product to check for per-piece pricing
+                const onclick = card.getAttribute('onclick');
+                const match = onclick ? onclick.match(/open(?:Product|Drink)Modal\('([^']+)'\)/) : null;
+                const productId = match ? match[1] : null;
+                const product = productId ? products[productId] : null;
+
                 const unitLabel = document.createElement('div');
                 unitLabel.className = 'product-unit';
-                unitLabel.textContent = 'За 100гр';
+                unitLabel.textContent = (product && product.isPerPiece)
+                    ? `За ${product.unitWeight}гр`
+                    : 'За 100гр';
                 productImage.appendChild(unitLabel);
             }
         }
@@ -2494,6 +2473,11 @@ function getItemPrice(item) {
         return Number(item.price);
     }
 
+    // Если это товар з фіксованою ціною за штуку (напр. лаваш)
+    if (item.isPerPiece) {
+        return Number(item.price);
+    }
+
     // Если это обычное блюдо
     let price = (Number(item.pricePer100g) * Number(item.weight)) / 100;
 
@@ -2717,32 +2701,3 @@ function selectMessenger(type, btnEl) {
     document.querySelectorAll('.messenger-btn').forEach(b => b.classList.remove('selected'));
     btnEl.classList.add('selected');
 }
-
-document.querySelectorAll('.product-card').forEach(card => {
-  const unitPrice  = parseFloat(card.dataset.unitPrice);
-  const unitWeight = parseFloat(card.dataset.unitWeight);
-
-  const qtyValueEl = card.querySelector('.quantity-value-new');
-  const weightEl    = card.querySelector('.product-unit');
-  const priceEl     = card.querySelector('.product-price-new');
-
-  let qty = parseInt(qtyValueEl.textContent, 10) || 1;
-
-  function render() {
-    qtyValueEl.textContent = qty;
-    if (weightEl) weightEl.textContent = `${unitWeight * qty}г`;
-    if (priceEl)  priceEl.textContent = `${unitPrice * qty} грн`;
-  }
-
-  card.querySelector('.qty-plus').addEventListener('click', () => {
-    qty++;
-    render();
-  });
-
-  card.querySelector('.qty-minus').addEventListener('click', () => {
-    if (qty > 1) {
-      qty--;
-      render();
-    }
-  });
-});
