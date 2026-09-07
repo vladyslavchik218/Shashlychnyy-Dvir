@@ -456,7 +456,7 @@ const products = {
         name: 'Вірменський лаваш',
         description: 'Смачний лаваш для шашлику',
         pricePerUnit: 25,
-        pricePer100g: 25,
+        pricePer125g: 25,
         unitWeight: 125,
         isPerPiece: true,
         image: '/static/images/lavash-uwu.jpg',
@@ -1309,7 +1309,7 @@ function updateCardPrice(productId) {
             const card = priceElement.closest('.product-card');
             const unitLabel = card ? card.querySelector('.product-unit') : null;
             if (unitLabel) {
-                unitLabel.textContent = 'За 100гр';
+                unitLabel.textContent = `За ${product.unitWeight || 100}гр`;
             }
         } else if (product.pricePer100g) {
             // Price is per 100g, so multiply by quantity (each unit is 100g)
@@ -1320,7 +1320,7 @@ function updateCardPrice(productId) {
             const card = priceElement.closest('.product-card');
             const unitLabel = card ? card.querySelector('.product-unit') : null;
             if (unitLabel) {
-                unitLabel.textContent = 'За 100гр';
+                unitLabel.textContent = `За ${product.unitWeight || 100}гр`;
             }
         } else if (product.price) {
             // Price is per item (drinks), so multiply by quantity
@@ -1908,17 +1908,26 @@ function addUnitLabelsToProductCards() {
         const productImage = card.querySelector('.product-image');
         if (productImage) {
             const category = card.dataset.category;
-            // Add unit label only for food products (not drinks)
             if (category !== 'drinks' && category !== 'sauces' && category !== 'sets') {
-                // Remove existing unit label if any
                 const existingLabel = productImage.querySelector('.product-unit');
                 if (existingLabel) {
                     existingLabel.remove();
                 }
 
+                // Получаем id товара, чтобы взять его unitWeight
+                const onclick = card.getAttribute('onclick');
+                let weightText = 'За 100гр';
+                if (onclick) {
+                    const match = onclick.match(/openProductModal\('([^']+)'\)/);
+                    if (match && products[match[1]]) {
+                        const p = products[match[1]];
+                        weightText = `За ${p.unitWeight || 100}гр`;
+                    }
+                }
+
                 const unitLabel = document.createElement('div');
                 unitLabel.className = 'product-unit';
-                unitLabel.textContent = 'За 100гр';
+                unitLabel.textContent = weightText;
                 productImage.appendChild(unitLabel);
             }
         }
@@ -2507,13 +2516,11 @@ function setupDateSelectDisplay(inputId, displayId, wrapperId, formatFn, placeho
     input.addEventListener('blur', () => wrapper.classList.remove('focused'));
 
     wrapper.addEventListener('click', () => {
-        // Mobile-friendly approach
-        if (input.type === 'date') {
-            // On mobile, just clicking the input should trigger the native picker
-            input.click();
-            input.focus();
-        } else if (input.showPicker) {
-            try { input.showPicker(); } catch (e) {
+        // Directly show the date picker
+        if (input.showPicker) {
+            try {
+                input.showPicker();
+            } catch (e) {
                 input.focus();
             }
         } else {
