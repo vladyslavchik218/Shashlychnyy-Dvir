@@ -4,8 +4,9 @@
 {% block hero %}
 <section class="hero-fullscreen">
     <div class="hero-background">
-    <div class="hero-overlay"></div>
+        <img src="{{ url_for('static', filename='images/first-photo.jpg') }}" alt="Background" class="hero-bg-image">
     </div>
+    <div class="hero-overlay"></div>
     <div class="hero-content">
         <div class="hero-text">
             <h1 class="hero-title">Шашличний двір</h1>
@@ -207,9 +208,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Шашлик зі свинного ошийка</h3>
+                     <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-pork-neck">85 грн</div>
+                            <div class="product-price-new" id="price-pork-neck">90 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-neck')">-</button>
@@ -231,9 +233,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Шашлик з філе курячого</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-chicken-fillet">80 грн</div>
+                            <div class="product-price-new" id="price-chicken-fillet">85 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-fillet')">-</button>
@@ -255,6 +258,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Шашлик з стегна курячого</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-chicken-thigh">80 грн</div>
@@ -279,9 +283,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Ковбаски свинні</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-pork-sausages">55 грн</div>
+                            <div class="product-price-new" id="price-pork-sausages">60 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-sausages')">-</button>
@@ -307,9 +312,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Ребра свинні</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-pork-ribs">70 грн</div>
+                            <div class="product-price-new" id="price-pork-ribs">75 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-ribs')">-</button>
@@ -336,6 +342,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Крильця курячі</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-chicken-wings">50 грн</div>
@@ -362,6 +369,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Гомілки курячі</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-chicken-legs">50 грн</div>
@@ -391,6 +399,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Стегно куряче</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-chicken-thigh-grill">50 грн</div>
@@ -420,6 +429,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Овочі печені</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-grilled-vegetables">60 грн</div>
@@ -446,6 +456,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Картопля печена</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-baked-potatoes">25 грн</div>
@@ -472,6 +483,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Цибуля маринована</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-marinated-onions">15 грн</div>
@@ -524,10 +536,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Болгарський перець</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-bell-pepper">60 грн</div>
-
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('bell-pepper')">-</button>
@@ -553,10 +565,11 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Шампіньйони</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-mushrooms">60 грн</div>
-
+                            
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('mushrooms')">-</button>
@@ -582,6 +595,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Кабачок</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-zucchini">60 грн</div>
@@ -611,6 +625,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Стручковий перець</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-bean-pepper">60 грн</div>
@@ -640,6 +655,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Чері помідори</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-cherry-tomatoes">60 грн</div>
@@ -669,6 +685,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Кукурудза</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-corn">60 грн</div>
@@ -698,10 +715,11 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Костиця</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-pork-chop">70 грн</div>
-
+                            <div class="product-price-new" id="price-pork-chop">75 грн</div>
+                            <description></description>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-chop')">-</button>
@@ -727,6 +745,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Пічеревина</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-pork-liver">55 грн</div>
@@ -756,6 +775,7 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Полядвиця</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
                             <div class="product-price-new" id="price-pork-tenderloin">60 грн</div>
@@ -785,9 +805,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Ребро полоска</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-rib-strip">48 грн</div>
+                            <div class="product-price-new" id="price-rib-strip">75 грн</div>
 
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
@@ -810,9 +831,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Ковбаски гриль</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-grill-sausages">55 грн</div>
+                            <div class="product-price-new" id="price-grill-sausages">60 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('grill-sausages')">-</button>
