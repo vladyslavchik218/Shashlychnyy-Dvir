@@ -443,7 +443,7 @@
                 </div>
             </div>
 
-            <!-- Product Card 8 -->
+            <!-- Product Card 6 -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('chicken-thigh-grill')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/chicken-thigh-grill.jpg') }}" alt="Стегно куряче" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -472,7 +472,61 @@
                     </div>
                 </div>
             </div>
-            
+
+            <!-- Product Card 7 - Костиця -->
+            <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-chop')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kostutsya.jpg') }}" alt="Костиця" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍖</div>
+                    <div class="product-badges">
+                        <span class="badge smoker">Смокер 🔥</span>
+                    </div>
+
+                </div>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Костиця</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-pork-chop">75 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-chop')">-</button>
+                                    <span class="quantity-value-new" id="quantity-pork-chop">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-chop')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-chop')">Хочу</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card 8 - Ковбаски гриль -->
+            <div class="product-card" data-category="shashlik" onclick="openProductModal('grill-sausages')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/kovbasku.jpg') }}" alt="Ковбаски гриль" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥓</div>
+                </div>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Ковбаски гриль</h3>
+                    <p class="product-description">Ціна за 100гр готового продукту</p>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-grill-sausages">60 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('grill-sausages')">-</button>
+                                    <span class="quantity-value-new" id="quantity-grill-sausages">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('grill-sausages')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('grill-sausages')">Хочу</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Product Card 9 -->
             <div class="product-card" data-category="sides" onclick="openProductModal('grilled-vegetables')">
                 <div class="product-image">
@@ -669,7 +723,7 @@
                 </div>
             </div>
 
-            <!-- Product Card 16 -->
+            <!-- Product Card 15 -->
             <div class="product-card" data-category="grill" onclick="openProductModal('cherry-tomatoes')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/tomato.jpg') }}" alt="Чері помідори" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -699,7 +753,7 @@
                 </div>
             </div>
             
-            <!-- Product Card 17 -->
+            <!-- Product Card 16 -->
             <div class="product-card" data-category="grill" onclick="openProductModal('corn')">
                 <div class="product-image">
                     <img src="/static/images/corn.jpg" alt="Кукурудза" onerror="console.log('Image error for corn:', this.src); this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -723,63 +777,6 @@
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('corn')">+</button>
                                 </div>
                                 <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('corn')">Хочу</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Product Card 18 - Костиця -->
-            <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-chop')">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/kostutsya.jpg') }}" alt="Костиця" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="product-image-placeholder" style="display:none;">🍖</div>
-                    <div class="product-badges">
-                        <span class="badge smoker">Смокер 🔥</span>
-                    </div>
-
-                </div>
-                <div class="product-info product-info-new">
-                    <h3 class="product-title">Костиця</h3>
-                    <p class="product-description">Ціна за 100гр готового продукту</p>
-                    <div class="product-footer-new">
-                        <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-pork-chop">75 грн</div>
-                            <description></description>
-                            <div class="quantity-and-want">
-                                <div class="quantity-selector-new">
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-chop')">-</button>
-                                    <span class="quantity-value-new" id="quantity-pork-chop">1</span>
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-chop')">+</button>
-                                </div>
-                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-chop')">Хочу</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            
-            <!-- Product Card 22 - Ковбаски гриль -->
-            <div class="product-card" data-category="shashlik" onclick="openProductModal('grill-sausages')">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/kovbasku.jpg') }}" alt="Ковбаски гриль" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="product-image-placeholder" style="display:none;">🥓</div>
-                </div>
-                <div class="product-info product-info-new">
-                    <h3 class="product-title">Ковбаски гриль</h3>
-                    <p class="product-description">Ціна за 100гр готового продукту</p>
-                    <div class="product-footer-new">
-                        <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-grill-sausages">60 грн</div>
-                            <div class="quantity-and-want">
-                                <div class="quantity-selector-new">
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('grill-sausages')">-</button>
-                                    <span class="quantity-value-new" id="quantity-grill-sausages">1</span>
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('grill-sausages')">+</button>
-                                </div>
-                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('grill-sausages')">Хочу</button>
                             </div>
                         </div>
                     </div>

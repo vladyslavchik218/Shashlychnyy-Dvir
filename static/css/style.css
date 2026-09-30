@@ -5960,6 +5960,32 @@ main {
     );
 }
 
+/* === Гортаючий опис для сетів та боксів === */
+.product-card[data-category="sets"] .product-description-new,
+.product-card[data-category="box"] .product-description-new {
+    -webkit-line-clamp: unset;
+    overflow-y: auto;
+    max-height: 60px;
+    scrollbar-width: thin;
+    scrollbar-color: #D45A2A #1E1510;
+}
+
+.product-card[data-category="sets"] .product-description-new::-webkit-scrollbar,
+.product-card[data-category="box"] .product-description-new::-webkit-scrollbar {
+    width: 4px;
+}
+
+.product-card[data-category="sets"] .product-description-new::-webkit-scrollbar-track,
+.product-card[data-category="box"] .product-description-new::-webkit-scrollbar-track {
+    background: #1E1510;
+}
+
+.product-card[data-category="sets"] .product-description-new::-webkit-scrollbar-thumb,
+.product-card[data-category="box"] .product-description-new::-webkit-scrollbar-thumb {
+    background: #D45A2A;
+    border-radius: 2px;
+}
+
 /* === Темна кошик-сторінка === */
 
 .empty-basket-message,

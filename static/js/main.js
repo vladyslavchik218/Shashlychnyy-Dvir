@@ -1881,7 +1881,7 @@ function addUnitLabelsToProductCards() {
         const productImage = card.querySelector('.product-image');
         if (productImage) {
             const category = card.dataset.category;
-            if (category !== 'drinks' && category !== 'sauces' && category !== 'sets') {
+            if (category !== 'drinks' && category !== 'sauces' && category !== 'sets' && category !== 'box') {
                 const existingLabel = productImage.querySelector('.product-unit');
                 if (existingLabel) {
                     existingLabel.remove();
