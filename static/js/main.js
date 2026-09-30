@@ -2445,6 +2445,10 @@ function getItemPrice(item) {
         return Number(item.price);
     }
 
+    if (item.category === "box") {
+        return Number(item.price);
+    }
+
     // Если это сет
     if (item.category === "sets") {
         return Number(item.price);

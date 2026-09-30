@@ -1216,6 +1216,11 @@ function getItemPrice(item) {
         return Number(item.price);
     }
 
+    // Если это бокс
+    if (item.category === "box") {
+        return Number(item.price);
+    }
+
     // Если это напій (сік, квас, мохіто)
     if (item.category === "drinks" || item.category === "draft") {
         return Number(item.price);
