@@ -1047,12 +1047,13 @@ function createBasketItem(item, index) {
     // Use stored price instead of recalculating
     let itemPrice = item.price || 0;
 
-    // Get image based on item type with better fallback logic
-    let imageUrl = '/static/images/placeholder.jpg';
-    if (item.type === 'sauce') {
-        imageUrl = item.image || '/static/images/sauce-mustard-correct.jpg';
-    } else if (item.image) {
+    // Get image based on item type - only show if image exists
+    let imageUrl = null;
+    let showImage = false;
+
+    if (item.image) {
         imageUrl = item.image;
+        showImage = true;
     }
 
     // Calculate item total
@@ -1071,11 +1072,15 @@ function createBasketItem(item, index) {
         saucesInfo = `<p class="basket-item-sauces">Соуси: ${sauceNames}</p>`;
     }
 
-    itemDiv.innerHTML = `
+    // Create image HTML only if image exists
+    const imageHtml = showImage ? `
         <div class="basket-item-image">
-            <img src="${imageUrl}" alt="${item.name}" onerror="this.src='/static/images/placeholder.jpg'">
-        </div>
-        <div class="basket-item-details">
+            <img src="${imageUrl}" alt="${item.name}" onerror="this.style.display='none'; this.parentElement.style.display='none';">
+        </div>` : '';
+
+    itemDiv.innerHTML = `
+        ${imageHtml}
+        <div class="basket-item-details ${!showImage ? 'basket-item-details--no-image' : ''}">
             <div class="basket-item-header">
                 <h3 class="basket-item-name">${item.name}</h3>
                 <button class="basket-item-remove" onclick="removeItem(${item.cartId})">

@@ -968,7 +968,8 @@ button, .category-item, .product-card {
 .product-card[data-category="shashlik"],
 .product-card[data-category="chicken"],
 .product-card[data-category="sides"],
-.product-card[data-category="grill"] {
+.product-card[data-category="grill"],
+.product-card[data-category="box"] {
     /* Specific styles defined in hover and other selectors */
     display: flex;
     flex-direction: column;
@@ -979,7 +980,8 @@ button, .category-item, .product-card {
 .product-card[data-category="shashlik"] .product-info-new,
 .product-card[data-category="chicken"] .product-info-new,
 .product-card[data-category="sides"] .product-info-new,
-.product-card[data-category="grill"] .product-info-new {
+.product-card[data-category="grill"] .product-info-new,
+.product-card[data-category="box"] .product-info-new {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -989,14 +991,16 @@ button, .category-item, .product-card {
 .product-card[data-category="shashlik"] .product-footer-new,
 .product-card[data-category="chicken"] .product-footer-new,
 .product-card[data-category="sides"] .product-footer-new,
-.product-card[data-category="grill"] .product-footer-new {
+.product-card[data-category="grill"] .product-footer-new,
+.product-card[data-category="box"] .product-footer-new {
     margin-top: auto;
 }
 
 .product-card[data-category="shashlik"]::before,
 .product-card[data-category="chicken"]::before,
 .product-card[data-category="sides"]::before,
-.product-card[data-category="grill"]::before {
+.product-card[data-category="grill"]::before,
+.product-card[data-category="box"]::before {
     content: '';
     position: absolute;
     top: 0;
@@ -1011,14 +1015,16 @@ button, .category-item, .product-card {
 .product-card[data-category="shashlik"]:hover::before,
 .product-card[data-category="chicken"]:hover::before,
 .product-card[data-category="sides"]:hover::before,
-.product-card[data-category="grill"]:hover::before {
+.product-card[data-category="grill"]:hover::before,
+.product-card[data-category="box"]:hover::before {
     opacity: 1;
 }
 
 .product-card[data-category="shashlik"]:hover,
 .product-card[data-category="chicken"]:hover,
 .product-card[data-category="sides"]:hover,
-.product-card[data-category="grill"]:hover {
+.product-card[data-category="grill"]:hover,
+.product-card[data-category="box"]:hover {
     transform: translateY(-8px);
     box-shadow: 0 10px 30px rgba(212, 90, 42, 0.15);
     border-color: var(--accent-fire);
@@ -1075,6 +1081,33 @@ button, .category-item, .product-card {
 }
 
 .product-card[data-category="drinks"]:hover::before {
+    opacity: 1;
+}
+
+/* Box cards specific styles */
+.product-card[data-category="box"] {
+    border-color: #B85A1A;
+}
+
+.product-card[data-category="box"]:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(184, 90, 26, 0.15);
+    border-color: #B85A1A;
+}
+
+.product-card[data-category="box"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #B85A1A, #D47A2A);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card[data-category="box"]:hover::before {
     opacity: 1;
 }
 
@@ -1408,7 +1441,8 @@ button, .category-item, .product-card {
 .product-card[data-category="chicken"] .product-footer,
 .product-card[data-category="sides"] .product-footer,
 .product-card[data-category="grill"] .product-footer,
-.product-card[data-category="drinks"] .product-footer {
+.product-card[data-category="drinks"] .product-footer,
+.product-card[data-category="box"] .product-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -5382,6 +5416,10 @@ main {
     flex-direction: column;
     gap: 8px;
     padding: 12px;
+}
+
+.basket-item-details--no-image {
+    padding: 16px;
 }
 
 .basket-item-header {

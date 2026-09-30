@@ -62,6 +62,9 @@
         <button class="category-item" data-category="sets">
             <span>Сети</span>
         </button>
+        <button class="category-item" data-category="box">
+            <span>Бокси</span>
+        </button>
         <button class="category-item" data-category="sides">
             <span>Гарніри</span>
         </button>
@@ -89,7 +92,7 @@
             <!-- Set Card 1 -->
             <div class="product-card" data-category="sets" data-id="set-2-persons" onclick="openProductModal('set-2-persons')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/4-set.jpg') }}" alt="Сет на 2 особи" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/set-2NEW.jpg') }}" alt="Сет на 2 особи" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
                     <div class="product-badges">
                         <span class="badge hit">Хіт вогню 🔥</span>
@@ -100,7 +103,7 @@
                     <p class="product-description-new">Шашлик свинний 400г, Ковбаски 300г, Картопля печена 500г, Лаваш 1 шт, Соус 50г</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-set-2-persons">690 грн</div>
+                            <div class="product-price-new" id="price-set-2-persons">725 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('set-2-persons')">-</button>
@@ -124,10 +127,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Сет на 4 особи</h3>
-                    <p class="product-description-new">Шашлик 600г, Ребра 500г, Овочі печені 500г, Картопля печена 600г, Лаваш 2 шт, Соус 100г</p>
+                    <p class="product-description-new">Шашлик 600г, Ребра Свинні 500г, Овочі печені 500г, Картопля печена 600г, Лаваш 2 шт, Соус 100г</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-set-4-persons">1420 грн</div>
+                            <div class="product-price-new" id="price-set-4-persons">1475 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('set-4-persons')">-</button>
@@ -144,7 +147,7 @@
             <!-- Set Card 2 -->
             <div class="product-card" data-category="sets" data-id="set-6-persons" onclick="openProductModal('set-6-persons')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/6-set.jpg') }}" alt="Сет на 6 осіб" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/set-6-NEW.jpg') }}" alt="Сет на 6 осіб" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
                     <div class="product-badges">
                         <span class="badge popular">Популярний ⭐</span>
@@ -155,7 +158,7 @@
                     <p class="product-description-new">Шашлик 1кг, Ребра 600г, Ковбаски 600г, Овочі печені 700г, Картопля печена 1кг, Лаваш 3шт, Соус 200г</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-set-6-persons">2290 грн</div>
+                            <div class="product-price-new" id="price-set-6-persons">2580 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('set-6-persons')">-</button>
@@ -172,7 +175,7 @@
             <!-- Set Card 3 -->
             <div class="product-card" data-category="sets" data-id="set-10-persons" onclick="openProductModal('set-10-persons')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/10-set.jpg') }}" alt="Сет на 10 осіб" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/set-10 NEW.jpg') }}" alt="Сет на 10 осіб" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
                     <div class="product-badges">
                         <span class="badge new">Новинка</span>
@@ -180,10 +183,10 @@
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Сет на 10 осіб</h3>
-                    <p class="product-description-new">Шашлик з свинного ошийка 2кг, Шашлик курячий 1кг, Ковбаски 1кг, Реберця 500г, Картопля по-селянськи 1.5кг, Овочі печені 1кг, Лаваш 5 шт, Соус</p>
+                    <p class="product-description-new">Шашлик з свинного ошийка 2кг, Шашлик курячий 1кг, Ковбаски 1кг, Ребра 500г, Картопля 1.5кг, Овочі печені 1кг, Лаваш 5 шт, Соус 300г</p>
                     <div class="product-footer-new">
                         <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-set-10-persons">4685 грн</div>
+                            <div class="product-price-new" id="price-set-10-persons">4910 грн</div>
                             <div class="quantity-and-want">
                                 <div class="quantity-selector-new">
                                     <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('set-10-persons')">-</button>
@@ -197,10 +200,122 @@
                 </div>
             </div>
 
+            <!-- Box Card 1 -->
+            <div class="product-card" data-category="box" data-id="box-pork" onclick="openProductModal('box-pork')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/pig-box-shahluk.jpg') }}" alt="Бокс із шашликом зі свиного ошийка" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍖</div>
+                    <div class="product-badges">
+                        <span class="badge hit">Хіт вогню 🔥</span>
+                    </div>
+                </div>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Бокс із шашликом зі свиного ошийка</h3>
+                    <p class="product-description-new">Шашлик 250г, Картопля печена 200г, Соус 50г, Лаваш</p>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-box-pork">340 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('box-pork')">-</button>
+                                    <span class="quantity-value-new" id="quantity-box-pork">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('box-pork')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('box-pork')">Хочу</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Box Card 2 -->
+            <div class="product-card" data-category="box" data-id="box-sausages" onclick="openProductModal('box-sausages')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/sosiski-box.jpg') }}" alt="Бокс із ковбасками" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🥓</div>
+                    <div class="product-badges">
+                        <span class="badge popular">Популярний ⭐</span>
+                    </div>
+                </div>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Бокс із ковбасками</h3>
+                    <p class="product-description-new">Ковбаски свинні 250г, Картопля печена 200г, Соус 50г, Лаваш</p>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-box-sausages">260 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('box-sausages')">-</button>
+                                    <span class="quantity-value-new" id="quantity-box-sausages">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('box-sausages')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('box-sausages')">Хочу</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Box Card 3 -->
+            <div class="product-card" data-category="box" data-id="box-chicken" onclick="openProductModal('box-chicken')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/chicken-box.jpg') }}" alt="Бокс із курячим шашликом" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍗</div>
+                    <div class="product-badges">
+                        <span class="badge new">Новинка</span>
+                    </div>
+                </div>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Бокс із курячим шашликом</h3>
+                    <p class="product-description-new">Шашлик 250г, Картопля печена 200г, Соус 50г, Лаваш</p>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-box-chicken">330 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('box-chicken')">-</button>
+                                    <span class="quantity-value-new" id="quantity-box-chicken">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('box-chicken')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('box-chicken')">Хочу</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Box Card 4 -->
+            <div class="product-card" data-category="box" data-id="box-ribs" onclick="openProductModal('box-ribs')">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='images/box-rebra2.jpg') }}" alt="Бокс з реберцями" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="product-image-placeholder" style="display:none;">🍖</div>
+                    <div class="product-badges">
+                        <span class="badge popular">Популярний ⭐</span>
+                    </div>
+                </div>
+                <div class="product-info product-info-new">
+                    <h3 class="product-title">Бокс з реберцями</h3>
+                    <p class="product-description-new">Ребра свинні 300г, Картопля печена 200г, Соус 50г, Лаваш</p>
+                    <div class="product-footer-new">
+                        <div class="product-price-row-with-btn">
+                            <div class="product-price-new" id="price-box-ribs">340 грн</div>
+                            <div class="quantity-and-want">
+                                <div class="quantity-selector-new">
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('box-ribs')">-</button>
+                                    <span class="quantity-value-new" id="quantity-box-ribs">1</span>
+                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('box-ribs')">+</button>
+                                </div>
+                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('box-ribs')">Хочу</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Product Card 1 -->
             <div class="product-card" data-category="shashlik" data-id="pork-neck" onclick="openProductModal('pork-neck')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/shahluk.jpg') }}" alt="Шашлик зі свинного ошийка" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/svunnuy-oshuyok.jpg') }}" alt="Шашлик зі свинного ошийка" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
                     <div class="product-badges">
                         <span class="badge hit">Хіт вогню 🔥</span>
@@ -307,7 +422,6 @@
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
                     <div class="product-badges">
                         <span class="badge popular">Популярний ⭐</span>
-                        <span class="badge smoker">Смокер 🔥</span>
                     </div>
                 </div>
                 <div class="product-info product-info-new">
@@ -329,64 +443,6 @@
                 </div>
             </div>
 
-            <!-- Product Card 6 -->
-            <div class="product-card" data-category="shashlik" onclick="openProductModal('chicken-wings')">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/chicken-wings.jpg') }}" alt="Крильця курячі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="product-image-placeholder" style="display:none;">🍗</div>
-                    <div class="product-badges">
-                        <span class="badge new">Новинка</span>
-                        <span class="badge smoker">Смокер 🔥</span>
-                    </div>
-
-                </div>
-                <div class="product-info product-info-new">
-                    <h3 class="product-title">Крильця курячі</h3>
-                    <p class="product-description">Ціна за 100гр готового продукту</p>
-                    <div class="product-footer-new">
-                        <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-chicken-wings">50 грн</div>
-
-                            <div class="quantity-and-want">
-                                <div class="quantity-selector-new">
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-wings')">-</button>
-                                    <span class="quantity-value-new" id="quantity-chicken-wings">1</span>
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('chicken-wings')">+</button>
-                                </div>
-                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('chicken-wings')">Хочу</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Product Card 7 -->
-            <div class="product-card" data-category="shashlik" onclick="openProductModal('chicken-legs')">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/chicken-legs.jpg') }}" alt="Гомілки курячі" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="product-image-placeholder" style="display:none;">🍗</div>
-
-                </div>
-                <div class="product-info product-info-new">
-                    <h3 class="product-title">Гомілки курячі</h3>
-                    <p class="product-description">Ціна за 100гр готового продукту</p>
-                    <div class="product-footer-new">
-                        <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-chicken-legs">50 грн</div>
-
-                            <div class="quantity-and-want">
-                                <div class="quantity-selector-new">
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-legs')">-</button>
-                                    <span class="quantity-value-new" id="quantity-chicken-legs">1</span>
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('chicken-legs')">+</button>
-                                </div>
-                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('chicken-legs')">Хочу</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <!-- Product Card 8 -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('chicken-thigh-grill')">
                 <div class="product-image">
@@ -503,7 +559,7 @@
 
             <div class="product-card" data-category="sides" onclick="openProductModal('lavash-uwu')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/lavash-uwu.jpg') }}" alt="Вірменський лаваш" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/lavash-NEW.jpg') }}" alt="Вірменський лаваш" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥔</div>
                 </div>
                 <div class="product-info product-info-new">
@@ -612,37 +668,7 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Product Card 15 -->
-            <div class="product-card" data-category="grill" onclick="openProductModal('bean-pepper')">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/bean-pepper.jpg') }}" alt="Стручковий перець" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="product-image-placeholder" style="display:none;">🫛</div>
-                    <div class="product-badges">
-                        <span class="badge veg">Веган 🌱</span>
-                    </div>
 
-                </div>
-                <div class="product-info product-info-new">
-                    <h3 class="product-title">Стручковий перець</h3>
-                    <p class="product-description">Ціна за 100гр готового продукту</p>
-                    <div class="product-footer-new">
-                        <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-bean-pepper">60 грн</div>
-
-                            <div class="quantity-and-want">
-                                <div class="quantity-selector-new">
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('bean-pepper')">-</button>
-                                    <span class="quantity-value-new" id="quantity-bean-pepper">1</span>
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('bean-pepper')">+</button>
-                                </div>
-                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('bean-pepper')">Хочу</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <!-- Product Card 16 -->
             <div class="product-card" data-category="grill" onclick="openProductModal('cherry-tomatoes')">
                 <div class="product-image">
@@ -706,7 +732,7 @@
             <!-- Product Card 18 - Костиця -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-chop')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/pork-chop.jpg') }}" alt="Костиця" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/kostutsya.jpg') }}" alt="Костиця" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
                     <div class="product-badges">
                         <span class="badge smoker">Смокер 🔥</span>
@@ -732,101 +758,13 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Product Card 19 - Пічеревина -->
-            <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-liver')">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/pork-liver.jpg') }}" alt="Пічеревина" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="product-image-placeholder" style="display:none;">🍖</div>
-                    <div class="product-badges">
-                        <span class="badge smoker">Смокер 🔥</span>
-                    </div>
 
-                </div>
-                <div class="product-info product-info-new">
-                    <h3 class="product-title">Пічеревина</h3>
-                    <p class="product-description">Ціна за 100гр готового продукту</p>
-                    <div class="product-footer-new">
-                        <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-pork-liver">55 грн</div>
 
-                            <div class="quantity-and-want">
-                                <div class="quantity-selector-new">
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-liver')">-</button>
-                                    <span class="quantity-value-new" id="quantity-pork-liver">1</span>
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-liver')">+</button>
-                                </div>
-                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-liver')">Хочу</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Product Card 20 - Полядвиця -->
-            <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-tenderloin')">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/pork-tenderloin.jpg') }}" alt="Полядвиця" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="product-image-placeholder" style="display:none;">🍖</div>
-                    <div class="product-badges">
-                        <span class="badge smoker">Смокер 🔥</span>
-                    </div>
-
-                </div>
-                <div class="product-info product-info-new">
-                    <h3 class="product-title">Полядвиця</h3>
-                    <p class="product-description">Ціна за 100гр готового продукту</p>
-                    <div class="product-footer-new">
-                        <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-pork-tenderloin">60 грн</div>
-
-                            <div class="quantity-and-want">
-                                <div class="quantity-selector-new">
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-tenderloin')">-</button>
-                                    <span class="quantity-value-new" id="quantity-pork-tenderloin">1</span>
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-tenderloin')">+</button>
-                                </div>
-                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-tenderloin')">Хочу</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Product Card 21 - Ребро полоска -->
-            <div class="product-card" data-category="shashlik" onclick="openProductModal('rib-strip')">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/rib-strip.jpg') }}" alt="Ребро полоска" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="product-image-placeholder" style="display:none;">🍖</div>
-                    <div class="product-badges">
-                        <span class="badge smoker">Смокер 🔥</span>
-                    </div>
-
-                </div>
-                <div class="product-info product-info-new">
-                    <h3 class="product-title">Ребро полоска</h3>
-                    <p class="product-description">Ціна за 100гр готового продукту</p>
-                    <div class="product-footer-new">
-                        <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-rib-strip">75 грн</div>
-
-                            <div class="quantity-and-want">
-                                <div class="quantity-selector-new">
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('rib-strip')">-</button>
-                                    <span class="quantity-value-new" id="quantity-rib-strip">1</span>
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('rib-strip')">+</button>
-                                </div>
-                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('rib-strip')">Хочу</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             
             <!-- Product Card 22 - Ковбаски гриль -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('grill-sausages')">
                 <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/kovbaski.jpg') }}" alt="Ковбаски гриль" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ url_for('static', filename='images/kovbasku.jpg') }}" alt="Ковбаски гриль" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🥓</div>
                 </div>
                 <div class="product-info product-info-new">

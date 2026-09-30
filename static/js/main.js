@@ -283,9 +283,9 @@ const products = {
         id: 'set-2-persons',
         name: 'Сет на 2 особи',
         description: 'Шашлик свинний 400г, Ковбаски 300г, Картопля печена 500г, Лаваш 1 шт, Соус 50г',
-        price: 690,
+        price: 725,
         originalPrice: 1250,
-        image: '/static/images/2-set.jpg',
+        image: '/static/images/2-setNEW.jpg',
         badges: ['hit'],
         category: 'sets'
     },
@@ -293,7 +293,7 @@ const products = {
         id: 'set-4-persons',
         name: 'Сет на 4 особи',
         description: 'Шашлик 600г, Ребра 500г, Овочі печені 500г, Картопля печена 600г, Лаваш 2 шт, Соус 100г',
-        price: 1420,
+        price: 1475,
         originalPrice: 1250,
         image: '/static/images/4-set.jpg',
         badges: ['hit'],
@@ -303,9 +303,9 @@ const products = {
         id: 'set-6-persons',
         name: 'Сет на 6 осіб',
         description: 'Шашлик 1кг, Ребра 600г, Ковбаски 600г, Овочі печені 700г, Картопля печена 1кг, Лаваш 3 шт, Соус 200г',
-        price: 2290,
+        price: 2580,
         originalPrice: 4100,
-        image: '/static/images/6-set.jpg',
+        image: '/static/images/set-6-NEW.jpg',
         badges: ['popular'],
         category: 'sets'
     },
@@ -313,11 +313,47 @@ const products = {
         id: 'set-10-persons',
         name: 'Сет на 10 осіб',
         description: 'Шашлик з свинного ошийка 2кг, Шашлик курячий 1кг, Ковбаски 1кг, Реберця 500г, Картопля по-селянськи 1.5кг, Овочі печені 1кг, Лаваш 5 шт, Соус',
-        price: 4685,
+        price: 4910,
         originalPrice: 7300,
-        image: '/static/images/10-set.jpg',
+        image: '/static/images/10-set NEW.jpg',
         badges: ['new'],
         category: 'sets'
+    },
+    'box-pork': {
+        id: 'box-pork',
+        name: 'Бокс із шашликом зі свиного ошийка',
+        description: 'Шашлик 250г, Картопля печена 200г, Соус 50г, Лаваш',
+        price: 340,
+        image: '/static/images/pig-box-shahluk.jpg',
+        badges: ['hit'],
+        category: 'box'
+    },
+    'box-sausages': {
+        id: 'box-sausages',
+        name: 'Бокс із ковбасками',
+        description: 'Ковбаски свинні 250г, Картопля печена 200г, Соус 50г, Лаваш',
+        price: 260,
+        image: '/static/images/sosiski-box.jpg',
+        badges: ['popular'],
+        category: 'box'
+    },
+    'box-chicken': {
+        id: 'box-chicken',
+        name: 'Бокс із курячим шашликом',
+        description: 'Шашлик 250г, Картопля 200г, Соус 50г, Лаваш',
+        price: 330,
+        image: '/static/images/chicken-box.jpg',
+        badges: ['new'],
+        category: 'box'
+    },
+    'box-ribs': {
+        id: 'box-ribs',
+        name: 'Бокс з реберцями',
+        description: 'Ребра свинні 300г, Картопля печена 200г, Соус 50г, Лаваш',
+        price: 340,
+        image: '/static/images/box-rebra2.jpg',
+        badges: ['popular'],
+        category: 'box'
     },
     'pork-neck': {
         id: 'pork-neck',
@@ -327,7 +363,7 @@ const products = {
         pricePer100g: 90,
         unitWeight: 100,
         isPerPiece: true,
-        image: '/static/images/chicken-fillet.jpg',
+        image: null,
         badges: ['hit'],
         category: 'shashlik'
     },
@@ -371,38 +407,15 @@ const products = {
         id: 'pork-ribs',
         name: 'Ребра свинні',
         description: 'М\'ясні ребра в соусі BBQ з копченням',
-        pricePerUnit: 60,
-        pricePer100g: 60,
+        pricePerUnit: 75,
+        pricePer100g: 75,
         unitWeight: 100,
         isPerPiece: true,
         image: '/static/images/pork-ribs.jpg',
-        badges: ['popular', 'smoker'],
+        badges: ['popular'],
         category: 'shashlik'
     },
-    'chicken-wings': {
-        id: 'chicken-wings',
-        name: 'Крильця курячі',
-        description: 'Хрусткі крильця в соусі BBQ з копченням',
-        pricePerUnit: 50,
-        pricePer100g: 50,
-        unitWeight: 100,
-        isPerPiece: true,
-        image: '/static/images/chicken-wings.jpg',
-        badges: ['new', 'smoker'],
-        category: 'shashlik'
-    },
-    'chicken-legs': {
-        id: 'chicken-legs',
-        name: 'Гомілки курячі',
-        description: 'Соковиті гомілки на мангалі',
-        pricePerUnit: 50,
-        pricePer100g: 50,
-        unitWeight: 100,
-        isPerPiece: true,
-        image: '/static/images/chicken-legs.jpg',
-        badges: [],
-        category: 'shashlik'
-    },
+
     'chicken-thigh-grill': {
         id: 'chicken-thigh-grill',
         name: 'Стегно куряче',
@@ -459,7 +472,7 @@ const products = {
         pricePer125g: 25,
         unitWeight: 125,
         isPerPiece: true,
-        image: '/static/images/lavash-uwu.jpg',
+        image: '/static/images/lavash-NEW.jpg',
         badges: [],
         category: 'sides'
     },
@@ -499,18 +512,6 @@ const products = {
         badges: ['veg'],
         category: 'grill'
     },
-    'bean-pepper': {
-        id: 'bean-pepper',
-        name: 'Стручковий перець',
-        description: 'Хрусткий перець, смажений на грилі',
-        pricePerUnit: 60,
-        pricePer100g: 60,
-        unitWeight: 100,
-        isPerPiece: true,
-        image: '/static/images/bean-pepper.jpg',
-        badges: ['veg'],
-        category: 'grill'
-    },
     'cherry-tomatoes': {
         id: 'cherry-tomatoes',
         name: 'Чері помідори',
@@ -543,46 +544,11 @@ const products = {
         pricePer100g: 75,
         unitWeight: 100,
         isPerPiece: true,
-        image: '/static/images/pork-chop.jpg',
+        image: '/static/images/kostutsya.jpg',
         badges: ['smoker'],
         category: 'shashlik'
     },
-    'pork-liver': {
-        id: 'pork-liver',
-        name: 'Пічеревина',
-        description: 'Ніжна свиняча печінка на мангалі',
-        pricePerUnit: 55,
-        pricePer100g: 55,
-        unitWeight: 100,
-        isPerPiece: true,
-        image: '/static/images/pork-liver.jpg',
-        badges: ['smoker'],
-        category: 'shashlik'
-    },
-    'pork-tenderloin': {
-        id: 'pork-tenderloin',
-        name: 'Полядвиця',
-        description: 'Найніжніша частина свинини на грилі',
-        pricePerUnit: 60,
-        pricePer100g: 60,
-        unitWeight: 100,
-        isPerPiece: true,
-        image: '/static/images/pork-tenderloin.jpg',
-        badges: ['smoker'],
-        category: 'shashlik'
-    },
-    'rib-strip': {
-        id: 'rib-strip',
-        name: 'Ребро полоска',
-        description: 'Смажені ребра-полоски з копченням',
-        pricePerUnit: 75,
-        pricePer100g: 75,
-        unitWeight: 100,
-        isPerPiece: true,
-        image: '/static/images/rib-strip.jpg',
-        badges: ['smoker'],
-        category: 'shashlik'
-    },
+
     'grill-sausages': {
         id: 'grill-sausages',
         name: 'Ковбаски гриль',
@@ -870,9 +836,9 @@ function addToCart(product, weight, selectedSauces) {
         // Don't update price - it should remain the unit price
         // Don't update weight - it should remain the unit weight
     } else {
-        // Calculate price based on weight or fixed price for sets
+        // Calculate price based on weight or fixed price for sets and boxes
         let calculatedPrice = 0;
-        if (product.category === 'sets') {
+        if (product.category === 'sets' || product.category === 'box') {
             calculatedPrice = product.price;
         } else if (product.isPerPiece && weight) {
             calculatedPrice = (product.pricePerUnit * weight) / product.unitWeight;
@@ -892,7 +858,8 @@ function addToCart(product, weight, selectedSauces) {
             sauces: selectedSauces,
             quantity: 1,
             price: Math.round(calculatedPrice), // Store calculated price for unit weight
-            cartId: Date.now()
+            cartId: Date.now(),
+            image: product.image || null
         };
         cart.push(cartItem);
     }
@@ -957,13 +924,15 @@ function openProductModal(productId) {
         'set-4-persons': '🍖',
         'set-6-persons': '🍖',
         'set-10-persons': '🍖',
+        'box-pork': '🍖',
+        'box-sausages': '🥓',
+        'box-chicken': '🍗',
+        'box-ribs': '🍖',
         'pork-neck': '🍖',
         'chicken-fillet': '🍗',
         'chicken-thigh': '🍗',
         'pork-sausages': '🥓',
         'pork-ribs': '🍖',
-        'chicken-wings': '🍗',
-        'chicken-legs': '🍗',
         'chicken-thigh-grill': '🍗',
         'grilled-vegetables': '🥗',
         'baked-potatoes': '🥔',
@@ -971,13 +940,9 @@ function openProductModal(productId) {
         'bell-pepper': '🫑',
         'mushrooms': '🍄',
         'zucchini': '🥒',
-        'bean-pepper': '🫛',
         'cherry-tomatoes': '🍅',
         'corn': '🌽',
         'pork-chop': '🍖',
-        'pork-liver': '🍖',
-        'pork-tenderloin': '🍖',
-        'rib-strip': '🍖',
         'grill-sausages': '🥓',
         'cherry-juice-1l': '🍒',
         'multifruit-juice-1l': '🍎',
@@ -1008,7 +973,7 @@ function openProductModal(productId) {
     document.getElementById('modal-product-description').textContent = product.description;
 
     // Set price based on product type
-    if (product.category === 'sets') {
+    if (product.category === 'sets' || product.category === 'box') {
         document.getElementById('modal-product-price').textContent = product.price + ' грн';
         if (product.originalPrice) {
             document.getElementById('modal-product-price').textContent += ` (замість ${product.originalPrice} грн)`;
@@ -1029,8 +994,8 @@ function openProductModal(productId) {
         badgesContainer.appendChild(badgeElement);
     });
 
-    // For sets, hide weight and sauce selectors
-    if (product.category === 'sets') {
+    // For sets and boxes, hide weight and sauce selectors
+    if (product.category === 'sets' || product.category === 'box') {
         const modalOptions = document.querySelector('.modal-options');
         modalOptions.innerHTML = '';
     } else {
@@ -1066,8 +1031,8 @@ function openProductModal(productId) {
         });
     }
 
-    // Add event listeners for weight buttons (only for non-sets)
-    if (product.category !== 'sets') {
+    // Add event listeners for weight buttons (only for non-sets and non-boxes)
+    if (product.category !== 'sets' && product.category !== 'box') {
         // Add event listeners for weight buttons
         document.querySelectorAll('.weight-btn').forEach(btn => {
             btn.onclick = function() {
@@ -1146,7 +1111,7 @@ function quickAdd(productId) {
 
     // Calculate price based on product type
     let calculatedPrice = 0;
-    if (product.category === 'sets') {
+    if (product.category === 'sets' || product.category === 'box') {
         calculatedPrice = product.price;
     } else if (product.isPerPiece) {
         calculatedPrice = product.pricePerUnit;
@@ -1156,8 +1121,8 @@ function quickAdd(productId) {
         calculatedPrice = product.price;
     }
 
-    // For sets and per-piece items, use simplified logic
-    if (product.category === 'sets' || product.isPerPiece) {
+    // For sets, boxes, and per-piece items, use simplified logic
+    if (product.category === 'sets' || product.category === 'box' || product.isPerPiece) {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
             existingItem.quantity += 1;
@@ -1169,7 +1134,8 @@ function quickAdd(productId) {
                 weight: product.isPerPiece ? product.unitWeight : undefined,
                 quantity: 1,
                 price: calculatedPrice,
-                cartId: Date.now()
+                cartId: Date.now(),
+                image: product.image || null
             };
             cart.push(cartItem);
         }
@@ -1186,7 +1152,8 @@ function quickAdd(productId) {
                 sauces: [],
                 quantity: 1,
                 price: Math.round(calculatedPrice),
-                cartId: Date.now()
+                cartId: Date.now(),
+                image: product.image || null
             };
             cart.push(cartItem);
         }
@@ -1240,8 +1207,8 @@ function updateCardQuantities() {
         if (quantityElement) {
             let totalQuantity = 0;
 
-            if (product.category === 'sets' || product.category === 'drinks' || product.isPerPiece) {
-                // For sets, drinks, and per-piece items, just sum all quantities
+            if (product.category === 'sets' || product.category === 'box' || product.category === 'drinks' || product.isPerPiece) {
+                // For sets, boxes, drinks, and per-piece items, just sum all quantities
                 totalQuantity = cart
                     .filter(item => item.id === productId)
                     .reduce((sum, item) => sum + item.quantity, 0);
@@ -1296,8 +1263,8 @@ function updateCardPrice(productId) {
     if (priceElement && quantityElement) {
         const displayedQuantity = parseInt(quantityElement.textContent) || 1;
 
-        if (product.category === 'sets') {
-            // Fixed price for sets
+        if (product.category === 'sets' || product.category === 'box') {
+            // Fixed price for sets and boxes
             const totalPrice = product.price * displayedQuantity;
             priceElement.textContent = `${totalPrice} грн`;
         } else if (product.isPerPiece) {
@@ -1365,7 +1332,7 @@ function addToCartDirect(productId) {
 
     // Calculate price based on product type
     let calculatedPrice = 0;
-    if (product.category === 'sets') {
+    if (product.category === 'sets' || product.category === 'box') {
         calculatedPrice = product.price;
     } else if (product.isPerPiece) {
         calculatedPrice = product.pricePerUnit;
@@ -1375,8 +1342,8 @@ function addToCartDirect(productId) {
         calculatedPrice = product.price;
     }
 
-    // For sets and per-piece items, use simplified logic
-    if (product.category === 'sets' || product.isPerPiece) {
+    // For sets, boxes, and per-piece items, use simplified logic
+    if (product.category === 'sets' || product.category === 'box' || product.isPerPiece) {
         const existingItem = cart.find(item => item.id === product.id);
         if (existingItem) {
             existingItem.quantity = currentQuantity;
@@ -1389,7 +1356,8 @@ function addToCartDirect(productId) {
                 weight: product.isPerPiece ? product.unitWeight : undefined,
                 quantity: currentQuantity,
                 price: calculatedPrice,
-                cartId: Date.now()
+                cartId: Date.now(),
+                image: product.image || null
             };
             cart.push(cartItem);
         }
@@ -1406,7 +1374,8 @@ function addToCartDirect(productId) {
                 sauces: [],
                 quantity: currentQuantity,
                 price: Math.round(calculatedPrice),
-                cartId: Date.now()
+                cartId: Date.now(),
+                image: product.image || null
             };
             cart.push(cartItem);
         }
@@ -1443,7 +1412,8 @@ function addSauceToCartDirect(sauceId) {
             weight: selectedWeight,
             price: selectedPrice,
             quantity: currentQuantity,
-            cartId: Date.now()
+            cartId: Date.now(),
+            image: sauce.image || null
         };
         cart.push(cartItem);
     }
@@ -1592,7 +1562,8 @@ function addToCartFromModal() {
                 weight: selectedWeight,
                 price: selectedWeight === 50 ? currentSauce.price50g : currentSauce.price100g,
                 quantity: 1,
-                cartId: Date.now()
+                cartId: Date.now(),
+                image: currentSauce.image || null
             };
             cart.push(cartItem);
         }
@@ -1602,8 +1573,8 @@ function addToCartFromModal() {
         updateCartUI();
         updateCardQuantities();
         showNotification('Соус додано в кошик!');
-    } else if (currentProduct && currentProduct.category === 'sets') {
-        // Add set
+    } else if (currentProduct && (currentProduct.category === 'sets' || currentProduct.category === 'box')) {
+        // Add set or box
         const existingItem = cart.find(item => item.id === currentProduct.id);
         if (existingItem) {
             existingItem.quantity += 1;
@@ -1613,7 +1584,8 @@ function addToCartFromModal() {
                 ...currentProduct,
                 quantity: 1,
                 price: currentProduct.price,
-                cartId: Date.now()
+                cartId: Date.now(),
+                image: currentProduct.image || null
             };
             cart.push(cartItem);
         }
@@ -1652,7 +1624,8 @@ function addToCartFromModal() {
                 ...currentDrink,
                 quantity: 1,
                 price: currentDrink.price,
-                cartId: Date.now()
+                cartId: Date.now(),
+                image: currentDrink.image || null
             };
             cart.push(cartItem);
         }
@@ -1702,8 +1675,8 @@ function updateCartUI() {
             if (item.type === 'sauce') {
                 itemPrice = item.price;
                 itemText = `${item.weight * item.quantity}г`;
-            } else if (item.category === 'sets') {
-                // Handle sets
+            } else if (item.category === 'sets' || item.category === 'box') {
+                // Handle sets and boxes
                 itemPrice = item.price;
                 itemText = '';
             } else if (item.category === 'drinks') {
@@ -1746,8 +1719,8 @@ function updateCartUI() {
         let itemPrice;
         if (item.type === 'sauce') {
             itemPrice = item.price;
-        } else if (item.category === 'sets') {
-            // Handle sets
+        } else if (item.category === 'sets' || item.category === 'box') {
+            // Handle sets and boxes
             itemPrice = item.price;
         } else if (item.category === 'drinks') {
             // Handle drinks
