@@ -315,7 +315,7 @@ const products = {
         description: 'Шашлик з свинного ошийка 2кг, Шашлик курячий 1кг, Ковбаски 1кг, Реберця 500г, Картопля по-селянськи 1.5кг, Овочі печені 1кг, Лаваш 5 шт, Соус',
         price: 4910,
         originalPrice: 7300,
-        image: '/static/images/10-set NEW.jpg',
+        image: '/static/images/set-10 NEW.jpg',
         badges: ['new'],
         category: 'sets'
     },
@@ -400,7 +400,7 @@ const products = {
         pricePer100g: 75,
         unitWeight: 100,
         isPerPiece: true,
-        image: '/static/images/pork-ribs.jpg',
+        image: '/static/images/rebra-svuni.jpg',
         badges: ['popular'],
         category: 'shashlik'
     },
