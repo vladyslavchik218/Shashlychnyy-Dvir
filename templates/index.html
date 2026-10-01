@@ -390,31 +390,6 @@
                 </div>
             </div>
 
-            <!-- Product Card 4 -->
-            <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-sausages')">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/pork-sausages.jpg') }}" alt="Ковбаски свинні" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="product-image-placeholder" style="display:none;">🥓</div>
-                </div>
-                <div class="product-info product-info-new">
-                    <h3 class="product-title">Ковбаски свинні</h3>
-                    <p class="product-description">Ціна за 100гр готового продукту</p>
-                    <div class="product-footer-new">
-                        <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-pork-sausages">60 грн</div>
-                            <div class="quantity-and-want">
-                                <div class="quantity-selector-new">
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('pork-sausages')">-</button>
-                                    <span class="quantity-value-new" id="quantity-pork-sausages">1</span>
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('pork-sausages')">+</button>
-                                </div>
-                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('pork-sausages')">Хочу</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Product Card 5 -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-ribs')">
                 <div class="product-image">
@@ -443,45 +418,11 @@
                 </div>
             </div>
 
-            <!-- Product Card 6 -->
-            <div class="product-card" data-category="shashlik" onclick="openProductModal('chicken-thigh-grill')">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='images/chicken-thigh-grill.jpg') }}" alt="Стегно куряче" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="product-image-placeholder" style="display:none;">🍗</div>
-                    <div class="product-badges">
-                        <span class="badge smoker">Смокер 🔥</span>
-                    </div>
-
-                </div>
-                <div class="product-info product-info-new">
-                    <h3 class="product-title">Стегно куряче</h3>
-                    <p class="product-description">Ціна за 100гр готового продукту</p>
-                    <div class="product-footer-new">
-                        <div class="product-price-row-with-btn">
-                            <div class="product-price-new" id="price-chicken-thigh-grill">50 грн</div>
-
-                            <div class="quantity-and-want">
-                                <div class="quantity-selector-new">
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); decreaseCardQuantity('chicken-thigh-grill')">-</button>
-                                    <span class="quantity-value-new" id="quantity-chicken-thigh-grill">1</span>
-                                    <button class="quantity-btn-new" onclick="event.stopPropagation(); increaseCardQuantity('chicken-thigh-grill')">+</button>
-                                </div>
-                                <button class="want-btn-new" onclick="event.stopPropagation(); addToCartDirect('chicken-thigh-grill')">Хочу</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Product Card 7 - Костиця -->
             <div class="product-card" data-category="shashlik" onclick="openProductModal('pork-chop')">
                 <div class="product-image">
                     <img src="{{ url_for('static', filename='images/kostutsya.jpg') }}" alt="Костиця" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="product-image-placeholder" style="display:none;">🍖</div>
-                    <div class="product-badges">
-                        <span class="badge smoker">Смокер 🔥</span>
-                    </div>
-
                 </div>
                 <div class="product-info product-info-new">
                     <h3 class="product-title">Костиця</h3>

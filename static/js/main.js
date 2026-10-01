@@ -285,7 +285,7 @@ const products = {
         description: 'Шашлик свинний 400г, Ковбаски 300г, Картопля печена 500г, Лаваш 1 шт, Соус 50г',
         price: 725,
         originalPrice: 1250,
-        image: '/static/images/2-setNEW.jpg',
+        image: '/static/images/set-2NEW.jpg',
         badges: ['hit'],
         category: 'sets'
     },
@@ -363,7 +363,7 @@ const products = {
         pricePer100g: 90,
         unitWeight: 100,
         isPerPiece: true,
-        image: null,
+        image: '/static/images/svunnuy-oshuyok.jpg',
         badges: ['hit'],
         category: 'shashlik'
     },
@@ -391,18 +391,7 @@ const products = {
         badges: [],
         category: 'shashlik'
     },
-    'pork-sausages': {
-        id: 'pork-sausages',
-        name: 'Ковбаски свинні',
-        description: 'Домашні ковбаски з власного м\'ясного цеху',
-        pricePerUnit: 60,
-        pricePer100g: 60,
-        unitWeight: 100,
-        isPerPiece: true,
-        image: '/static/images/pork-sausages.jpg',
-        badges: [],
-        category: 'shashlik'
-    },
+
     'pork-ribs': {
         id: 'pork-ribs',
         name: 'Ребра свинні',
@@ -416,18 +405,7 @@ const products = {
         category: 'shashlik'
     },
 
-    'chicken-thigh-grill': {
-        id: 'chicken-thigh-grill',
-        name: 'Стегно куряче',
-        description: 'Ціле куряче стегно на кістці',
-        pricePerUnit: 50,
-        pricePer100g: 50,
-        unitWeight: 100,
-        isPerPiece: true,
-        image: '/static/images/chicken-thigh-grill.jpg',
-        badges: ['smoker'],
-        category: 'shashlik'
-    },
+
     'grilled-vegetables': {
         id: 'grilled-vegetables',
         name: 'Овочі печені',
@@ -448,7 +426,7 @@ const products = {
         pricePer100g: 25,
         unitWeight: 100,
         isPerPiece: true,
-        image: '/static/images/baked-potatoes.jpg',
+        image: '/static/images/potato.jpg',
         badges: [],
         category: 'sides'
     },
@@ -460,7 +438,7 @@ const products = {
         pricePer100g: 15,
         unitWeight: 100,
         isPerPiece: true,
-        image: '/static/images/marinated-onions.jpg',
+        image: '/static/images/tsibylya-marynovana.jpg',
         badges: [],
         category: 'sides'
     },
@@ -484,7 +462,7 @@ const products = {
         pricePer100g: 60,
         unitWeight: 100,
         isPerPiece: true,
-        image: '/static/images/bell-pepper.jpg',
+        image: '/static/images/pertsi.jpg',
         badges: ['veg'],
         category: 'grill'
     },
@@ -496,7 +474,7 @@ const products = {
         pricePer100g: 60,
         unitWeight: 100,
         isPerPiece: true,
-        image: '/static/images/mushrooms.jpg',
+        image: '/static/images/mushroom.jpg',
         badges: ['veg'],
         category: 'grill'
     },
@@ -508,7 +486,7 @@ const products = {
         pricePer100g: 60,
         unitWeight: 100,
         isPerPiece: true,
-        image: '/static/images/zucchini.jpg',
+        image: '/static/images/kabachki.jpg',
         badges: ['veg'],
         category: 'grill'
     },
@@ -520,7 +498,7 @@ const products = {
         pricePer100g: 60,
         unitWeight: 100,
         isPerPiece: true,
-        image: '/static/images/cherry-tomatoes.jpg',
+        image: '/static/images/tomato.jpg',
         badges: ['veg'],
         category: 'grill'
     },
@@ -545,7 +523,7 @@ const products = {
         unitWeight: 100,
         isPerPiece: true,
         image: '/static/images/kostutsya.jpg',
-        badges: ['smoker'],
+        badges: [],
         category: 'shashlik'
     },
 
@@ -557,8 +535,8 @@ const products = {
         pricePer100g: 60,
         unitWeight: 100,
         isPerPiece: true,
-        image: '/static/images/grill-sausages.jpg',
-        badges: ['smoker'],
+        image: '/static/images/kovbasku.jpg',
+        badges: [],
         category: 'shashlik'
     },
     // Drinks
@@ -859,7 +837,7 @@ function addToCart(product, weight, selectedSauces) {
             quantity: 1,
             price: Math.round(calculatedPrice), // Store calculated price for unit weight
             cartId: Date.now(),
-            image: product.image || null
+            image: product.image
         };
         cart.push(cartItem);
     }
@@ -1135,7 +1113,7 @@ function quickAdd(productId) {
                 quantity: 1,
                 price: calculatedPrice,
                 cartId: Date.now(),
-                image: product.image || null
+                image: product.image
             };
             cart.push(cartItem);
         }
@@ -1153,7 +1131,7 @@ function quickAdd(productId) {
                 quantity: 1,
                 price: Math.round(calculatedPrice),
                 cartId: Date.now(),
-                image: product.image || null
+                image: product.image
             };
             cart.push(cartItem);
         }
@@ -1240,14 +1218,6 @@ function updateCardQuantities() {
                 .filter(item => item.type === 'sauce' && item.sauceId === sauce.id && item.weight === selectedWeight)
                 .reduce((sum, item) => sum + item.quantity, 0);
             quantityElement.textContent = totalQuantity > 0 ? totalQuantity : 1;
-        }
-    });
-
-    // Update per-piece weight labels (e.g. lavash) to match current quantity
-    Object.keys(products).forEach(productId => {
-        const product = products[productId];
-        if (product.isPerPiece || product.pricePer100g) {
-            updateCardPrice(productId);
         }
     });
 }
@@ -1357,7 +1327,7 @@ function addToCartDirect(productId) {
                 quantity: currentQuantity,
                 price: calculatedPrice,
                 cartId: Date.now(),
-                image: product.image || null
+                image: product.image
             };
             cart.push(cartItem);
         }
@@ -1375,7 +1345,7 @@ function addToCartDirect(productId) {
                 quantity: currentQuantity,
                 price: Math.round(calculatedPrice),
                 cartId: Date.now(),
-                image: product.image || null
+                image: product.image
             };
             cart.push(cartItem);
         }
@@ -1413,7 +1383,7 @@ function addSauceToCartDirect(sauceId) {
             price: selectedPrice,
             quantity: currentQuantity,
             cartId: Date.now(),
-            image: sauce.image || null
+            image: sauce.image
         };
         cart.push(cartItem);
     }
@@ -1563,7 +1533,7 @@ function addToCartFromModal() {
                 price: selectedWeight === 50 ? currentSauce.price50g : currentSauce.price100g,
                 quantity: 1,
                 cartId: Date.now(),
-                image: currentSauce.image || null
+                image: currentSauce.image
             };
             cart.push(cartItem);
         }
@@ -1585,7 +1555,7 @@ function addToCartFromModal() {
                 quantity: 1,
                 price: currentProduct.price,
                 cartId: Date.now(),
-                image: currentProduct.image || null
+                image: currentProduct.image
             };
             cart.push(cartItem);
         }
@@ -1625,7 +1595,7 @@ function addToCartFromModal() {
                 quantity: 1,
                 price: currentDrink.price,
                 cartId: Date.now(),
-                image: currentDrink.image || null
+                image: currentDrink.image
             };
             cart.push(cartItem);
         }
