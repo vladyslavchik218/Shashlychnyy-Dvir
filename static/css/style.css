@@ -185,6 +185,15 @@ button, .category-item, .product-card {
     stroke: var(--white);
 }
 
+.phone-btn {
+    background: var(--white);
+}
+
+.phone-btn:hover {
+    background: var(--accent-fire);
+    border-color: var(--accent-fire);
+}
+
 .cart-badge {
     position: absolute;
     top: -5px;

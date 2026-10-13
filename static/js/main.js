@@ -869,6 +869,14 @@ function openCart() {
     window.location.href = '/basket';
 }
 
+// Make phone call function
+function makePhoneCall() {
+    const phoneNumber = '0996615777';
+    if (confirm('Викликати номер ' + phoneNumber + '?')) {
+        window.location.href = 'tel:' + phoneNumber;
+    }
+}
+
 // Close cart drawer
 function closeCart() {
     document.getElementById('cart-drawer').classList.remove('open');
