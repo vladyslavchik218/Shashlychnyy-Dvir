@@ -872,8 +872,19 @@ function openCart() {
 // Make phone call function
 function makePhoneCall() {
     const phoneNumber = '0996615777';
-    if (confirm('Викликати номер ' + phoneNumber + '?')) {
+
+    // Check if in Instagram or other in-app browser
+    const isInAppBrowser = /Instagram|FBAN|FBAV|Twitter|Line|WeChat|MicroMessenger/i.test(navigator.userAgent) ||
+                          (window.webkit && window.webkit.messageHandlers && !window.webkit.messageHandlers.hasOwnProperty('tel'));
+
+    if (isInAppBrowser) {
+        // Direct call without confirmation in in-app browsers
         window.location.href = 'tel:' + phoneNumber;
+    } else {
+        // Show confirmation dialog in regular browsers
+        if (confirm('Викликати номер ' + phoneNumber + '?')) {
+            window.location.href = 'tel:' + phoneNumber;
+        }
     }
 }
 
