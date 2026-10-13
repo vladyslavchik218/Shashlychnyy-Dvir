@@ -869,24 +869,8 @@ function openCart() {
     window.location.href = '/basket';
 }
 
-// Make phone call function
-function makePhoneCall() {
-    const phoneNumber = '0996615777';
-
-    // Check if in Instagram or other in-app browser
-    const isInAppBrowser = /Instagram|FBAN|FBAV|Twitter|Line|WeChat|MicroMessenger/i.test(navigator.userAgent) ||
-                          (window.webkit && window.webkit.messageHandlers && !window.webkit.messageHandlers.hasOwnProperty('tel'));
-
-    if (isInAppBrowser) {
-        // Direct call without confirmation in in-app browsers
-        window.location.href = 'tel:' + phoneNumber;
-    } else {
-        // Show confirmation dialog in regular browsers
-        if (confirm('Викликати номер ' + phoneNumber + '?')) {
-            window.location.href = 'tel:' + phoneNumber;
-        }
-    }
-}
+// Make phone call function (no longer needed - using direct tel: link)
+// Kept for reference in case needed in the future
 
 // Close cart drawer
 function closeCart() {

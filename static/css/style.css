@@ -165,6 +165,8 @@ button, .category-item, .product-card {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    text-decoration: none;
+    color: inherit;
 }
 
 .nav-btn:hover {
