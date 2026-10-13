@@ -189,6 +189,11 @@ button, .category-item, .product-card {
 
 .phone-btn {
     background: var(--white);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .phone-btn:hover {
